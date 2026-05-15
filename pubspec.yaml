@@ -1,0 +1,35 @@
+name: fanpitch
+description: "FanPitch — Real-Time Social Match Experience"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  dio: ^5.7.0
+  web_socket_channel: ^3.0.1
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.2
+  go_router: ^14.6.1
+  cached_network_image: ^3.4.1
+  image_picker: ^1.1.2
+  intl: ^0.19.0
+  confetti: ^0.8.0
+  http: ^1.2.2
+  collection: ^1.18.0
+  cupertino_icons: ^1.0.8
+  video_player: ^2.9.2
+  visibility_detector: ^0.4.0+2
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

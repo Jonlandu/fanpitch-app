@@ -25,8 +25,27 @@ class ApiClient {
         if (e.response?.statusCode == 401) {
           final refreshed = await _tryRefresh();
           if (refreshed) {
-            final clone = await _dio.fetch(e.requestOptions);
+            // Le token a été mis à jour, on doit réinjecter le NOUVEAU token
+            // dans les headers de la requête clonée avant de la rejouer !
+            final newAccess = await _storage.readAccess();
+            final options = e.requestOptions;
+            if (newAccess != null) {
+              options.headers['Authorization'] = 'Bearer $newAccess';
+            }
+
+            final clone = await _dio.fetch(options);
             return handler.resolve(clone);
+          } else {
+            // Si le refresh échoue, on stoppe tout et on renvoie une 401 propre
+            // pour rediriger l'utilisateur vers l'écran de Login
+            return handler.reject(
+              DioException(
+                requestOptions: e.requestOptions,
+                error: 'Session expired, please try to reconnect.',
+                type: DioExceptionType.badResponse,
+                response: e.response,
+              ),
+            );
           }
         }
         handler.next(e);
@@ -87,6 +106,37 @@ class ApiClient {
   Future<AppUser> getMe() async {
     final r = await _dio.get('/auth/me/');
     return AppUser.fromJson(r.data as Map<String, dynamic>);
+  }
+
+  /// Public profile of any user (with is_me + is_following).
+  Future<AppUser> getUser(int userId) async {
+    final r = await _dio.get('/auth/users/$userId/');
+    return AppUser.fromJson(r.data as Map<String, dynamic>);
+  }
+
+  /// All public statuses (non-expired) authored by [userId], paginated.
+  Future<({List<StatusPost> items, int total, bool hasMore})>
+      getUserStatuses(int userId, {int limit = 20, int offset = 0}) async {
+    final r = await _dio.get('/users/$userId/statuses/', queryParameters: {
+      'limit': limit,
+      'offset': offset,
+    });
+    final results = (r.data['results'] as List? ?? const []);
+    return (
+      items: results
+          .map((e) => StatusPost.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      total: (r.data['count'] ?? 0) as int,
+      hasMore: (r.data['has_more'] ?? false) as bool,
+    );
+  }
+
+  Future<void> follow(int userId) async {
+    await _dio.post('/auth/users/$userId/follow/');
+  }
+
+  Future<void> unfollow(int userId) async {
+    await _dio.delete('/auth/users/$userId/follow/');
   }
 
   // --- matches ---

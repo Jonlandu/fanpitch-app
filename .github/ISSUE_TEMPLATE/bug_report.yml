@@ -1,0 +1,63 @@
+name: 🐛 Bug report
+description: Something is broken in the mobile app.
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      placeholder: |
+        After tapping a username in the feed, the app crashes with a red
+        screen showing "RenderFlex overflow".
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Login as kinshasa_kid
+        2. Open the For-You feed
+        3. Tap any username
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      placeholder: "0.1.0+1 (from pubspec.yaml)"
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - iOS simulator
+        - iOS device
+        - Android emulator
+        - Android device
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      placeholder: "iOS 17.4 / Android 14"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output
+      render: shell
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before submitting
+      options:
+        - label: I'm running the latest `main` (or know which commit I'm on).
+          required: true
+        - label: I've searched existing issues for this bug.
+          required: true

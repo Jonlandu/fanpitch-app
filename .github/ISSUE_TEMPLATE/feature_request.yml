@@ -1,0 +1,35 @@
+name: ✨ Feature request
+description: Suggest a new feature or enhancement for the mobile app.
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+
+  - type: dropdown
+    id: pillar
+    attributes:
+      label: Which challenge pillar does this reinforce?
+      options:
+        - Multiplayer
+        - Real-time data
+        - Gamification
+        - Usability / polish
+        - Cross-platform thinking
+        - Other / none
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before submitting
+      options:
+        - label: I've searched existing issues for this idea.
+          required: true

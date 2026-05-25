@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # Dart / Flutter packages
+  - package-ecosystem: pub
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 10
+    labels: [dependencies, flutter]
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+      include: scope
+    groups:
+      riverpod-stack:
+        patterns:
+          - "flutter_riverpod*"
+          - "riverpod*"
+      networking:
+        patterns:
+          - "dio*"
+          - "http*"
+          - "web_socket_channel*"
+      ui-stack:
+        patterns:
+          - "go_router*"
+          - "flutter_animate*"
+          - "flutter_svg*"
+          - "cached_network_image*"
+          - "shimmer*"
+          - "confetti*"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [dependencies, ci]
+    commit-message:
+      prefix: "chore(ci)"

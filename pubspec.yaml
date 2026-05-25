@@ -17,7 +17,7 @@ dependencies:
   go_router: ^14.6.1
   cached_network_image: ^3.4.1
   image_picker: ^1.1.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   confetti: ^0.8.0
   http: ^1.2.2
   collection: ^1.18.0

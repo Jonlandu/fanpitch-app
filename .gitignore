@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Hackathon data — must never be committed (Challenge 3 brief explicitly forbids it)
+*.pdf
+ISB-UserGuide.pdf
+Challenge*.pdf
+
+# Generated icon previews (re-creatable from assets/branding/app_icon.svg)
+assets/branding/previews/

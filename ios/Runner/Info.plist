@@ -5,7 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Fanpitch</string>
+	<string>FanPitch</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>FanPitch a besoin d'enregistrer les publications sauvegardées dans ta galerie.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>FanPitch a besoin d'accéder à ta galerie pour publier des photos.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>FanPitch utilise la caméra pour capturer tes réactions et publications.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

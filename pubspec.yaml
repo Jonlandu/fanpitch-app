@@ -25,6 +25,10 @@ dependencies:
   video_player: ^2.9.2
   visibility_detector: ^0.4.0+2
   shimmer: ^3.0.0
+  flutter_svg: ^2.0.10+1     # render brand logo SVG at any size
+  flutter_animate: ^4.5.0    # declarative animations for onboarding + motion design
+  gal: ^2.3.0                # save post media to the device photo gallery
+  permission_handler: ^11.3.1 # iOS photo-add permission for gal
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +37,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/branding/
+    - assets/branding/previews/

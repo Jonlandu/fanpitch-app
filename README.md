@@ -1,6 +1,18 @@
 # FanPitch Mobile
 
-Flutter 3 app (iOS + Android), wired to the FanPitch Django backend over HTTP + WebSocket.
+[![CI](https://github.com/Jonlandu/fanpitch-app/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jonlandu/fanpitch-app/actions/workflows/ci.yml)
+[![Flutter 3](https://img.shields.io/badge/flutter-3.x-02569B.svg?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Dart 3](https://img.shields.io/badge/dart-3.x-0175C2.svg?logo=dart&logoColor=white)](https://dart.dev)
+[![Material 3](https://img.shields.io/badge/Material-3-757575.svg?logo=material-design&logoColor=white)](https://m3.material.io)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196.svg)](https://www.conventionalcommits.org)
+
+> **Mobile companion** to [`fanpitch-api`](https://github.com/Jonlandu/fanpitch-api) — built for the AWS World Sports Innovation Cup 2026.
+
+Flutter 3 (iOS + Android) with Riverpod, go_router, dio + JWT refresh interceptor, and `web_socket_channel` for live match rooms.
+
+- 🏗️ **Architecture overview** → [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- 🤝 **How to contribute** → [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- 🔒 **Security policy** → [`SECURITY.md`](SECURITY.md)
 
 ```
 lib/

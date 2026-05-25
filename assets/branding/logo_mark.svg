@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FanPitch — Logo Mark (no text, no background)
+  Use anywhere the brand symbol is needed in isolation.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="markGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#00A651"/>
+      <stop offset="100%" stop-color="#FF6B2C"/>
+    </linearGradient>
+    <radialGradient id="markBallGlow" cx="40%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E8ECEF"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Brand-colored disc behind the ball -->
+  <circle cx="256" cy="256" r="240" fill="url(#markGrad)"/>
+
+  <!-- Outer ripple arcs (fan broadcast) -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.75">
+    <path d="M 360,160 A 130,130 0 0 1 360,352"/>
+    <path d="M 152,160 A 130,130 0 0 0 152,352" opacity="0.55"/>
+  </g>
+
+  <!-- Pitch lines, subtle -->
+  <g opacity="0.18" stroke="#FFFFFF" stroke-width="3" fill="none">
+    <circle cx="256" cy="256" r="180"/>
+    <line x1="256" y1="76" x2="256" y2="436"/>
+  </g>
+
+  <!-- The football -->
+  <circle cx="256" cy="256" r="108" fill="url(#markBallGlow)"/>
+  <path d="M 256,194
+           L 312,232
+           L 290,295
+           L 222,295
+           L 200,232 Z"
+        fill="#0D1117"/>
+  <g fill="none" stroke="#0D1117" stroke-width="5.5" stroke-linejoin="round">
+    <path d="M 200,232 L 158,250"/>
+    <path d="M 312,232 L 354,250"/>
+    <path d="M 222,295 L 206,344"/>
+    <path d="M 290,295 L 306,344"/>
+    <path d="M 256,194 L 256,156"/>
+  </g>
+  <!-- Orange accent edge -->
+  <path d="M 346,290 A 108,108 0 0 1 290,346"
+        fill="none" stroke="#FF6B2C" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+</svg>

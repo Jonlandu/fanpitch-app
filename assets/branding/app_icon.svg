@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FanPitch — App Icon
+  ───────────────────
+  Master 1024×1024 SVG for iOS / Android app icons.
+  Concept: vibrant green→orange gradient (Africa + football energy) +
+  stylized ball with broadcasting "fan ripples" radiating outward.
+  Colors locked to the FanPitch brand palette:
+    Pitch Green  #00A651    Fan Orange  #FF6B2C
+    Ink Black    #0D1117    Crowd White #FFFFFF
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Diagonal gradient: green top-left → orange bottom-right -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#00A651"/>
+      <stop offset="50%"  stop-color="#1FB76C"/>
+      <stop offset="100%" stop-color="#FF6B2C"/>
+    </linearGradient>
+
+    <!-- Inner glow on the ball -->
+    <radialGradient id="ballGlow" cx="40%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#FFFFFF"/>
+      <stop offset="70%"  stop-color="#F4F6F8"/>
+      <stop offset="100%" stop-color="#D6DDE3"/>
+    </radialGradient>
+
+    <!-- Soft shadow under the ball -->
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="12" result="shadow"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded-square background, iOS-style corner radius ≈ 22.5% -->
+  <rect x="0" y="0" width="1024" height="1024" rx="230" ry="230" fill="url(#bg)"/>
+
+  <!-- Subtle pitch lines (decorative, low contrast) -->
+  <g opacity="0.10" stroke="#FFFFFF" stroke-width="6" fill="none">
+    <circle cx="512" cy="512" r="380"/>
+    <line x1="512" y1="132" x2="512" y2="892"/>
+    <circle cx="512" cy="512" r="120"/>
+  </g>
+
+  <!-- Fan ripples — three concentric arcs radiating from the ball -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" opacity="0.78">
+    <!-- Top-right ripple arc -->
+    <path d="M 720,300 A 250,250 0 0 1 720,720" />
+    <!-- Outer ripple -->
+    <path d="M 800,250 A 340,340 0 0 1 800,770" opacity="0.55"/>
+    <!-- Bottom-left ripple, opposite direction -->
+    <path d="M 304,300 A 250,250 0 0 0 304,720" opacity="0.65"/>
+  </g>
+
+  <!-- The ball: large white sphere with hint of classic pentagon panel -->
+  <g filter="url(#softShadow)">
+    <circle cx="512" cy="512" r="210" fill="url(#ballGlow)"/>
+    <!-- Central pentagon (classic football panel) -->
+    <path d="M 512,388
+             L 619,463
+             L 578,585
+             L 446,585
+             L 405,463 Z"
+          fill="#0D1117"/>
+    <!-- Three flanking hex-edges suggesting other panels -->
+    <g fill="none" stroke="#0D1117" stroke-width="11" stroke-linejoin="round">
+      <path d="M 405,463 L 322,495"/>
+      <path d="M 619,463 L 702,495"/>
+      <path d="M 446,585 L 414,684"/>
+      <path d="M 578,585 L 610,684"/>
+      <path d="M 512,388 L 512,310"/>
+    </g>
+  </g>
+
+  <!-- Subtle orange highlight on bottom-right edge of ball (Fan Orange accent) -->
+  <path d="M 690,580 A 210,210 0 0 1 580,690"
+        fill="none" stroke="#FF6B2C" stroke-width="14" stroke-linecap="round" opacity="0.85"/>
+</svg>

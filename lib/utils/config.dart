@@ -23,12 +23,12 @@ class AppConfig {
 
   static String _autoBase({required bool httpScheme}) {
     final scheme = httpScheme ? 'http' : 'ws';
-    if (kIsWeb) return '$scheme://127.0.0.1:8000';
+    if (kIsWeb) return '$scheme://192.168.1.77:8000';
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return '$scheme://10.0.2.2:8000';
       default:
-        return '$scheme://127.0.0.1:8000';
+        return '$scheme://192.168.1.77:8000';
     }
   }
 }

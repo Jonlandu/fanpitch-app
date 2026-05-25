@@ -1,0 +1,12 @@
+# FanPitch mobile — CODEOWNERS
+
+*                       @Jonlandu
+
+# Sensitive surfaces — explicit owner gate
+/lib/services/auth_storage.dart @Jonlandu
+/lib/services/api_client.dart   @Jonlandu
+/ios/Runner/Info.plist          @Jonlandu
+/android/app/src/main/AndroidManifest.xml @Jonlandu
+/assets/branding/               @Jonlandu
+/.github/                       @Jonlandu
+/SECURITY.md                    @Jonlandu

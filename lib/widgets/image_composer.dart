@@ -9,8 +9,8 @@ import 'package:flutter/rendering.dart';
 /// composed result as PNG bytes.
 ///
 /// Usage:
-///   final composed = await Navigator.of(ctx).push<Uint8List>(
-///     MaterialPageRoute(builder: (_) => ImageComposerScreen(bytes: original)),
+///   final composed = await Navigator.of(ctx).push&lt;Uint8List&gt;(
+///     MaterialPageRoute(builder: (_) =&gt; ImageComposerScreen(bytes: original)),
 ///   );
 class ImageComposerScreen extends StatefulWidget {
   const ImageComposerScreen({super.key, required this.bytes});
@@ -217,14 +217,14 @@ class _Overlay {
     required this.content,
     required this.position,
     this.scale = 1.0,
-    this.rotation = 0.0,
   });
 
   final _OverlayKind kind;
   final String content;
   Offset position;
   double scale;
-  double rotation;
+  // ignore: unused_field  // reserved for future rotation gesture
+  double rotation = 0.0;
 }
 
 class _OverlayWidget extends StatelessWidget {

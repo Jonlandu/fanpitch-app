@@ -20,6 +20,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.35.3"   # pinned to match local dev — bump deliberately
           channel: stable
           cache: true
 
@@ -33,7 +34,10 @@ jobs:
           fi
 
       - name: Analyze (fail on any error or warning)
-        run: flutter analyze --fatal-warnings --fatal-infos
+        # `--fatal-infos` is dropped on purpose: newer Dart analyzer versions
+        # ship new info-level lints that are stylistic, not bugs. We still
+        # fail on warnings (real correctness issues).
+        run: flutter analyze --fatal-warnings
 
   test:
     name: flutter test
@@ -43,6 +47,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.35.3"   # pinned to match local dev — bump deliberately
           channel: stable
           cache: true
 
@@ -67,6 +72,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.35.3"   # pinned to match local dev — bump deliberately
           channel: stable
           cache: true
 

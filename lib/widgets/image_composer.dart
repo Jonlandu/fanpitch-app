@@ -223,7 +223,6 @@ class _Overlay {
   final String content;
   Offset position;
   double scale;
-  // ignore: unused_field  // reserved for future rotation gesture
   double rotation = 0.0;
 }
 

@@ -76,10 +76,10 @@ class StatusCard extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: status.media!.cdnUrl!,
                       fit: BoxFit.cover,
-                      height: 220,
+                      height: 180,
                       width: double.infinity,
                       placeholder: (_, __) => Container(
-                        height: 220,
+                        height: 180,
                         color: Theme.of(
                           context,
                         ).colorScheme.surfaceContainerHighest,
@@ -112,6 +112,34 @@ class StatusCard extends StatelessWidget {
                         fontSize: 13,
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ],
+            if (status.commentsCount > 0 || status.reactionsCount > 0) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.favorite_outline,
+                    size: 14,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${status.reactionsCount}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(width: 14),
+                  Icon(
+                    Icons.mode_comment_outlined,
+                    size: 14,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${status.commentsCount}',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),

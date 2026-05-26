@@ -135,7 +135,63 @@ class _StatusReelState extends ConsumerState<StatusReel> {
         const _BottomScrim(),
         const _TopScrim(),
 
-        // 3. left column: author + caption
+        // 3. TOP header — author + timestamp always visible above the fold
+        Positioned(
+          left: 16,
+          right: 96,
+          top: MediaQuery.of(context).padding.top + 64,
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 16,
+                backgroundColor: Colors.white,
+                child: Text(
+                  (p.displayName.isNotEmpty
+                          ? p.displayName.substring(0, 1)
+                          : s.author.username.substring(0, 1))
+                      .toUpperCase(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '@${s.author.username}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
+                      ),
+                    ),
+                    Text(
+                      ts,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: 11,
+                        shadows: const [
+                          Shadow(blurRadius: 4, color: Colors.black54),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // 4. BOTTOM — caption (truncated) + AI caption + comments teaser
         Positioned(
           left: 16,
           right: 96,
@@ -144,38 +200,11 @@ class _StatusReelState extends ConsumerState<StatusReel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.white,
-                    child: Text(
-                      (p.displayName.isNotEmpty
-                              ? p.displayName.substring(0, 1)
-                              : s.author.username.substring(0, 1))
-                          .toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '@${s.author.username}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
               if (s.bodyText.isNotEmpty)
                 Text(
                   s.bodyText,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -185,7 +214,7 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                 ),
               if (s.media?.aiCaption != null &&
                   s.media!.aiCaption!.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Row(
                   children: [
                     const Icon(
@@ -197,6 +226,8 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                     Expanded(
                       child: Text(
                         '"${s.media!.aiCaption}"',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white70,
                           fontStyle: FontStyle.italic,
@@ -207,14 +238,25 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                   ],
                 ),
               ],
-              const SizedBox(height: 6),
-              Text(
-                ts,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  fontSize: 11,
+              if (s.commentsCount > 0) ...[
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: _openComments,
+                  child: Text(
+                    s.commentsCount == 1
+                        ? 'Voir 1 commentaire'
+                        : 'Voir les ${s.commentsCount} commentaires',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.85),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      shadows: const [
+                        Shadow(blurRadius: 4, color: Colors.black54),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),

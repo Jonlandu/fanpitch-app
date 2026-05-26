@@ -51,14 +51,37 @@ class ReelsController extends StateNotifier<ReelsState> {
   final Map<int, int> _pendingImpressions = {};
   late final Timer _impressionFlusher;
 
+  /// True until the first successful refresh — used to gate the post-login
+  /// auto-retry. After we've shown content once, transient failures bubble
+  /// up to the user as an error instead of silently retrying.
+  bool _firstLoadCompleted = false;
+
+  Future<List<StatusPost>> _fetch() => state.tab == FeedTab.forYou
+      ? _api.forYouFeed(limit: 20)
+      : _api.followingFeed(limit: 20);
+
   Future<void> refresh() async {
     state = state.copyWith(loading: true, error: null);
     try {
-      final items = state.tab == FeedTab.forYou
-          ? await _api.forYouFeed(limit: 20)
-          : await _api.followingFeed(limit: 20);
+      final items = await _fetch();
+      _firstLoadCompleted = true;
       state = state.copyWith(items: items, loading: false);
     } catch (e) {
+      // The very first call right after login sometimes loses to a race
+      // with the auth/Dio interceptor warm-up. Quietly retry once before
+      // surfacing the error.
+      if (!_firstLoadCompleted) {
+        await Future<void>.delayed(const Duration(milliseconds: 600));
+        try {
+          final items = await _fetch();
+          _firstLoadCompleted = true;
+          state = state.copyWith(items: items, loading: false);
+          return;
+        } catch (e2) {
+          state = state.copyWith(loading: false, error: e2.toString());
+          return;
+        }
+      }
       state = state.copyWith(loading: false, error: e.toString());
     }
   }

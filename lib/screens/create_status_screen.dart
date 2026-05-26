@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../l10n/generated/app_localizations.dart';
 import '../providers/feed_provider.dart';
+import '../providers/reels_provider.dart';
 import '../services/api_client.dart';
 
 class CreateStatusScreen extends ConsumerStatefulWidget {
@@ -115,6 +116,10 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
             : _body.text,
         mediaId: mediaId,
       );
+      // Refresh BOTH providers — reelsProvider drives the For-You tab the
+      // user is about to land on; feedProvider is kept in sync for any
+      // legacy consumer that still reads it.
+      await ref.read(reelsProvider.notifier).refresh();
       await ref.read(feedProvider.notifier).refresh();
       if (mounted) context.go('/');
     } catch (e) {

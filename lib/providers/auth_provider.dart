@@ -1,11 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/user.dart';
 import '../services/api_client.dart';
 import '../services/auth_storage.dart';
 
+void _logAuth(String msg) {
+  if (kDebugMode) debugPrint('🔐 AUTH | $msg');
+}
+
 class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
   AuthController(this._api, this._storage) : super(const AsyncValue.loading()) {
+    _logAuth('AuthController constructed → state=loading, firing _bootstrap');
     _bootstrap();
   }
 
@@ -18,16 +24,23 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
   Object? lastError;
 
   Future<void> _bootstrap() async {
+    _logAuth('_bootstrap: start, reading storage…');
     try {
       final token = await _storage.readAccess();
+      _logAuth(
+        '_bootstrap: storage.readAccess = ${token == null ? "null" : "${token.substring(0, 12)}..."}',
+      );
       if (token == null) {
+        _logAuth('_bootstrap: no token → state=data(null)');
         state = const AsyncValue.data(null);
         return;
       }
+      _logAuth('_bootstrap: calling api.getMe()…');
       final me = await _api.getMe();
+      _logAuth('_bootstrap: getMe OK (user=${me.username}) → state=data(user)');
       state = AsyncValue.data(me);
-    } catch (_) {
-      // Stale / invalid token, or backend unreachable. Treat as "not logged in".
+    } catch (e) {
+      _logAuth('_bootstrap: caught $e → clearing storage + state=data(null)');
       try {
         await _storage.clear();
       } catch (_) {
@@ -38,17 +51,23 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
   }
 
   Future<bool> login(String username, String password) async {
+    _logAuth('login: start username=$username, state=loading');
     lastError = null;
     state = const AsyncValue.loading();
     try {
+      _logAuth('login: calling api.login()…');
       final tokens = await _api.login(username, password);
+      _logAuth('login: tokens received, writing to storage…');
       await _storage.writeTokens(tokens.access, tokens.refresh);
+      _logAuth('login: tokens written, calling api.getMe()…');
       final me = await _api.getMe();
+      _logAuth('login: getMe OK (user=${me.username}) → state=data(user) ✓');
       state = AsyncValue.data(me);
       return true;
     } catch (e) {
+      _logAuth('login: caught $e → state=data(null) ✗');
       lastError = e;
-      state = const AsyncValue.data(null); // stay logged-out, no AsyncError
+      state = const AsyncValue.data(null);
       return false;
     }
   }
@@ -60,9 +79,13 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
     String? displayName,
     String? country,
   }) async {
+    _logAuth(
+      'register: start username=$username country=$country, state=loading',
+    );
     lastError = null;
     state = const AsyncValue.loading();
     try {
+      _logAuth('register: calling api.register()…');
       final r = await _api.register(
         username: username,
         email: email,
@@ -70,10 +93,15 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
         displayName: displayName,
         country: country,
       );
+      _logAuth('register: tokens received, writing to storage…');
       await _storage.writeTokens(r.tokens.access, r.tokens.refresh);
+      _logAuth(
+        'register: tokens written → state=data(user=${r.user.username}) ✓',
+      );
       state = AsyncValue.data(r.user);
       return true;
     } catch (e) {
+      _logAuth('register: caught $e → state=data(null) ✗');
       lastError = e;
       state = const AsyncValue.data(null);
       return false;
@@ -81,6 +109,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
   }
 
   Future<void> logout() async {
+    _logAuth('logout: called (state was=${state.valueOrNull?.username})');
     lastError = null;
     try {
       await _storage.clear();
@@ -88,6 +117,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
       /* ignore */
     }
     state = const AsyncValue.data(null);
+    _logAuth('logout: state=data(null)');
   }
 }
 

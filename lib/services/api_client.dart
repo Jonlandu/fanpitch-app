@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/match.dart';
@@ -10,6 +11,10 @@ import '../models/user.dart';
 import '../utils/config.dart';
 import 'auth_storage.dart';
 
+void _logDio(String msg) {
+  if (kDebugMode) debugPrint('🌐 DIO  | $msg');
+}
+
 class ApiClient {
   ApiClient(this._storage) {
     _dio.options.baseUrl = '${AppConfig.apiBase}/api/v1';
@@ -19,25 +24,25 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final t = await _storage.readAccess();
+          final tokPreview = t == null ? "null" : "${t.substring(0, 12)}...";
+          _logDio('→ ${options.method} ${options.path} (token=$tokPreview)');
           if (t != null) options.headers['Authorization'] = 'Bearer $t';
           handler.next(options);
         },
         onError: (e, handler) async {
-          // Skip refresh for the auth endpoints themselves — a 401 on
-          // /auth/login/ means wrong credentials, not an expired session.
-          // Trying to refresh there would mint fresh tokens from a stale
-          // refresh and silently log the wrong user back in.
+          final code = e.response?.statusCode ?? '?';
           final path = e.requestOptions.path;
+          _logDio('✗ $code ${e.requestOptions.method} $path');
           final isAuthEndpoint =
               path.contains('/auth/login') ||
               path.contains('/auth/register') ||
               path.contains('/auth/refresh');
 
           if (e.response?.statusCode == 401 && !isAuthEndpoint) {
+            _logDio('401 → attempting _tryRefresh');
             final refreshed = await _tryRefresh();
             if (refreshed) {
-              // Le token a été mis à jour, on doit réinjecter le NOUVEAU token
-              // dans les headers de la requête clonée avant de la rejouer !
+              _logDio('refresh OK, retrying $path');
               final newAccess = await _storage.readAccess();
               final options = e.requestOptions;
               if (newAccess != null) {
@@ -47,9 +52,7 @@ class ApiClient {
               final clone = await _dio.fetch(options);
               return handler.resolve(clone);
             } else {
-              // Refresh failed. Let the error propagate so the UI shows
-              // a refreshable error — we do NOT force a logout here, the
-              // user might just be on a flaky network.
+              _logDio('refresh FAILED → propagating 401 (no auto-logout)');
               return handler.reject(
                 DioException(
                   requestOptions: e.requestOptions,
@@ -71,7 +74,11 @@ class ApiClient {
 
   Future<bool> _tryRefresh() async {
     final r = await _storage.readRefresh();
-    if (r == null) return false;
+    if (r == null) {
+      _logDio('_tryRefresh: no refresh token in storage');
+      return false;
+    }
+    _logDio('_tryRefresh: refresh token found, calling /auth/refresh/');
     try {
       final resp = await Dio().post(
         '${AppConfig.apiBase}/api/v1/auth/refresh/',
@@ -80,8 +87,10 @@ class ApiClient {
       final access = resp.data['access'] as String;
       final newRefresh = (resp.data['refresh'] ?? r) as String;
       await _storage.writeTokens(access, newRefresh);
+      _logDio('_tryRefresh: NEW tokens written ✓');
       return true;
-    } catch (_) {
+    } catch (err) {
+      _logDio('_tryRefresh: caught $err → CLEARING STORAGE');
       await _storage.clear();
       return false;
     }

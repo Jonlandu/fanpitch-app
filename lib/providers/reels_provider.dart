@@ -1,9 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/status_post.dart';
 import '../services/api_client.dart';
+
+void _logReels(String msg) {
+  if (kDebugMode) debugPrint('📰 REELS  | $msg');
+}
 
 enum FeedTab { forYou, following }
 
@@ -61,23 +66,26 @@ class ReelsController extends StateNotifier<ReelsState> {
       : _api.followingFeed(limit: 20);
 
   Future<void> refresh() async {
+    _logReels('refresh: start (tab=${state.tab.name})');
     state = state.copyWith(loading: true, error: null);
     try {
       final items = await _fetch();
       _firstLoadCompleted = true;
+      _logReels('refresh: ✓ ${items.length} items');
       state = state.copyWith(items: items, loading: false);
     } catch (e) {
-      // The very first call right after login sometimes loses to a race
-      // with the auth/Dio interceptor warm-up. Quietly retry once before
-      // surfacing the error.
+      _logReels('refresh: ✗ first attempt failed: $e');
       if (!_firstLoadCompleted) {
+        _logReels('refresh: retrying after 600 ms');
         await Future<void>.delayed(const Duration(milliseconds: 600));
         try {
           final items = await _fetch();
           _firstLoadCompleted = true;
+          _logReels('refresh: ✓ retry got ${items.length} items');
           state = state.copyWith(items: items, loading: false);
           return;
         } catch (e2) {
+          _logReels('refresh: ✗ retry also failed: $e2');
           state = state.copyWith(loading: false, error: e2.toString());
           return;
         }

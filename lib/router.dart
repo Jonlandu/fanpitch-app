@@ -15,6 +15,10 @@ import 'screens/register_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/user_profile_screen.dart';
 
+void _logRouter(String msg) {
+  if (kDebugMode) debugPrint('🧭 ROUTER | $msg');
+}
+
 /// True until the user has tapped through the onboarding flow once.
 final firstLaunchProvider = FutureProvider<bool>((ref) async {
   return shouldShowOnboarding();
@@ -36,8 +40,14 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final loc = state.matchedLocation;
 
-      // Wait for every async stream to resolve before deciding.
+      final summary =
+          'loc=$loc'
+          ' auth=${auth.isLoading ? "LOADING" : (auth.valueOrNull != null ? "user=${auth.valueOrNull!.username}" : "null")}'
+          ' firstLaunch=${firstLaunch.isLoading ? "LOADING" : "${firstLaunch.valueOrNull}"}'
+          ' lang=${langNeeded.isLoading ? "LOADING" : "${langNeeded.valueOrNull}"}';
+
       if (auth.isLoading || firstLaunch.isLoading || langNeeded.isLoading) {
+        _logRouter('$summary → null (still loading)');
         return null;
       }
 
@@ -48,35 +58,28 @@ final routerProvider = Provider<GoRouter>((ref) {
       final onAuthScreen = loc == '/login' || loc == '/register';
       final onOnboarding = loc == '/onboarding';
       final onLanguage = loc == '/language';
-      // Settings-reached language picker — never redirects.
       final onSettingsLanguage = loc == '/settings/language';
 
-      // First-launch language picker takes priority over everything else.
+      String? decision;
       if (!loggedIn && showLanguage && !onLanguage && !onSettingsLanguage) {
-        return '/language';
-      }
-
-      // First-launch onboarding path.
-      if (!loggedIn &&
+        decision = '/language';
+      } else if (!loggedIn &&
           !showLanguage &&
           showOnboarding &&
           !onOnboarding &&
           !onAuthScreen) {
-        return '/onboarding';
-      }
-
-      // Standard auth gate (settings/language stays reachable while logged in).
-      if (!loggedIn &&
+        decision = '/onboarding';
+      } else if (!loggedIn &&
           !onAuthScreen &&
           !onOnboarding &&
           !onLanguage &&
           !onSettingsLanguage) {
-        return '/login';
+        decision = '/login';
+      } else if (loggedIn && (onAuthScreen || onOnboarding || onLanguage)) {
+        decision = '/';
       }
-      if (loggedIn && (onAuthScreen || onOnboarding || onLanguage)) {
-        return '/';
-      }
-      return null;
+      _logRouter('$summary → ${decision ?? "stay"}');
+      return decision;
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),

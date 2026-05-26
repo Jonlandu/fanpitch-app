@@ -192,11 +192,14 @@ class _StatusReelState extends ConsumerState<StatusReel> {
           ),
         ),
 
-        // 4. BOTTOM — caption (truncated) + AI caption + comments teaser
+        // 4. BOTTOM — caption (compact) + AI caption + comments teaser.
+        // Bottom offset = system safe area + room for the MainTabs
+        // NavigationBar (≈ 80 px), so the AI caption and the comments
+        // teaser stay visible instead of disappearing behind the nav.
         Positioned(
           left: 16,
           right: 96,
-          bottom: 24,
+          bottom: MediaQuery.of(context).padding.bottom + 96,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -204,18 +207,18 @@ class _StatusReelState extends ConsumerState<StatusReel> {
               if (s.bodyText.isNotEmpty)
                 Text(
                   s.bodyText,
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
-                    height: 1.3,
+                    fontSize: 14,
+                    height: 1.25,
                     shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
                   ),
                 ),
               if (s.media?.aiCaption != null &&
                   s.media!.aiCaption!.isNotEmpty) ...[
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(
@@ -232,7 +235,10 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                         style: const TextStyle(
                           color: Colors.white70,
                           fontStyle: FontStyle.italic,
-                          fontSize: 13,
+                          fontSize: 12,
+                          shadows: [
+                            Shadow(blurRadius: 4, color: Colors.black54),
+                          ],
                         ),
                       ),
                     ),
@@ -240,14 +246,14 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                 ),
               ],
               if (s.commentsCount > 0) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 InkWell(
                   onTap: _openComments,
                   child: Text(
                     AppL10n.of(context).feedSeeComments(s.commentsCount),
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                       shadows: const [
                         Shadow(blurRadius: 4, color: Colors.black54),
@@ -260,20 +266,20 @@ class _StatusReelState extends ConsumerState<StatusReel> {
           ),
         ),
 
-        // 4. right column: reactions / comments / impressions
+        // 4. right column: reactions / comments / impressions.
+        // Bottom is anchored above the MainTabs NavigationBar (same offset
+        // as the left text block) so the two columns stay aligned.
         Positioned(
           right: 8,
-          bottom: 16,
-          top: MediaQuery.of(context).padding.top + 80,
-          child: SafeArea(
-            child: SideReactionBar(
-              counts: s.reactionsBreakdown,
-              mine: s.myReactions,
-              onReact: _toggleReaction,
-              onTapComments: _openComments,
-              commentsCount: s.commentsCount,
-              impressionsCount: s.impressionsCount,
-            ),
+          bottom: MediaQuery.of(context).padding.bottom + 96,
+          top: MediaQuery.of(context).padding.top + 120,
+          child: SideReactionBar(
+            counts: s.reactionsBreakdown,
+            mine: s.myReactions,
+            onReact: _toggleReaction,
+            onTapComments: _openComments,
+            commentsCount: s.commentsCount,
+            impressionsCount: s.impressionsCount,
           ),
         ),
       ],

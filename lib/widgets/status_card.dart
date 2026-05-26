@@ -14,6 +14,11 @@ class StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = status.author.profile;
     final ts = DateFormat('d MMM • HH:mm').format(status.createdAt.toLocal());
+    // Media height adapts to screen height so a single card never eats more
+    // than ~22% of the viewport on phones — leaves room for at least two
+    // cards above the fold on most devices.
+    final mediaHeight = MediaQuery.of(context).size.height * 0.22;
+    final clampedMedia = mediaHeight.clamp(140.0, 220.0);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 6),
       clipBehavior: Clip.antiAlias,
@@ -76,10 +81,10 @@ class StatusCard extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: status.media!.cdnUrl!,
                       fit: BoxFit.cover,
-                      height: 180,
+                      height: clampedMedia,
                       width: double.infinity,
                       placeholder: (_, __) => Container(
-                        height: 180,
+                        height: clampedMedia,
                         color: Theme.of(
                           context,
                         ).colorScheme.surfaceContainerHighest,

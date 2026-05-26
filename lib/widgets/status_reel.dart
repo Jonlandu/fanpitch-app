@@ -125,6 +125,21 @@ class _StatusReelState extends ConsumerState<StatusReel> {
     final s = widget.status;
     final p = s.author.profile;
     final ts = DateFormat('d MMM • HH:mm').format(s.createdAt.toLocal());
+    final media = MediaQuery.of(context);
+    final screenH = media.size.height;
+    // Adaptive sizing — short phones (e.g. iPhone SE, small Android) get a
+    // tighter layout so nothing has to be scrolled.
+    final short = screenH < 700;
+    final topOffset = media.padding.top + (short ? 48 : 64);
+    // The MainTabs NavigationBar (~80) lives above the system gesture inset.
+    // The side reaction bar's last icon (impressions) is anchored at
+    // `rightBottom` but has 16 px of internal padding above the screen
+    // edge — the left text block sits 16 px higher so its last line ends
+    // on the SAME horizontal line as that icon.
+    final rightBottom = media.padding.bottom + (short ? 84 : 96);
+    final leftBottom = rightBottom + 16;
+    final bodyLines = short ? 1 : 2;
+    final aiLines = short ? 1 : 2;
 
     return Stack(
       fit: StackFit.expand,
@@ -140,21 +155,21 @@ class _StatusReelState extends ConsumerState<StatusReel> {
         Positioned(
           left: 16,
           right: 96,
-          top: MediaQuery.of(context).padding.top + 64,
+          top: topOffset,
           child: Row(
             children: [
               CircleAvatar(
-                radius: 16,
+                radius: short ? 14 : 16,
                 backgroundColor: Colors.white,
                 child: Text(
                   (p.displayName.isNotEmpty
                           ? p.displayName.substring(0, 1)
                           : s.author.username.substring(0, 1))
                       .toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w900,
                     color: Colors.black,
-                    fontSize: 13,
+                    fontSize: short ? 12 : 13,
                   ),
                 ),
               ),
@@ -168,18 +183,20 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                       '@${s.author.username}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: short ? 14 : 15,
                         fontWeight: FontWeight.w800,
-                        shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
+                        shadows: const [
+                          Shadow(blurRadius: 4, color: Colors.black54),
+                        ],
                       ),
                     ),
                     Text(
                       ts,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.85),
-                        fontSize: 11,
+                        fontSize: short ? 10 : 11,
                         shadows: const [
                           Shadow(blurRadius: 4, color: Colors.black54),
                         ],
@@ -192,87 +209,98 @@ class _StatusReelState extends ConsumerState<StatusReel> {
           ),
         ),
 
-        // 4. BOTTOM — caption (compact) + AI caption + comments teaser.
-        // Bottom offset = system safe area + room for the MainTabs
-        // NavigationBar (≈ 80 px), so the AI caption and the comments
-        // teaser stay visible instead of disappearing behind the nav.
+        // 4. BOTTOM — body text + AI caption + comments teaser.
+        // The whole block sits above the MainTabs NavigationBar and is
+        // constrained to ~35% of screen height so it can never overflow
+        // past the top header (which would hide content).
         Positioned(
           left: 16,
           right: 96,
-          bottom: MediaQuery.of(context).padding.bottom + 96,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (s.bodyText.isNotEmpty)
-                Text(
-                  s.bodyText,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    height: 1.25,
-                    shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
-                  ),
-                ),
-              if (s.media?.aiCaption != null &&
-                  s.media!.aiCaption!.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome,
-                      color: Colors.amber,
-                      size: 14,
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        '"${s.media!.aiCaption}"',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 12,
-                          shadows: [
-                            Shadow(blurRadius: 4, color: Colors.black54),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-              if (s.commentsCount > 0) ...[
-                const SizedBox(height: 6),
-                InkWell(
-                  onTap: _openComments,
-                  child: Text(
-                    AppL10n.of(context).feedSeeComments(s.commentsCount),
+          bottom: leftBottom,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: screenH * 0.35),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (s.bodyText.isNotEmpty)
+                  Text(
+                    s.bodyText,
+                    maxLines: bodyLines,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: short ? 13 : 14,
+                      height: 1.25,
                       shadows: const [
                         Shadow(blurRadius: 4, color: Colors.black54),
                       ],
                     ),
                   ),
-                ),
+                if (s.media?.aiCaption != null &&
+                    s.media!.aiCaption!.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Icon(
+                          Icons.auto_awesome,
+                          color: Colors.amber,
+                          size: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          '"${s.media!.aiCaption}"',
+                          maxLines: aiLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontStyle: FontStyle.italic,
+                            fontSize: short ? 11 : 12,
+                            shadows: const [
+                              Shadow(blurRadius: 4, color: Colors.black54),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (s.commentsCount > 0) ...[
+                  SizedBox(height: short ? 4 : 6),
+                  InkWell(
+                    onTap: _openComments,
+                    child: Text(
+                      AppL10n.of(context).feedSeeComments(s.commentsCount),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: short ? 11 : 12,
+                        fontWeight: FontWeight.w600,
+                        shadows: const [
+                          Shadow(blurRadius: 4, color: Colors.black54),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
 
-        // 4. right column: reactions / comments / impressions.
-        // Bottom is anchored above the MainTabs NavigationBar (same offset
-        // as the left text block) so the two columns stay aligned.
+        // 5. right column: reactions / comments / impressions.
+        // Anchored 16 px below the left text block so the LAST icon (eye
+        // = impressions) lines up horizontally with the last text line.
         Positioned(
           right: 8,
-          bottom: MediaQuery.of(context).padding.bottom + 96,
-          top: MediaQuery.of(context).padding.top + 120,
+          bottom: rightBottom,
+          top: topOffset + (short ? 44 : 56),
           child: SideReactionBar(
             counts: s.reactionsBreakdown,
             mine: s.myReactions,

@@ -29,11 +29,30 @@
   "loginError": "Invalid credentials",
 
   "registerTitle": "Create an account",
+  "registerDisplayName": "Display name",
   "registerUsername": "Username",
   "registerEmail": "Email",
   "registerPassword": "Password",
+  "registerCountry": "Country",
+  "registerCountryHint": "Pick your country",
   "registerSubmit": "Sign up",
   "registerHaveAccount": "Already have an account? Sign in",
+  "registerFailed": "Sign up failed: {error}",
+  "@registerFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "matchCompetition": "Competition",
+  "matchVenue": "Venue",
+  "matchMinute": "{minute}'",
+  "@matchMinute": {
+    "placeholders": { "minute": { "type": "int" } }
+  },
+  "matchStatsTitle": "Stats",
+  "matchStatsScorers": "Scorers",
+  "matchStatsCards": "Cards",
+  "matchStatsPossession": "Possession",
+  "matchStatsNoEvents": "No events yet",
 
   "tabForYou": "For you",
   "tabMatches": "Matches",

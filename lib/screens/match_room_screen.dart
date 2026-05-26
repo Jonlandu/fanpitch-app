@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/match_room_provider.dart';
 import '../widgets/event_card.dart';
+import '../widgets/match_stats_panel.dart';
 import '../widgets/poll_card.dart';
 import '../widgets/score_header.dart';
 
@@ -48,30 +49,38 @@ class MatchRoomScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          ScoreHeader(
-            match: m,
-            homeScore: state.homeScore,
-            awayScore: state.awayScore,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: ScoreHeader(
+              match: m,
+              homeScore: state.homeScore,
+              awayScore: state.awayScore,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: MatchStatsPanel(match: m, events: state.events),
           ),
           if (state.polls.isNotEmpty)
-            SizedBox(
-              height: 168,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemCount: state.polls.length,
-                itemBuilder: (_, i) => PollCard(
-                  poll: state.polls[i],
-                  onVote: (idx) => controller.votePoll(state.polls[i].id, idx),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 168,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: state.polls.length,
+                  itemBuilder: (_, i) => PollCard(
+                    poll: state.polls[i],
+                    onVote: (idx) =>
+                        controller.votePoll(state.polls[i].id, idx),
+                  ),
                 ),
               ),
             ),
-          const Divider(height: 1),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8),
+          const SliverToBoxAdapter(child: Divider(height: 1)),
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverList.builder(
               itemCount: state.events.length,
               itemBuilder: (_, i) {
                 final ev = state.events[i];
@@ -86,6 +95,7 @@ class MatchRoomScreen extends ConsumerWidget {
               },
             ),
           ),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ],
       ),
     );

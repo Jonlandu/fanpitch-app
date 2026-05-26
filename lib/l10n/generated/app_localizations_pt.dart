@@ -86,6 +86,9 @@ class AppL10nPt extends AppL10n {
   String get registerTitle => 'Criar conta';
 
   @override
+  String get registerDisplayName => 'Nome a apresentar';
+
+  @override
   String get registerUsername => 'Nome de utilizador';
 
   @override
@@ -95,10 +98,47 @@ class AppL10nPt extends AppL10n {
   String get registerPassword => 'Palavra-passe';
 
   @override
+  String get registerCountry => 'País';
+
+  @override
+  String get registerCountryHint => 'Escolhe o teu país';
+
+  @override
   String get registerSubmit => 'Registar';
 
   @override
   String get registerHaveAccount => 'Já tens conta? Entrar';
+
+  @override
+  String registerFailed(String error) {
+    return 'Falha no registo: $error';
+  }
+
+  @override
+  String get matchCompetition => 'Competição';
+
+  @override
+  String get matchVenue => 'Local';
+
+  @override
+  String matchMinute(int minute) {
+    return '$minute\'';
+  }
+
+  @override
+  String get matchStatsTitle => 'Estatísticas';
+
+  @override
+  String get matchStatsScorers => 'Marcadores';
+
+  @override
+  String get matchStatsCards => 'Cartões';
+
+  @override
+  String get matchStatsPossession => 'Posse de bola';
+
+  @override
+  String get matchStatsNoEvents => 'Sem eventos ainda';
 
   @override
   String get tabForYou => 'Para ti';

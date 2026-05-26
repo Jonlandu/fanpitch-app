@@ -58,6 +58,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
     required String email,
     required String password,
     String? displayName,
+    String? country,
   }) async {
     lastError = null;
     state = const AsyncValue.loading();
@@ -67,6 +68,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
         email: email,
         password: password,
         displayName: displayName,
+        country: country,
       );
       await _storage.writeTokens(r.tokens.access, r.tokens.refresh);
       state = AsyncValue.data(r.user);

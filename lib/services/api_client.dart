@@ -83,6 +83,7 @@ class ApiClient {
     required String email,
     required String password,
     String? displayName,
+    String? country,
   }) async {
     final r = await _dio.post(
       '/auth/register/',
@@ -91,6 +92,7 @@ class ApiClient {
         'email': email,
         'password': password,
         'display_name': displayName ?? username,
+        if (country != null && country.isNotEmpty) 'country': country,
       },
     );
     final tokens = AuthTokens.fromJson(r.data as Map<String, dynamic>);

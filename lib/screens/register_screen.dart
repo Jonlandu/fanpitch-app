@@ -16,7 +16,24 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _display = TextEditingController();
+  String? _country;
   bool _busy = false;
+
+  /// Countries that match the teams we seed on prod, so a new fan can
+  /// pick the same flag as one of the demo squads. Flag + label + value
+  /// keep us decoupled from any backend-side list.
+  static const _countries = <({String flag, String value, String label})>[
+    (flag: '🇨🇩', value: 'DR Congo', label: 'DR Congo'),
+    (flag: '🇵🇹', value: 'Portugal', label: 'Portugal'),
+    (flag: '🇫🇷', value: 'France', label: 'France'),
+    (flag: '🇦🇷', value: 'Argentina', label: 'Argentina'),
+    (flag: '🇧🇷', value: 'Brazil', label: 'Brazil'),
+    (flag: '🇲🇦', value: 'Morocco', label: 'Morocco'),
+    (flag: '🇸🇳', value: 'Senegal', label: 'Senegal'),
+    (flag: '🇨🇲', value: 'Cameroon', label: 'Cameroon'),
+    (flag: '🇪🇸', value: 'Spain', label: 'Spain'),
+    (flag: '🇳🇬', value: 'Nigeria', label: 'Nigeria'),
+  ];
 
   @override
   void dispose() {
@@ -36,13 +53,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       email: _email.text.trim(),
       password: _password.text,
       displayName: _display.text.trim(),
+      country: _country,
     );
     if (!mounted) return;
     if (ok) {
       context.go('/');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Register failed: ${notifier.lastError}')),
+        SnackBar(
+          content: Text(
+            AppL10n.of(
+              context,
+            ).registerFailed(notifier.lastError?.toString() ?? '—'),
+          ),
+        ),
       );
     }
     if (mounted) setState(() => _busy = false);
@@ -52,7 +76,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final l = AppL10n.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l.registerTitle)),
+      appBar: AppBar(
+        title: Text(l.registerTitle),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.go('/login'),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -62,7 +92,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               TextField(
                 controller: _display,
                 decoration: InputDecoration(
-                  labelText: l.registerUsername,
+                  labelText: l.registerDisplayName,
                   border: const OutlineInputBorder(),
                 ),
               ),
@@ -92,6 +122,31 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   border: const OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                initialValue: _country,
+                isExpanded: true,
+                decoration: InputDecoration(
+                  labelText: l.registerCountry,
+                  border: const OutlineInputBorder(),
+                ),
+                hint: Text(l.registerCountryHint),
+                items: _countries
+                    .map(
+                      (c) => DropdownMenuItem<String>(
+                        value: c.value,
+                        child: Row(
+                          children: [
+                            Text(c.flag, style: const TextStyle(fontSize: 20)),
+                            const SizedBox(width: 10),
+                            Text(c.label),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) => setState(() => _country = v),
+              ),
               const SizedBox(height: 24),
               FilledButton(
                 onPressed: _busy ? null : _submit,
@@ -102,6 +157,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Text(l.registerSubmit),
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: _busy ? null : () => context.go('/login'),
+                child: Text(l.registerHaveAccount),
               ),
             ],
           ),

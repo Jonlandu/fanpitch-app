@@ -29,11 +29,30 @@
   "loginError": "Ungültige Anmeldedaten",
 
   "registerTitle": "Konto erstellen",
+  "registerDisplayName": "Anzeigename",
   "registerUsername": "Benutzername",
   "registerEmail": "E-Mail",
   "registerPassword": "Passwort",
+  "registerCountry": "Land",
+  "registerCountryHint": "Wähle dein Land",
   "registerSubmit": "Registrieren",
   "registerHaveAccount": "Schon dabei? Anmelden",
+  "registerFailed": "Registrierung fehlgeschlagen: {error}",
+  "@registerFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "matchCompetition": "Wettbewerb",
+  "matchVenue": "Stadion",
+  "matchMinute": "{minute}'",
+  "@matchMinute": {
+    "placeholders": { "minute": { "type": "int" } }
+  },
+  "matchStatsTitle": "Statistik",
+  "matchStatsScorers": "Torschützen",
+  "matchStatsCards": "Karten",
+  "matchStatsPossession": "Ballbesitz",
+  "matchStatsNoEvents": "Noch keine Ereignisse",
 
   "tabForYou": "Für dich",
   "tabMatches": "Spiele",

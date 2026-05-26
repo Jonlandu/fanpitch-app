@@ -247,6 +247,12 @@ abstract class AppL10n {
   /// **'Créer un compte'**
   String get registerTitle;
 
+  /// No description provided for @registerDisplayName.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom à afficher'**
+  String get registerDisplayName;
+
   /// No description provided for @registerUsername.
   ///
   /// In fr, this message translates to:
@@ -265,6 +271,18 @@ abstract class AppL10n {
   /// **'Mot de passe'**
   String get registerPassword;
 
+  /// No description provided for @registerCountry.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pays'**
+  String get registerCountry;
+
+  /// No description provided for @registerCountryHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ton pays'**
+  String get registerCountryHint;
+
   /// No description provided for @registerSubmit.
   ///
   /// In fr, this message translates to:
@@ -276,6 +294,60 @@ abstract class AppL10n {
   /// In fr, this message translates to:
   /// **'Déjà inscrit ? Connecte-toi'**
   String get registerHaveAccount;
+
+  /// No description provided for @registerFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Inscription échouée : {error}'**
+  String registerFailed(String error);
+
+  /// No description provided for @matchCompetition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compétition'**
+  String get matchCompetition;
+
+  /// No description provided for @matchVenue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lieu'**
+  String get matchVenue;
+
+  /// No description provided for @matchMinute.
+  ///
+  /// In fr, this message translates to:
+  /// **'{minute}\''**
+  String matchMinute(int minute);
+
+  /// No description provided for @matchStatsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Statistiques'**
+  String get matchStatsTitle;
+
+  /// No description provided for @matchStatsScorers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Buteurs'**
+  String get matchStatsScorers;
+
+  /// No description provided for @matchStatsCards.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cartons'**
+  String get matchStatsCards;
+
+  /// No description provided for @matchStatsPossession.
+  ///
+  /// In fr, this message translates to:
+  /// **'Possession'**
+  String get matchStatsPossession;
+
+  /// No description provided for @matchStatsNoEvents.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun événement pour l\'instant'**
+  String get matchStatsNoEvents;
 
   /// No description provided for @tabForYou.
   ///

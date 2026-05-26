@@ -29,11 +29,30 @@
   "loginError": "Credenciales inválidas",
 
   "registerTitle": "Crear una cuenta",
+  "registerDisplayName": "Nombre a mostrar",
   "registerUsername": "Usuario",
   "registerEmail": "Email",
   "registerPassword": "Contraseña",
+  "registerCountry": "País",
+  "registerCountryHint": "Elige tu país",
   "registerSubmit": "Registrarse",
   "registerHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+  "registerFailed": "Fallo al registrar: {error}",
+  "@registerFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "matchCompetition": "Competición",
+  "matchVenue": "Estadio",
+  "matchMinute": "{minute}'",
+  "@matchMinute": {
+    "placeholders": { "minute": { "type": "int" } }
+  },
+  "matchStatsTitle": "Estadísticas",
+  "matchStatsScorers": "Goleadores",
+  "matchStatsCards": "Tarjetas",
+  "matchStatsPossession": "Posesión",
+  "matchStatsNoEvents": "Sin eventos aún",
 
   "tabForYou": "Para ti",
   "tabMatches": "Partidos",

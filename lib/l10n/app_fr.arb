@@ -29,11 +29,30 @@
   "loginError": "Identifiants incorrects",
 
   "registerTitle": "Créer un compte",
+  "registerDisplayName": "Nom à afficher",
   "registerUsername": "Nom d'utilisateur",
   "registerEmail": "Email",
   "registerPassword": "Mot de passe",
+  "registerCountry": "Pays",
+  "registerCountryHint": "Choisis ton pays",
   "registerSubmit": "S'inscrire",
   "registerHaveAccount": "Déjà inscrit ? Connecte-toi",
+  "registerFailed": "Inscription échouée : {error}",
+  "@registerFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "matchCompetition": "Compétition",
+  "matchVenue": "Lieu",
+  "matchMinute": "{minute}'",
+  "@matchMinute": {
+    "placeholders": { "minute": { "type": "int" } }
+  },
+  "matchStatsTitle": "Statistiques",
+  "matchStatsScorers": "Buteurs",
+  "matchStatsCards": "Cartons",
+  "matchStatsPossession": "Possession",
+  "matchStatsNoEvents": "Aucun événement pour l'instant",
 
   "tabForYou": "Pour toi",
   "tabMatches": "Matchs",

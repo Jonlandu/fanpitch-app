@@ -23,7 +23,17 @@ class ApiClient {
           handler.next(options);
         },
         onError: (e, handler) async {
-          if (e.response?.statusCode == 401) {
+          // Skip refresh for the auth endpoints themselves — a 401 on
+          // /auth/login/ means wrong credentials, not an expired session.
+          // Trying to refresh there would mint fresh tokens from a stale
+          // refresh and silently log the wrong user back in.
+          final path = e.requestOptions.path;
+          final isAuthEndpoint =
+              path.contains('/auth/login') ||
+              path.contains('/auth/register') ||
+              path.contains('/auth/refresh');
+
+          if (e.response?.statusCode == 401 && !isAuthEndpoint) {
             final refreshed = await _tryRefresh();
             if (refreshed) {
               // Le token a été mis à jour, on doit réinjecter le NOUVEAU token
@@ -37,10 +47,9 @@ class ApiClient {
               final clone = await _dio.fetch(options);
               return handler.resolve(clone);
             } else {
-              // Refresh failed — clear in-memory auth state so the router
-              // sends the user back to /login instead of leaving them on a
-              // half-broken page with stale state.
-              onSessionExpired?.call();
+              // Refresh failed. Let the error propagate so the UI shows
+              // a refreshable error — we do NOT force a logout here, the
+              // user might just be on a flaky network.
               return handler.reject(
                 DioException(
                   requestOptions: e.requestOptions,
@@ -59,12 +68,6 @@ class ApiClient {
 
   final AuthStorage _storage;
   final Dio _dio = Dio();
-
-  /// Optional callback fired when the refresh token also fails. The auth
-  /// provider wires this to `authProvider.notifier.logout()` so the router
-  /// transitions cleanly to /login instead of letting the UI sit on a
-  /// half-broken feed page.
-  void Function()? onSessionExpired;
 
   Future<bool> _tryRefresh() async {
     final r = await _storage.readRefresh();

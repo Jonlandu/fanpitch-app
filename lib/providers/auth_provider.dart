@@ -71,12 +71,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
         country: country,
       );
       await _storage.writeTokens(r.tokens.access, r.tokens.refresh);
-      // Symmetry with login(): verify the token works against /auth/me/
-      // BEFORE flipping the auth state. If the verification fails (token
-      // not yet readable from storage, clock skew, etc.) we surface a
-      // real error instead of landing the user on a half-broken feed.
-      final me = await _api.getMe();
-      state = AsyncValue.data(me);
+      state = AsyncValue.data(r.user);
       return true;
     } catch (e) {
       lastError = e;
@@ -94,24 +89,12 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
     }
     state = const AsyncValue.data(null);
   }
-
-  /// Called by [ApiClient] when the refresh-token flow also fails. The
-  /// interceptor already cleared the secure storage — we just sync the
-  /// in-memory state so the router redirects to /login.
-  void handleSessionExpired() {
-    // Avoid bouncing if the user is already logged out.
-    if (state.valueOrNull == null) return;
-    lastError = 'session_expired';
-    state = const AsyncValue.data(null);
-  }
 }
 
 final authProvider =
     StateNotifierProvider<AuthController, AsyncValue<AppUser?>>((ref) {
-      final api = ref.read(apiClientProvider);
-      final storage = ref.read(authStorageProvider);
-      final controller = AuthController(api, storage);
-      // Wire the Dio interceptor's session-expired hook to the auth state.
-      api.onSessionExpired = controller.handleSessionExpired;
-      return controller;
+      return AuthController(
+        ref.read(apiClientProvider),
+        ref.read(authStorageProvider),
+      );
     });

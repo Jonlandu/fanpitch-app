@@ -16,6 +16,7 @@ class CreateStatusScreen extends ConsumerStatefulWidget {
 
 class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
   final _body = TextEditingController();
+  final _brief = TextEditingController();
 
   // Stored as bytes so it works on every platform (web included).
   Uint8List? _imageBytes;
@@ -23,12 +24,22 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
   String? _imageMime;
 
   String? _caption;
+  String _captionLang = 'fr';
   bool _busy = false;
   bool _captionLoading = false;
+
+  // Lang code -> (flag, label) for the picker chips.
+  static const _langs = <String, ({String flag, String label})>{
+    'fr': (flag: '🇫🇷', label: 'Français'),
+    'ln': (flag: '🇨🇩', label: 'Lingala'),
+    'sw': (flag: '🇰🇪', label: 'Swahili'),
+    'en': (flag: '🇬🇧', label: 'English'),
+  };
 
   @override
   void dispose() {
     _body.dispose();
+    _brief.dispose();
     super.dispose();
   }
 
@@ -62,7 +73,11 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
     try {
       final r = await ref
           .read(apiClientProvider)
-          .aiCaption(summary: _body.text);
+          .aiCaption(
+            summary: _body.text,
+            lang: _captionLang,
+            brief: _brief.text.trim(),
+          );
       if (!mounted) return;
       setState(() => _caption = r['caption'] as String?);
     } catch (e) {
@@ -147,6 +162,86 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: 16),
+
+              // ── AI Caption Studio ──────────────────────────────
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.auto_awesome,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'AI Caption Studio',
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Décris le moment dans ta langue, l\'IA écrit la légende parfaite.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: _brief,
+                      maxLines: 2,
+                      maxLength: 140,
+                      decoration: const InputDecoration(
+                        hintText:
+                            "Ex: les fans congolais qui dansent après le but...",
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Wrap(
+                      spacing: 6,
+                      children: _langs.entries.map((e) {
+                        final selected = _captionLang == e.key;
+                        return ChoiceChip(
+                          selected: selected,
+                          label: Text('${e.value.flag} ${e.value.label}'),
+                          onSelected: (_) =>
+                              setState(() => _captionLang = e.key),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton.icon(
+                        onPressed: _captionLoading ? null : _aiCaption,
+                        icon: _captionLoading
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.bolt),
+                        label: const Text('Générer la légende'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
@@ -156,17 +251,6 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                     onPressed: _pickImage,
                     icon: const Icon(Icons.image_outlined),
                     label: const Text('Add image'),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: _captionLoading ? null : _aiCaption,
-                    icon: _captionLoading
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Icon(Icons.auto_awesome),
-                    label: const Text('AI caption'),
                   ),
                 ],
               ),
@@ -180,9 +264,36 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                     ).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    '"$_caption"',
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '"$_caption"',
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _body.text = _caption!;
+                                _body.selection = TextSelection.collapsed(
+                                  offset: _body.text.length,
+                                );
+                              });
+                            },
+                            icon: const Icon(Icons.check, size: 16),
+                            label: const Text('Utiliser'),
+                          ),
+                          TextButton.icon(
+                            onPressed: _captionLoading ? null : _aiCaption,
+                            icon: const Icon(Icons.refresh, size: 16),
+                            label: const Text('Régénérer'),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],

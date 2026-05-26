@@ -468,12 +468,16 @@ class ApiClient {
   Future<Map<String, dynamic>> aiCaption({
     int? matchId,
     String? summary,
+    String? lang,
+    String? brief,
   }) async {
     final r = await _dio.post(
       '/ai/caption/',
       data: {
         if (matchId != null) 'match_id': matchId,
         if (summary != null) 'summary': summary,
+        if (lang != null) 'lang': lang,
+        if (brief != null && brief.isNotEmpty) 'brief': brief,
       },
     );
     return r.data as Map<String, dynamic>;

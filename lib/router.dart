@@ -35,7 +35,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final langNeeded = ref.watch(languagePickerNeededProvider);
 
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     refreshListenable: _RouterRefresh(ref),
     redirect: (context, state) {
       final loc = state.matchedLocation;
@@ -46,9 +46,15 @@ final routerProvider = Provider<GoRouter>((ref) {
           ' firstLaunch=${firstLaunch.isLoading ? "LOADING" : "${firstLaunch.valueOrNull}"}'
           ' lang=${langNeeded.isLoading ? "LOADING" : "${langNeeded.valueOrNull}"}';
 
+      final onSplash = loc == '/splash';
+
       if (auth.isLoading || firstLaunch.isLoading || langNeeded.isLoading) {
-        _logRouter('$summary → null (still loading)');
-        return null;
+        // Park the user on /splash until every gate has resolved so the
+        // unauthenticated MainTabs never mounts and never fires the feed
+        // call without a token.
+        final decision = onSplash ? null : '/splash';
+        _logRouter('$summary → ${decision ?? "stay (splash)"} (loading)');
+        return decision;
       }
 
       final loggedIn = auth.valueOrNull != null;
@@ -75,8 +81,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           !onLanguage &&
           !onSettingsLanguage) {
         decision = '/login';
-      } else if (loggedIn && (onAuthScreen || onOnboarding || onLanguage)) {
+      } else if (loggedIn &&
+          (onSplash || onAuthScreen || onOnboarding || onLanguage)) {
         decision = '/';
+      } else if (!loggedIn && onSplash) {
+        // Shouldn't happen — one of the !loggedIn branches above
+        // should have fired — but keep a safe fallback.
+        decision = '/login';
       }
       _logRouter('$summary → ${decision ?? "stay"}');
       return decision;

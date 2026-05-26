@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../providers/auth_provider.dart';
+import '../providers/locale_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -12,6 +14,11 @@ class ProfileScreen extends ConsumerWidget {
     final user = ref.watch(authProvider).value;
     if (user == null) return const Center(child: CircularProgressIndicator());
     final p = user.profile;
+    final l = AppL10n.of(context);
+    final locale = ref.watch(localeProvider);
+    final currentCode =
+        locale?.languageCode ?? Localizations.localeOf(context).languageCode;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -55,20 +62,32 @@ class ProfileScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _stat('Points', '${p.points}'),
-                    _stat('Level', '${p.level}'),
+                    _stat(l.profilePoints, '${p.points}'),
+                    _stat(l.profileLevel, '${p.level}'),
                     _stat(
-                      'Country',
+                      l.profileCountry,
                       p.country?.isEmpty == false ? p.country! : '—',
                     ),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.language_rounded),
+                title: Text(l.profileLanguage),
+                subtitle: Text(
+                  '${localeFlag(currentCode)}  ${localeDisplayName(currentCode)}',
+                ),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/settings/language'),
+              ),
+            ),
             const Spacer(),
             OutlinedButton.icon(
               icon: const Icon(Icons.logout),
-              label: const Text('Log out'),
+              label: Text(l.profileLogout),
               onPressed: () async {
                 await ref.read(authProvider.notifier).logout();
                 if (context.mounted) context.go('/login');

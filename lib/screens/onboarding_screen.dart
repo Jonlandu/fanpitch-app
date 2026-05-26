@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../theme.dart';
 
 const _seenKey = 'fp_onboarding_seen_v1';
@@ -23,8 +24,8 @@ class _Page {
   final IconData icon;
   final Color iconColor;
   final String eyebrow;
-  final String title;
-  final String subtitle;
+  final String Function(AppL10n l) title;
+  final String Function(AppL10n l) subtitle;
   const _Page({
     required this.icon,
     required this.iconColor,
@@ -34,38 +35,34 @@ class _Page {
   });
 }
 
-const _pages = <_Page>[
+final _pages = <_Page>[
   _Page(
     icon: Icons.stadium_rounded,
     iconColor: FanPitchColors.pitchGreenHi,
     eyebrow: 'LIVE',
-    title: 'Le match en direct\ndans ta poche.',
-    subtitle:
-        'Suis chaque but, carton et moment magique en temps réel — même quand tu n\'es pas devant la TV.',
+    title: (l) => l.onboardingLiveTitle,
+    subtitle: (l) => l.onboardingLiveSubtitle,
   ),
   _Page(
     icon: Icons.local_fire_department_rounded,
     iconColor: FanPitchColors.fanOrange,
     eyebrow: 'TRIBE',
-    title: 'Réagis avec\nta tribu.',
-    subtitle:
-        'Émojis qui fusent, sondages éclair, commentaires qui chauffent. Vis chaque action avec des milliers de fans.',
+    title: (l) => l.onboardingTribeTitle,
+    subtitle: (l) => l.onboardingTribeSubtitle,
   ),
   _Page(
     icon: Icons.emoji_events_rounded,
     iconColor: FanPitchColors.gold,
     eyebrow: 'WIN',
-    title: 'Prédis. Score.\nBrille.',
-    subtitle:
-        'Place tes paris avant le coup d\'envoi, gagne des points, débloque des badges et grimpe au classement.',
+    title: (l) => l.onboardingWinTitle,
+    subtitle: (l) => l.onboardingWinSubtitle,
   ),
   _Page(
     icon: Icons.bolt_rounded,
     iconColor: FanPitchColors.pitchGreen,
     eyebrow: 'READY',
-    title: 'Prêt à entrer\nsur le terrain ?',
-    subtitle:
-        'Rejoins la communauté FanPitch en 30 secondes. Aucune carte de crédit, juste ta passion.',
+    title: (l) => l.onboardingReadyTitle,
+    subtitle: (l) => l.onboardingReadySubtitle,
   ),
 ];
 
@@ -117,6 +114,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final bg = isDark ? FanPitchColors.inkBlack : FanPitchColors.crowdWhite;
     final fg = isDark ? FanPitchColors.crowdWhite : FanPitchColors.inkBlack;
     final muted = FanPitchColors.muted;
+    final l = AppL10n.of(context);
 
     return Scaffold(
       backgroundColor: bg,
@@ -148,7 +146,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     TextButton(
                       onPressed: _skip,
                       child: Text(
-                        'Passer',
+                        l.onboardingSkip,
                         style: TextStyle(
                           color: muted,
                           fontWeight: FontWeight.w600,
@@ -223,7 +221,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             child: Center(
                               child: Text(
-                                _isLast ? 'Créer mon compte' : 'Continuer',
+                                _isLast
+                                    ? l.onboardingCreateAccount
+                                    : l.onboardingContinue,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w800,
@@ -242,7 +242,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     TextButton(
                       onPressed: _skip,
                       child: Text(
-                        'Déjà inscrit ? Connecte-toi',
+                        l.onboardingAlreadyHaveAccount,
                         style: TextStyle(
                           color: fg,
                           fontWeight: FontWeight.w600,
@@ -269,6 +269,9 @@ class _PageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = isDark ? FanPitchColors.crowdWhite : FanPitchColors.inkBlack;
+    final l = AppL10n.of(context);
+    final title = page.title(l);
+    final subtitle = page.subtitle(l);
     return Padding(
       padding: const EdgeInsets.fromLTRB(28, 32, 28, 16),
       child: Column(
@@ -278,7 +281,7 @@ class _PageView extends StatelessWidget {
           Expanded(
             flex: 5,
             child: _HeroIllustration(icon: page.icon, color: page.iconColor)
-                .animate(key: ValueKey(page.title))
+                .animate(key: ValueKey(title))
                 .scale(
                   begin: const Offset(0.85, 0.85),
                   end: const Offset(1, 1),
@@ -309,7 +312,7 @@ class _PageView extends StatelessWidget {
                   ),
                 ),
               )
-              .animate(key: ValueKey('${page.title}eyebrow'))
+              .animate(key: ValueKey('${title}eyebrow'))
               .fadeIn(delay: 150.ms, duration: 350.ms)
               .slideY(
                 begin: 0.3,
@@ -323,7 +326,7 @@ class _PageView extends StatelessWidget {
 
           // Title
           Text(
-                page.title,
+                title,
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,
@@ -332,7 +335,7 @@ class _PageView extends StatelessWidget {
                   height: 1.1,
                 ),
               )
-              .animate(key: ValueKey('${page.title}title'))
+              .animate(key: ValueKey('${title}title'))
               .fadeIn(delay: 200.ms, duration: 400.ms)
               .slideY(
                 begin: 0.3,
@@ -346,7 +349,7 @@ class _PageView extends StatelessWidget {
 
           // Subtitle
           Text(
-                page.subtitle,
+                subtitle,
                 style: TextStyle(
                   fontSize: 15,
                   color: FanPitchColors.muted,
@@ -354,7 +357,7 @@ class _PageView extends StatelessWidget {
                   height: 1.5,
                 ),
               )
-              .animate(key: ValueKey('${page.title}sub'))
+              .animate(key: ValueKey('${title}sub'))
               .fadeIn(delay: 280.ms, duration: 400.ms)
               .slideY(
                 begin: 0.3,

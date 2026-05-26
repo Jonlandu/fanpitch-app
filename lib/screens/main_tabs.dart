@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import 'matches_list_screen.dart';
 import 'profile_screen.dart';
 import 'reels_feed_screen.dart';
@@ -23,17 +24,18 @@ class _MainTabsState extends ConsumerState<MainTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     // The Reels feed runs its own immersive AppBar, so we hide ours on tab 0.
     final showAppBar = _index != 0;
     return Scaffold(
       extendBody: _index == 0,
       appBar: showAppBar
           ? AppBar(
-              title: Text(_index == 1 ? 'Matches' : 'Profile'),
+              title: Text(_index == 1 ? l.matchesTitle : l.tabMe),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.emoji_events_outlined),
-                  tooltip: 'Leaderboard',
+                  tooltip: l.leaderboardTitle,
                   onPressed: () => context.go('/leaderboard'),
                 ),
               ],
@@ -43,16 +45,16 @@ class _MainTabsState extends ConsumerState<MainTabs> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dynamic_feed),
-            label: 'For you',
+            icon: const Icon(Icons.dynamic_feed),
+            label: l.tabForYou,
           ),
           NavigationDestination(
-            icon: Icon(Icons.sports_soccer),
-            label: 'Matches',
+            icon: const Icon(Icons.sports_soccer),
+            label: l.tabMatches,
           ),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Me'),
+          NavigationDestination(icon: const Icon(Icons.person), label: l.tabMe),
         ],
       ),
     );

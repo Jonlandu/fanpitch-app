@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -50,6 +51,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -65,25 +67,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 8),
-              Text(
-                'Live the match. Together. Out loud.',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text(l.loginTitle, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 48),
               TextField(
                 controller: _username,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l.loginUsername,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _password,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l.loginPassword,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 24),
@@ -95,12 +94,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         height: 18,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text('Log in'),
+                    : Text(l.loginSubmit),
               ),
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () => context.go('/register'),
-                child: const Text('Create an account'),
+                child: Text(l.loginNoAccount),
               ),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/match.dart';
 import '../providers/matches_provider.dart';
 
@@ -12,17 +13,18 @@ class MatchesListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(matchesProvider);
+    final l = AppL10n.of(context);
     return RefreshIndicator(
       onRefresh: () => ref.read(matchesProvider.notifier).refresh(),
       child: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (e, _) => Center(child: Text('${l.commonError}: $e')),
         data: (list) {
           if (list.isEmpty) {
             return ListView(
-              children: const [
-                SizedBox(height: 80),
-                Center(child: Text('No matches scheduled.')),
+              children: [
+                const SizedBox(height: 80),
+                Center(child: Text(l.matchesTitle)),
               ],
             );
           }
@@ -56,19 +58,24 @@ class _MatchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final ts = DateFormat(
       'EEE d MMM • HH:mm',
     ).format(match.kickoffAt.toLocal());
     Color tone;
+    final String statusLabel;
     switch (match.status) {
       case 'LIVE':
         tone = Colors.redAccent;
+        statusLabel = l.matchStatusLive;
         break;
       case 'FINISHED':
         tone = Theme.of(context).disabledColor;
+        statusLabel = l.matchStatusFinished;
         break;
       default:
         tone = Theme.of(context).colorScheme.primary;
+        statusLabel = l.matchStatusUpcoming;
     }
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -82,7 +89,7 @@ class _MatchTile extends StatelessWidget {
           '${match.competition.isEmpty ? "FanPitch Match" : match.competition} • $ts',
         ),
         trailing: Chip(
-          label: Text(match.status, style: const TextStyle(fontSize: 11)),
+          label: Text(statusLabel, style: const TextStyle(fontSize: 11)),
           backgroundColor: tone.withValues(alpha: 0.15),
           side: BorderSide(color: tone),
         ),

@@ -1,0 +1,95 @@
+{
+  "@@locale": "de",
+
+  "appName": "FanPitch",
+
+  "languageName": "Deutsch",
+  "languagePickerTitle": "Wähle deine Sprache",
+  "languagePickerSubtitle": "Du kannst sie später in den Einstellungen ändern.",
+  "languagePickerContinue": "Weiter",
+
+  "onboardingSkip": "Überspringen",
+  "onboardingContinue": "Weiter",
+  "onboardingCreateAccount": "Konto erstellen",
+  "onboardingAlreadyHaveAccount": "Schon dabei? Anmelden",
+  "onboardingLiveTitle": "Das Live-Spiel\nin deiner Tasche.",
+  "onboardingLiveSubtitle": "Verfolge jedes Tor, jede Karte und jeden magischen Moment in Echtzeit — auch wenn du nicht vor dem Fernseher bist.",
+  "onboardingTribeTitle": "Reagiere mit\ndeiner Crew.",
+  "onboardingTribeSubtitle": "Fliegende Emojis, Blitzumfragen, hitzige Kommentare. Erlebe jeden Spielzug mit Tausenden Fans.",
+  "onboardingWinTitle": "Tippe. Treffe.\nStrahle.",
+  "onboardingWinSubtitle": "Setze deine Tipps vor dem Anpfiff, sammle Punkte, schalte Abzeichen frei und klettere in der Rangliste.",
+  "onboardingReadyTitle": "Bereit, das Feld\nzu betreten?",
+  "onboardingReadySubtitle": "Tritt der FanPitch-Community in 30 Sekunden bei. Keine Kreditkarte — nur deine Leidenschaft.",
+
+  "loginTitle": "Anmelden",
+  "loginUsername": "Benutzername",
+  "loginPassword": "Passwort",
+  "loginSubmit": "Anmelden",
+  "loginNoAccount": "Noch kein Konto? Registrieren",
+  "loginError": "Ungültige Anmeldedaten",
+
+  "registerTitle": "Konto erstellen",
+  "registerUsername": "Benutzername",
+  "registerEmail": "E-Mail",
+  "registerPassword": "Passwort",
+  "registerSubmit": "Registrieren",
+  "registerHaveAccount": "Schon dabei? Anmelden",
+
+  "tabForYou": "Für dich",
+  "tabMatches": "Spiele",
+  "tabMe": "Ich",
+
+  "feedForYou": "Für dich",
+  "feedFollowing": "Folge ich",
+  "feedEmptyForYou": "Noch keine Beiträge. Sei der Erste 🔥",
+  "feedEmptyFollowing": "Folge anderen Fans, um diesen Feed zu füllen.",
+  "feedRefresh": "Aktualisieren",
+  "feedRetry": "Erneut versuchen",
+  "feedLoadError": "Feed konnte nicht geladen werden.",
+  "feedSeeComments": "{count, plural, =1{1 Kommentar ansehen} other{Alle {count} Kommentare ansehen}}",
+  "@feedSeeComments": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "createTitle": "Neuer Beitrag",
+  "createPost": "Posten",
+  "createHint": "Wie ist die Stimmung? 🔥",
+  "createAddImage": "Bild hinzufügen",
+  "createRemoveImage": "Bild entfernen",
+  "createAutoExpires": "Beiträge verfallen nach 7 Tagen automatisch.",
+  "createPostFailed": "Posten fehlgeschlagen: {error}",
+  "@createPostFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "captionStudioTitle": "KI-Beschriftungsstudio",
+  "captionStudioIntro": "Beschreibe den Moment in deiner Sprache — die KI schreibt die perfekte Beschriftung.",
+  "captionStudioBriefHint": "z. B. Kongolesische Fans tanzen nach dem Tor...",
+  "captionStudioGenerate": "Beschriftung erzeugen",
+  "captionStudioUse": "Übernehmen",
+  "captionStudioRegenerate": "Neu erzeugen",
+  "captionStudioFailed": "KI-Beschriftung fehlgeschlagen: {error}",
+  "@captionStudioFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "profilePoints": "Punkte",
+  "profileLevel": "Stufe",
+  "profileCountry": "Land",
+  "profileLanguage": "Sprache",
+  "profileLanguageChange": "Sprache ändern",
+  "profileLogout": "Abmelden",
+
+  "matchesTitle": "Spiele",
+  "matchStatusUpcoming": "Bald",
+  "matchStatusLive": "Live",
+  "matchStatusFinished": "Beendet",
+
+  "leaderboardTitle": "Rangliste",
+
+  "commonCancel": "Abbrechen",
+  "commonClose": "Schließen",
+  "commonSave": "Speichern",
+  "commonError": "Fehler",
+  "commonLoading": "Lädt…"
+}

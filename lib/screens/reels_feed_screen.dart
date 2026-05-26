@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../providers/reels_provider.dart';
 import '../widgets/status_reel.dart';
 
@@ -47,6 +48,7 @@ class _ReelsFeedScreenState extends ConsumerState<ReelsFeedScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(reelsProvider);
     final ctrl = ref.read(reelsProvider.notifier);
+    final l = AppL10n.of(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -59,7 +61,7 @@ class _ReelsFeedScreenState extends ConsumerState<ReelsFeedScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
-            tooltip: 'Post',
+            tooltip: l.createPost,
             onPressed: () => context.go('/status/new'),
           ),
         ],
@@ -74,14 +76,14 @@ class _ReelsFeedScreenState extends ConsumerState<ReelsFeedScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Couldn\'t load feed.\n${state.error}',
+                      '${l.feedLoadError}\n${state.error}',
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: ctrl.refresh,
-                      child: const Text('Retry'),
+                      child: Text(l.feedRetry),
                     ),
                   ],
                 ),
@@ -141,11 +143,12 @@ class _TopTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _tab(context, 'For you', FeedTab.forYou),
-        _tab(context, 'Following', FeedTab.following),
+        _tab(context, l.feedForYou, FeedTab.forYou),
+        _tab(context, l.feedFollowing, FeedTab.following),
       ],
     );
   }
@@ -158,9 +161,10 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final msg = tab == FeedTab.following
-        ? 'Follow some fans to populate this feed.'
-        : 'No posts yet. Be the first 🔥';
+        ? l.feedEmptyFollowing
+        : l.feedEmptyForYou;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -170,7 +174,7 @@ class _EmptyState extends StatelessWidget {
           FilledButton.icon(
             onPressed: onRefresh,
             icon: const Icon(Icons.refresh),
-            label: const Text('Refresh'),
+            label: Text(l.feedRefresh),
           ),
         ],
       ),

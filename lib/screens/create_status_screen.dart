@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../providers/feed_provider.dart';
 import '../services/api_client.dart';
 
@@ -82,9 +83,11 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
       setState(() => _caption = r['caption'] as String?);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('AI caption failed: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppL10n.of(context).captionStudioFailed(e.toString())),
+        ),
+      );
     } finally {
       if (mounted) setState(() => _captionLoading = false);
     }
@@ -116,9 +119,11 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
       if (mounted) context.go('/');
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Post failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppL10n.of(context).createPostFailed(e.toString())),
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -127,9 +132,10 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New status'),
+        title: Text(l.createTitle),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.go('/'),
@@ -143,7 +149,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                     height: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Post'),
+                : Text(l.createPost),
           ),
         ],
       ),
@@ -157,9 +163,9 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                 controller: _body,
                 maxLines: 5,
                 maxLength: 280,
-                decoration: const InputDecoration(
-                  hintText: "What's the vibe? 🔥",
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: l.createHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16),
@@ -185,7 +191,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'AI Caption Studio',
+                          l.captionStudioTitle,
                           style: Theme.of(context).textTheme.titleSmall
                               ?.copyWith(fontWeight: FontWeight.w800),
                         ),
@@ -193,7 +199,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Décris le moment dans ta langue, l\'IA écrit la légende parfaite.',
+                      l.captionStudioIntro,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 10),
@@ -201,10 +207,9 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                       controller: _brief,
                       maxLines: 2,
                       maxLength: 140,
-                      decoration: const InputDecoration(
-                        hintText:
-                            "Ex: les fans congolais qui dansent après le but...",
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: l.captionStudioBriefHint,
+                        border: const OutlineInputBorder(),
                         isDense: true,
                       ),
                     ),
@@ -235,7 +240,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                                 ),
                               )
                             : const Icon(Icons.bolt),
-                        label: const Text('Générer la légende'),
+                        label: Text(l.captionStudioGenerate),
                       ),
                     ),
                   ],
@@ -250,7 +255,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                   OutlinedButton.icon(
                     onPressed: _pickImage,
                     icon: const Icon(Icons.image_outlined),
-                    label: const Text('Add image'),
+                    label: Text(l.createAddImage),
                   ),
                 ],
               ),
@@ -284,12 +289,12 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                               });
                             },
                             icon: const Icon(Icons.check, size: 16),
-                            label: const Text('Utiliser'),
+                            label: Text(l.captionStudioUse),
                           ),
                           TextButton.icon(
                             onPressed: _captionLoading ? null : _aiCaption,
                             icon: const Icon(Icons.refresh, size: 16),
-                            label: const Text('Régénérer'),
+                            label: Text(l.captionStudioRegenerate),
                           ),
                         ],
                       ),
@@ -310,7 +315,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                 ),
                 TextButton.icon(
                   icon: const Icon(Icons.close, size: 18),
-                  label: const Text('Remove image'),
+                  label: Text(l.createRemoveImage),
                   onPressed: () => setState(() {
                     _imageBytes = null;
                     _imageName = null;
@@ -321,7 +326,7 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
               const SizedBox(height: 16),
               Center(
                 child: Text(
-                  'Statuses auto-expire after 7 days.',
+                  l.createAutoExpires,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),

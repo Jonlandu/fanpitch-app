@@ -1,0 +1,95 @@
+{
+  "@@locale": "es",
+
+  "appName": "FanPitch",
+
+  "languageName": "Español",
+  "languagePickerTitle": "Elige tu idioma",
+  "languagePickerSubtitle": "Puedes cambiarlo más tarde en Ajustes.",
+  "languagePickerContinue": "Continuar",
+
+  "onboardingSkip": "Saltar",
+  "onboardingContinue": "Continuar",
+  "onboardingCreateAccount": "Crear mi cuenta",
+  "onboardingAlreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+  "onboardingLiveTitle": "El partido en directo\nen tu bolsillo.",
+  "onboardingLiveSubtitle": "Sigue cada gol, tarjeta y momento mágico en tiempo real — incluso lejos de la tele.",
+  "onboardingTribeTitle": "Reacciona con\ntu tribu.",
+  "onboardingTribeSubtitle": "Emojis al vuelo, encuestas relámpago, comentarios que arden. Vive cada jugada con miles de aficionados.",
+  "onboardingWinTitle": "Predice. Marca.\nBrilla.",
+  "onboardingWinSubtitle": "Apuesta antes del pitido inicial, gana puntos, desbloquea insignias y sube en la clasificación.",
+  "onboardingReadyTitle": "¿Listo para saltar\nal campo?",
+  "onboardingReadySubtitle": "Únete a la comunidad FanPitch en 30 segundos. Sin tarjeta de crédito — solo tu pasión.",
+
+  "loginTitle": "Iniciar sesión",
+  "loginUsername": "Usuario",
+  "loginPassword": "Contraseña",
+  "loginSubmit": "Iniciar sesión",
+  "loginNoAccount": "¿Sin cuenta todavía? Regístrate",
+  "loginError": "Credenciales inválidas",
+
+  "registerTitle": "Crear una cuenta",
+  "registerUsername": "Usuario",
+  "registerEmail": "Email",
+  "registerPassword": "Contraseña",
+  "registerSubmit": "Registrarse",
+  "registerHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+
+  "tabForYou": "Para ti",
+  "tabMatches": "Partidos",
+  "tabMe": "Yo",
+
+  "feedForYou": "Para ti",
+  "feedFollowing": "Siguiendo",
+  "feedEmptyForYou": "Aún no hay publicaciones. Sé el primero 🔥",
+  "feedEmptyFollowing": "Sigue a más fans para llenar este feed.",
+  "feedRefresh": "Actualizar",
+  "feedRetry": "Reintentar",
+  "feedLoadError": "No se pudo cargar el feed.",
+  "feedSeeComments": "{count, plural, =1{Ver 1 comentario} other{Ver los {count} comentarios}}",
+  "@feedSeeComments": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "createTitle": "Nueva publicación",
+  "createPost": "Publicar",
+  "createHint": "¿Cuál es el ambiente? 🔥",
+  "createAddImage": "Añadir imagen",
+  "createRemoveImage": "Quitar imagen",
+  "createAutoExpires": "Las publicaciones expiran tras 7 días.",
+  "createPostFailed": "Fallo al publicar: {error}",
+  "@createPostFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "captionStudioTitle": "Estudio de Subtítulos IA",
+  "captionStudioIntro": "Describe el momento en tu idioma, la IA escribe la frase perfecta.",
+  "captionStudioBriefHint": "Ej: fans congoleños bailando tras el gol...",
+  "captionStudioGenerate": "Generar frase",
+  "captionStudioUse": "Usar",
+  "captionStudioRegenerate": "Regenerar",
+  "captionStudioFailed": "Fallo de la IA: {error}",
+  "@captionStudioFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "profilePoints": "Puntos",
+  "profileLevel": "Nivel",
+  "profileCountry": "País",
+  "profileLanguage": "Idioma",
+  "profileLanguageChange": "Cambiar idioma",
+  "profileLogout": "Cerrar sesión",
+
+  "matchesTitle": "Partidos",
+  "matchStatusUpcoming": "Próximos",
+  "matchStatusLive": "En directo",
+  "matchStatusFinished": "Finalizado",
+
+  "leaderboardTitle": "Clasificación",
+
+  "commonCancel": "Cancelar",
+  "commonClose": "Cerrar",
+  "commonSave": "Guardar",
+  "commonError": "Error",
+  "commonLoading": "Cargando…"
+}

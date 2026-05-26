@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 
+import '../l10n/generated/app_localizations.dart';
 import '../models/status_post.dart';
 import '../services/api_client.dart';
 import 'comment_sheet.dart';
@@ -243,9 +244,7 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                 InkWell(
                   onTap: _openComments,
                   child: Text(
-                    s.commentsCount == 1
-                        ? 'Voir 1 commentaire'
-                        : 'Voir les ${s.commentsCount} commentaires',
+                    AppL10n.of(context).feedSeeComments(s.commentsCount),
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 13,

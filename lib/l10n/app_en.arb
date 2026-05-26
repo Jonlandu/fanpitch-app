@@ -1,0 +1,95 @@
+{
+  "@@locale": "en",
+
+  "appName": "FanPitch",
+
+  "languageName": "English",
+  "languagePickerTitle": "Choose your language",
+  "languagePickerSubtitle": "You can change it later in Settings.",
+  "languagePickerContinue": "Continue",
+
+  "onboardingSkip": "Skip",
+  "onboardingContinue": "Continue",
+  "onboardingCreateAccount": "Create my account",
+  "onboardingAlreadyHaveAccount": "Already have an account? Sign in",
+  "onboardingLiveTitle": "The live match\nin your pocket.",
+  "onboardingLiveSubtitle": "Follow every goal, card and magic moment in real time — even when you're away from the TV.",
+  "onboardingTribeTitle": "React with\nyour tribe.",
+  "onboardingTribeSubtitle": "Flying emojis, lightning polls, comments that heat up. Live every play with thousands of fans.",
+  "onboardingWinTitle": "Predict. Score.\nShine.",
+  "onboardingWinSubtitle": "Place your picks before kickoff, earn points, unlock badges and climb the leaderboard.",
+  "onboardingReadyTitle": "Ready to step\nonto the pitch?",
+  "onboardingReadySubtitle": "Join the FanPitch community in 30 seconds. No credit card — just your passion.",
+
+  "loginTitle": "Sign in",
+  "loginUsername": "Username",
+  "loginPassword": "Password",
+  "loginSubmit": "Sign in",
+  "loginNoAccount": "No account yet? Sign up",
+  "loginError": "Invalid credentials",
+
+  "registerTitle": "Create an account",
+  "registerUsername": "Username",
+  "registerEmail": "Email",
+  "registerPassword": "Password",
+  "registerSubmit": "Sign up",
+  "registerHaveAccount": "Already have an account? Sign in",
+
+  "tabForYou": "For you",
+  "tabMatches": "Matches",
+  "tabMe": "Me",
+
+  "feedForYou": "For you",
+  "feedFollowing": "Following",
+  "feedEmptyForYou": "No posts yet. Be the first 🔥",
+  "feedEmptyFollowing": "Follow some fans to populate this feed.",
+  "feedRefresh": "Refresh",
+  "feedRetry": "Retry",
+  "feedLoadError": "Couldn't load the feed.",
+  "feedSeeComments": "{count, plural, =1{See 1 comment} other{See all {count} comments}}",
+  "@feedSeeComments": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "createTitle": "New status",
+  "createPost": "Post",
+  "createHint": "What's the vibe? 🔥",
+  "createAddImage": "Add image",
+  "createRemoveImage": "Remove image",
+  "createAutoExpires": "Posts auto-expire after 7 days.",
+  "createPostFailed": "Post failed: {error}",
+  "@createPostFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "captionStudioTitle": "AI Caption Studio",
+  "captionStudioIntro": "Describe the moment in your language, the AI writes the perfect caption.",
+  "captionStudioBriefHint": "e.g. Congolese fans dancing after the goal...",
+  "captionStudioGenerate": "Generate caption",
+  "captionStudioUse": "Use it",
+  "captionStudioRegenerate": "Regenerate",
+  "captionStudioFailed": "AI caption failed: {error}",
+  "@captionStudioFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "profilePoints": "Points",
+  "profileLevel": "Level",
+  "profileCountry": "Country",
+  "profileLanguage": "Language",
+  "profileLanguageChange": "Change language",
+  "profileLogout": "Log out",
+
+  "matchesTitle": "Matches",
+  "matchStatusUpcoming": "Upcoming",
+  "matchStatusLive": "Live",
+  "matchStatusFinished": "Finished",
+
+  "leaderboardTitle": "Leaderboard",
+
+  "commonCancel": "Cancel",
+  "commonClose": "Close",
+  "commonSave": "Save",
+  "commonError": "Error",
+  "commonLoading": "Loading…"
+}

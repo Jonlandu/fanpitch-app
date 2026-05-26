@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^2.5.1
   dio: ^5.7.0
   web_socket_channel: ^3.0.1
@@ -17,7 +19,7 @@ dependencies:
   go_router: ^14.6.1
   cached_network_image: ^3.4.1
   image_picker: ^1.1.2
-  intl: ^0.19.0
+  intl: ^0.20.2
   confetti: ^0.8.0
   http: ^1.2.2
   collection: ^1.18.0
@@ -37,6 +39,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true   # enables flutter_gen for .arb localizations
   assets:
     - assets/branding/
     - assets/branding/previews/

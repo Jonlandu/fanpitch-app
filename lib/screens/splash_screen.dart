@@ -13,9 +13,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: context.fp.brandGradient,
-        ),
+        decoration: BoxDecoration(gradient: context.fp.brandGradient),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -27,10 +25,10 @@ class SplashScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
-                  'assets/branding/logo_mark.svg',
-                  width: 160,
-                  height: 160,
-                )
+                      'assets/branding/logo_mark.svg',
+                      width: 160,
+                      height: 160,
+                    )
                     .animate()
                     .scale(
                       begin: const Offset(0.4, 0.4),
@@ -43,14 +41,14 @@ class SplashScreen extends StatelessWidget {
                 const SizedBox(height: 32),
 
                 const Text(
-                  'FanPitch',
-                  style: TextStyle(
-                    fontSize: 44,
-                    fontWeight: FontWeight.w900,
-                    color: FanPitchColors.crowdWhite,
-                    letterSpacing: -1.2,
-                  ),
-                )
+                      'FanPitch',
+                      style: TextStyle(
+                        fontSize: 44,
+                        fontWeight: FontWeight.w900,
+                        color: FanPitchColors.crowdWhite,
+                        letterSpacing: -1.2,
+                      ),
+                    )
                     .animate()
                     .slideY(
                       begin: 0.4,
@@ -78,18 +76,19 @@ class SplashScreen extends StatelessWidget {
             // Loader at the very bottom
             Positioned(
               bottom: 64,
-              child: SizedBox(
-                width: 28,
-                height: 28,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.4,
-                  valueColor: AlwaysStoppedAnimation(
-                    FanPitchColors.crowdWhite.withValues(alpha: 0.7),
-                  ),
-                ),
-              )
-                  .animate(onPlay: (c) => c.repeat())
-                  .fadeIn(duration: 400.ms, delay: 900.ms),
+              child:
+                  SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.4,
+                          valueColor: AlwaysStoppedAnimation(
+                            FanPitchColors.crowdWhite.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      )
+                      .animate(onPlay: (c) => c.repeat())
+                      .fadeIn(duration: 400.ms, delay: 900.ms),
             ),
           ],
         ),
@@ -101,16 +100,16 @@ class SplashScreen extends StatelessWidget {
   List<Widget> _ripples() {
     return List.generate(3, (i) {
       return Container(
-        width: 240,
-        height: 240,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: FanPitchColors.crowdWhite.withValues(alpha: 0.18),
-            width: 1.5,
-          ),
-        ),
-      )
+            width: 240,
+            height: 240,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: FanPitchColors.crowdWhite.withValues(alpha: 0.18),
+                width: 1.5,
+              ),
+            ),
+          )
           .animate(onPlay: (c) => c.repeat())
           .scale(
             begin: const Offset(0.7, 0.7),

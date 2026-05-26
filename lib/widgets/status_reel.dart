@@ -37,11 +37,16 @@ class _StatusReelState extends ConsumerState<StatusReel> {
     if (widget.status.media?.isVideo == true && url != null) {
       _video = VideoPlayerController.networkUrl(Uri.parse(url));
       _video!.setLooping(true);
-      _video!.initialize().then((_) {
-        if (!mounted) return;
-        setState(() => _videoReady = true);
-        if (widget.isActive) _video!.play();
-      }).catchError((_) {/* swallow — fallback to thumbnail */});
+      _video!
+          .initialize()
+          .then((_) {
+            if (!mounted) return;
+            setState(() => _videoReady = true);
+            if (widget.isActive) _video!.play();
+          })
+          .catchError((_) {
+            /* swallow — fallback to thumbnail */
+          });
     }
   }
 
@@ -70,10 +75,14 @@ class _StatusReelState extends ConsumerState<StatusReel> {
     final next = s.withOptimisticReaction(emoji, toggle: true);
     widget.onChanged(next);
     try {
-      await ref.read(apiClientProvider).toggleReaction(
-        targetType: 'STATUS', targetId: s.id, emoji: emoji,
-        currentlyOn: had,
-      );
+      await ref
+          .read(apiClientProvider)
+          .toggleReaction(
+            targetType: 'STATUS',
+            targetId: s.id,
+            emoji: emoji,
+            currentlyOn: had,
+          );
     } catch (_) {
       // Revert on failure
       widget.onChanged(s);
@@ -89,20 +98,22 @@ class _StatusReelState extends ConsumerState<StatusReel> {
         targetType: 'STATUS',
         targetId: widget.status.id,
         onPosted: () {
-          widget.onChanged(StatusPost(
-            id: widget.status.id,
-            author: widget.status.author,
-            bodyText: widget.status.bodyText,
-            media: widget.status.media,
-            teamId: widget.status.teamId,
-            impressionsCount: widget.status.impressionsCount,
-            reactionsCount: widget.status.reactionsCount,
-            commentsCount: widget.status.commentsCount + 1,
-            reactionsBreakdown: widget.status.reactionsBreakdown,
-            myReactions: widget.status.myReactions,
-            expiresAt: widget.status.expiresAt,
-            createdAt: widget.status.createdAt,
-          ));
+          widget.onChanged(
+            StatusPost(
+              id: widget.status.id,
+              author: widget.status.author,
+              bodyText: widget.status.bodyText,
+              media: widget.status.media,
+              teamId: widget.status.teamId,
+              impressionsCount: widget.status.impressionsCount,
+              reactionsCount: widget.status.reactionsCount,
+              commentsCount: widget.status.commentsCount + 1,
+              reactionsBreakdown: widget.status.reactionsBreakdown,
+              myReactions: widget.status.myReactions,
+              expiresAt: widget.status.expiresAt,
+              createdAt: widget.status.createdAt,
+            ),
+          );
         },
       ),
     );
@@ -126,7 +137,9 @@ class _StatusReelState extends ConsumerState<StatusReel> {
 
         // 3. left column: author + caption
         Positioned(
-          left: 16, right: 96, bottom: 24,
+          left: 16,
+          right: 96,
+          bottom: 24,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -142,7 +155,8 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                               : s.author.username.substring(0, 1))
                           .toUpperCase(),
                       style: const TextStyle(
-                        fontWeight: FontWeight.w900, color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -150,7 +164,8 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                   Text(
                     '@${s.author.username}',
                     style: const TextStyle(
-                      color: Colors.white, fontSize: 16,
+                      color: Colors.white,
+                      fontSize: 16,
                       fontWeight: FontWeight.w800,
                       shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
                     ),
@@ -162,32 +177,42 @@ class _StatusReelState extends ConsumerState<StatusReel> {
                 Text(
                   s.bodyText,
                   style: const TextStyle(
-                    color: Colors.white, fontSize: 15, height: 1.3,
+                    color: Colors.white,
+                    fontSize: 15,
+                    height: 1.3,
                     shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
                   ),
                 ),
               if (s.media?.aiCaption != null &&
                   s.media!.aiCaption!.isNotEmpty) ...[
                 const SizedBox(height: 8),
-                Row(children: [
-                  const Icon(Icons.auto_awesome, color: Colors.amber, size: 14),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      '"${s.media!.aiCaption}"',
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontStyle: FontStyle.italic, fontSize: 13,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.auto_awesome,
+                      color: Colors.amber,
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        '"${s.media!.aiCaption}"',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
-                  ),
-                ]),
+                  ],
+                ),
               ],
               const SizedBox(height: 6),
               Text(
                 ts,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7), fontSize: 11,
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontSize: 11,
                 ),
               ),
             ],
@@ -196,7 +221,9 @@ class _StatusReelState extends ConsumerState<StatusReel> {
 
         // 4. right column: reactions / comments / impressions
         Positioned(
-          right: 8, bottom: 16, top: MediaQuery.of(context).padding.top + 80,
+          right: 8,
+          bottom: 16,
+          top: MediaQuery.of(context).padding.top + 80,
           child: SafeArea(
             child: SideReactionBar(
               counts: s.reactionsBreakdown,
@@ -214,8 +241,11 @@ class _StatusReelState extends ConsumerState<StatusReel> {
 }
 
 class _Background extends StatelessWidget {
-  const _Background(
-      {required this.status, required this.video, required this.videoReady});
+  const _Background({
+    required this.status,
+    required this.video,
+    required this.videoReady,
+  });
   final StatusPost status;
   final VideoPlayerController? video;
   final bool videoReady;
@@ -250,7 +280,8 @@ class _Background extends StatelessWidget {
           Theme.of(context).colorScheme.primary,
           Theme.of(context).colorScheme.tertiary,
         ],
-        begin: Alignment.topLeft, end: Alignment.bottomRight,
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
     ),
     alignment: Alignment.center,
@@ -260,7 +291,9 @@ class _Background extends StatelessWidget {
         status.bodyText,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          color: Colors.white, fontSize: 22, fontWeight: FontWeight.w800,
+          color: Colors.white,
+          fontSize: 22,
+          fontWeight: FontWeight.w800,
         ),
       ),
     ),
@@ -277,7 +310,8 @@ class _BottomScrim extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.center, end: Alignment.bottomCenter,
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
               colors: [Colors.transparent, Colors.black.withValues(alpha: 0.6)],
             ),
           ),
@@ -296,8 +330,12 @@ class _TopScrim extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter, end: Alignment.center,
-              colors: [Colors.black.withValues(alpha: 0.35), Colors.transparent],
+              begin: Alignment.topCenter,
+              end: Alignment.center,
+              colors: [
+                Colors.black.withValues(alpha: 0.35),
+                Colors.transparent,
+              ],
             ),
           ),
         ),

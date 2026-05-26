@@ -45,13 +45,12 @@ class StatusCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            p.displayName.isEmpty
-                                ? status.author.username
-                                : p.displayName,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w700)),
-                        Text(ts,
-                            style: Theme.of(context).textTheme.bodySmall),
+                          p.displayName.isEmpty
+                              ? status.author.username
+                              : p.displayName,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(ts, style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),
                   ),
@@ -81,10 +80,13 @@ class StatusCard extends StatelessWidget {
                       width: double.infinity,
                       placeholder: (_, __) => Container(
                         height: 220,
-                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         child: const Center(child: CircularProgressIndicator()),
                       ),
-                      errorWidget: (_, __, ___) => const Icon(Icons.broken_image),
+                      errorWidget: (_, __, ___) =>
+                          const Icon(Icons.broken_image),
                     ),
                   ),
                   Positioned(
@@ -103,9 +105,13 @@ class StatusCard extends StatelessWidget {
                   const Icon(Icons.auto_awesome, size: 14),
                   const SizedBox(width: 4),
                   Expanded(
-                    child: Text('"${status.media!.aiCaption}"',
-                        style: const TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 13)),
+                    child: Text(
+                      '"${status.media!.aiCaption}"',
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -165,9 +171,9 @@ class _DownloadButtonState extends State<_DownloadButton> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Échec du téléchargement')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Échec du téléchargement')));
     }
   }
 

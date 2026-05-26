@@ -28,19 +28,25 @@ class ProfileScreen extends ConsumerWidget {
                           : user.username.substring(0, 1))
                       .toUpperCase(),
                   style: const TextStyle(
-                      fontSize: 36, fontWeight: FontWeight.w800),
+                    fontSize: 36,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
             Center(
-              child: Text(p.displayName.isEmpty ? user.username : p.displayName,
-                  style: Theme.of(context).textTheme.headlineSmall),
+              child: Text(
+                p.displayName.isEmpty ? user.username : p.displayName,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
             ),
             const SizedBox(height: 4),
             Center(
-              child: Text('@${user.username}',
-                  style: Theme.of(context).textTheme.bodyMedium),
+              child: Text(
+                '@${user.username}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
             const SizedBox(height: 24),
             Card(
@@ -51,7 +57,10 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     _stat('Points', '${p.points}'),
                     _stat('Level', '${p.level}'),
-                    _stat('Country', p.country?.isEmpty == false ? p.country! : '—'),
+                    _stat(
+                      'Country',
+                      p.country?.isEmpty == false ? p.country! : '—',
+                    ),
                   ],
                 ),
               ),
@@ -72,11 +81,12 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _stat(String label, String value) => Column(
-        children: [
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.w800)),
-          Text(label),
-        ],
-      );
+    children: [
+      Text(
+        value,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+      ),
+      Text(label),
+    ],
+  );
 }

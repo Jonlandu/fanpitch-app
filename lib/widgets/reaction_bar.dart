@@ -32,9 +32,13 @@ class ReactionBar extends StatelessWidget {
                     if ((counts[e] ?? 0) > 0)
                       Padding(
                         padding: const EdgeInsets.only(left: 6),
-                        child: Text('${counts[e]}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 12)),
+                        child: Text(
+                          '${counts[e]}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
                   ],
                 ),

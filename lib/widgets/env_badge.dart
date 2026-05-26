@@ -36,11 +36,11 @@ class EnvBadge extends StatelessWidget {
   }
 
   static Color _colorFor(BuildEnv env) => switch (env) {
-        BuildEnv.local   => FanPitchColors.muted,
-        BuildEnv.dev     => FanPitchColors.fanOrange,
-        BuildEnv.staging => FanPitchColors.gold,
-        BuildEnv.prod    => Colors.transparent,
-      };
+    BuildEnv.local => FanPitchColors.muted,
+    BuildEnv.dev => FanPitchColors.fanOrange,
+    BuildEnv.staging => FanPitchColors.gold,
+    BuildEnv.prod => Colors.transparent,
+  };
 }
 
 class _Ribbon extends StatelessWidget {

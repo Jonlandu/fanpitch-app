@@ -15,42 +15,44 @@ class ApiClient {
     _dio.options.baseUrl = '${AppConfig.apiBase}/api/v1';
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 20);
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final t = await _storage.readAccess();
-        if (t != null) options.headers['Authorization'] = 'Bearer $t';
-        handler.next(options);
-      },
-      onError: (e, handler) async {
-        if (e.response?.statusCode == 401) {
-          final refreshed = await _tryRefresh();
-          if (refreshed) {
-            // Le token a été mis à jour, on doit réinjecter le NOUVEAU token
-            // dans les headers de la requête clonée avant de la rejouer !
-            final newAccess = await _storage.readAccess();
-            final options = e.requestOptions;
-            if (newAccess != null) {
-              options.headers['Authorization'] = 'Bearer $newAccess';
-            }
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final t = await _storage.readAccess();
+          if (t != null) options.headers['Authorization'] = 'Bearer $t';
+          handler.next(options);
+        },
+        onError: (e, handler) async {
+          if (e.response?.statusCode == 401) {
+            final refreshed = await _tryRefresh();
+            if (refreshed) {
+              // Le token a été mis à jour, on doit réinjecter le NOUVEAU token
+              // dans les headers de la requête clonée avant de la rejouer !
+              final newAccess = await _storage.readAccess();
+              final options = e.requestOptions;
+              if (newAccess != null) {
+                options.headers['Authorization'] = 'Bearer $newAccess';
+              }
 
-            final clone = await _dio.fetch(options);
-            return handler.resolve(clone);
-          } else {
-            // Si le refresh échoue, on stoppe tout et on renvoie une 401 propre
-            // pour rediriger l'utilisateur vers l'écran de Login
-            return handler.reject(
-              DioException(
-                requestOptions: e.requestOptions,
-                error: 'Session expired, please try to reconnect.',
-                type: DioExceptionType.badResponse,
-                response: e.response,
-              ),
-            );
+              final clone = await _dio.fetch(options);
+              return handler.resolve(clone);
+            } else {
+              // Si le refresh échoue, on stoppe tout et on renvoie une 401 propre
+              // pour rediriger l'utilisateur vers l'écran de Login
+              return handler.reject(
+                DioException(
+                  requestOptions: e.requestOptions,
+                  error: 'Session expired, please try to reconnect.',
+                  type: DioExceptionType.badResponse,
+                  response: e.response,
+                ),
+              );
+            }
           }
-        }
-        handler.next(e);
-      },
-    ));
+          handler.next(e);
+        },
+      ),
+    );
   }
 
   final AuthStorage _storage;
@@ -82,24 +84,25 @@ class ApiClient {
     required String password,
     String? displayName,
   }) async {
-    final r = await _dio.post('/auth/register/', data: {
-      'username': username,
-      'email': email,
-      'password': password,
-      'display_name': displayName ?? username,
-    });
-    final tokens = AuthTokens.fromJson(r.data as Map<String, dynamic>);
-    final user = AppUser.fromJson(
-      (r.data['user'] as Map<String, dynamic>),
+    final r = await _dio.post(
+      '/auth/register/',
+      data: {
+        'username': username,
+        'email': email,
+        'password': password,
+        'display_name': displayName ?? username,
+      },
     );
+    final tokens = AuthTokens.fromJson(r.data as Map<String, dynamic>);
+    final user = AppUser.fromJson((r.data['user'] as Map<String, dynamic>));
     return (tokens: tokens, user: user);
   }
 
   Future<AuthTokens> login(String username, String password) async {
-    final r = await _dio.post('/auth/login/', data: {
-      'username': username,
-      'password': password,
-    });
+    final r = await _dio.post(
+      '/auth/login/',
+      data: {'username': username, 'password': password},
+    );
     return AuthTokens.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -115,12 +118,15 @@ class ApiClient {
   }
 
   /// All public statuses (non-expired) authored by [userId], paginated.
-  Future<({List<StatusPost> items, int total, bool hasMore})>
-      getUserStatuses(int userId, {int limit = 20, int offset = 0}) async {
-    final r = await _dio.get('/users/$userId/statuses/', queryParameters: {
-      'limit': limit,
-      'offset': offset,
-    });
+  Future<({List<StatusPost> items, int total, bool hasMore})> getUserStatuses(
+    int userId, {
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    final r = await _dio.get(
+      '/users/$userId/statuses/',
+      queryParameters: {'limit': limit, 'offset': offset},
+    );
     final results = (r.data['results'] as List? ?? const []);
     return (
       items: results
@@ -142,9 +148,10 @@ class ApiClient {
   // --- matches ---
 
   Future<List<Match>> listMatches({String? status}) async {
-    final r = await _dio.get('/matches/', queryParameters: {
-      if (status != null) 'status': status,
-    });
+    final r = await _dio.get(
+      '/matches/',
+      queryParameters: {if (status != null) 'status': status},
+    );
     final results = (r.data is List)
         ? r.data as List
         : (r.data['results'] as List? ?? const []);
@@ -182,9 +189,10 @@ class ApiClient {
 
   /// TikTok-style "for you" — ranked by engagement × recency × personalisation.
   Future<List<StatusPost>> forYouFeed({int limit = 20, int offset = 0}) async {
-    final r = await _dio.get('/feed/for-you/', queryParameters: {
-      'limit': limit, 'offset': offset,
-    });
+    final r = await _dio.get(
+      '/feed/for-you/',
+      queryParameters: {'limit': limit, 'offset': offset},
+    );
     final results = (r.data['results'] as List? ?? const []);
     return results
         .map((e) => StatusPost.fromJson(e as Map<String, dynamic>))
@@ -192,10 +200,14 @@ class ApiClient {
   }
 
   /// Strict "following" feed — only authors the user follows + self.
-  Future<List<StatusPost>> followingFeed({int limit = 20, int offset = 0}) async {
-    final r = await _dio.get('/feed/following/', queryParameters: {
-      'limit': limit, 'offset': offset,
-    });
+  Future<List<StatusPost>> followingFeed({
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    final r = await _dio.get(
+      '/feed/following/',
+      queryParameters: {'limit': limit, 'offset': offset},
+    );
     final results = (r.data['results'] as List? ?? const []);
     return results
         .map((e) => StatusPost.fromJson(e as Map<String, dynamic>))
@@ -203,13 +215,15 @@ class ApiClient {
   }
 
   /// Bulk impression report — call every 5-10s with up to 50 ids.
-  Future<void> reportImpressions(List<int> statusIds,
-      {List<int>? dwellMs}) async {
+  Future<void> reportImpressions(
+    List<int> statusIds, {
+    List<int>? dwellMs,
+  }) async {
     if (statusIds.isEmpty) return;
-    await _dio.post('/impressions/', data: {
-      'status_ids': statusIds,
-      if (dwellMs != null) 'dwell_ms': dwellMs,
-    });
+    await _dio.post(
+      '/impressions/',
+      data: {'status_ids': statusIds, if (dwellMs != null) 'dwell_ms': dwellMs},
+    );
   }
 
   /// Toggle a reaction emoji on a Status (or any target). Idempotent.
@@ -221,9 +235,10 @@ class ApiClient {
   }) async {
     if (currentlyOn) {
       // Backend exposes only POST on /reactions/ — find + delete via filter
-      final list = await _dio.get('/reactions/', queryParameters: {
-        'target_type': targetType, 'target_id': targetId,
-      });
+      final list = await _dio.get(
+        '/reactions/',
+        queryParameters: {'target_type': targetType, 'target_id': targetId},
+      );
       final results = (list.data is List)
           ? list.data as List
           : (list.data['results'] as List? ?? const []);
@@ -235,20 +250,25 @@ class ApiClient {
         }
       }
     } else {
-      await _dio.post('/reactions/', data: {
-        'target_type': targetType,
-        'target_id': targetId,
-        'emoji': emoji,
-      });
+      await _dio.post(
+        '/reactions/',
+        data: {
+          'target_type': targetType,
+          'target_id': targetId,
+          'emoji': emoji,
+        },
+      );
     }
   }
 
   Future<List<Map<String, dynamic>>> listComments({
-    required String targetType, required int targetId,
+    required String targetType,
+    required int targetId,
   }) async {
-    final r = await _dio.get('/comments/', queryParameters: {
-      'target_type': targetType, 'target_id': targetId,
-    });
+    final r = await _dio.get(
+      '/comments/',
+      queryParameters: {'target_type': targetType, 'target_id': targetId},
+    );
     final results = (r.data is List)
         ? r.data as List
         : (r.data['results'] as List? ?? const []);
@@ -256,12 +276,14 @@ class ApiClient {
   }
 
   Future<void> postComment({
-    required String targetType, required int targetId,
+    required String targetType,
+    required int targetId,
     required String body,
   }) async {
-    await _dio.post('/comments/', data: {
-      'target_type': targetType, 'target_id': targetId, 'body': body,
-    });
+    await _dio.post(
+      '/comments/',
+      data: {'target_type': targetType, 'target_id': targetId, 'body': body},
+    );
   }
 
   Future<StatusPost> createStatus({
@@ -269,11 +291,14 @@ class ApiClient {
     int? mediaId,
     int? teamId,
   }) async {
-    final r = await _dio.post('/statuses/', data: {
-      'body_text': bodyText,
-      if (mediaId != null) 'media_id': mediaId,
-      if (teamId != null) 'team': teamId,
-    });
+    final r = await _dio.post(
+      '/statuses/',
+      data: {
+        'body_text': bodyText,
+        if (mediaId != null) 'media_id': mediaId,
+        if (teamId != null) 'team': teamId,
+      },
+    );
     return StatusPost.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -281,10 +306,10 @@ class ApiClient {
     required String filename,
     required String contentType,
   }) async {
-    final r = await _dio.post('/media/upload-url/', data: {
-      'filename': filename,
-      'content_type': contentType,
-    });
+    final r = await _dio.post(
+      '/media/upload-url/',
+      data: {'filename': filename, 'content_type': contentType},
+    );
     return r.data as Map<String, dynamic>;
   }
 
@@ -334,11 +359,14 @@ class ApiClient {
     String? aiCaption,
   }) async {
     final presigned = await presignUpload(
-      filename: filename, contentType: contentType,
+      filename: filename,
+      contentType: contentType,
     );
     await uploadFileTo(
-      presigned: presigned, bytes: bytes,
-      contentType: contentType, filename: filename,
+      presigned: presigned,
+      bytes: bytes,
+      contentType: contentType,
+      filename: filename,
     );
     return registerMediaPost(
       s3Key: presigned['key'] as String,
@@ -354,12 +382,15 @@ class ApiClient {
     String? aiCaption,
     String? cdnUrl,
   }) async {
-    final r = await _dio.post('/media/', data: {
-      's3_key': s3Key,
-      'media_type': mediaType,
-      if (aiCaption != null) 'ai_caption': aiCaption,
-      if (cdnUrl != null) 'cdn_url': cdnUrl,
-    });
+    final r = await _dio.post(
+      '/media/',
+      data: {
+        's3_key': s3Key,
+        'media_type': mediaType,
+        if (aiCaption != null) 'ai_caption': aiCaption,
+        if (cdnUrl != null) 'cdn_url': cdnUrl,
+      },
+    );
     return MediaPost.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -370,11 +401,10 @@ class ApiClient {
     required int home,
     required int away,
   }) async {
-    final r = await _dio.post('/predictions/', data: {
-      'match': matchId,
-      'home_score': home,
-      'away_score': away,
-    });
+    final r = await _dio.post(
+      '/predictions/',
+      data: {'match': matchId, 'home_score': home, 'away_score': away},
+    );
     return Prediction.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -386,9 +416,10 @@ class ApiClient {
   }
 
   Future<List<Poll>> polls({int? matchId}) async {
-    final r = await _dio.get('/polls/', queryParameters: {
-      if (matchId != null) 'match_id': matchId,
-    });
+    final r = await _dio.get(
+      '/polls/',
+      queryParameters: {if (matchId != null) 'match_id': matchId},
+    );
     final results = (r.data is List)
         ? r.data as List
         : (r.data['results'] as List? ?? const []);
@@ -398,8 +429,10 @@ class ApiClient {
   }
 
   Future<Poll> votePoll(int pollId, int optionIndex) async {
-    final r = await _dio.post('/polls/$pollId/vote/',
-        data: {'option_index': optionIndex});
+    final r = await _dio.post(
+      '/polls/$pollId/vote/',
+      data: {'option_index': optionIndex},
+    );
     return Poll.fromJson(r.data as Map<String, dynamic>);
   }
 
@@ -408,30 +441,41 @@ class ApiClient {
     required int targetId,
     required String emoji,
   }) async {
-    await _dio.post('/reactions/', data: {
-      'target_type': targetType,
-      'target_id': targetId,
-      'emoji': emoji,
-    });
+    await _dio.post(
+      '/reactions/',
+      data: {'target_type': targetType, 'target_id': targetId, 'emoji': emoji},
+    );
   }
 
   // --- gamification ---
 
-  Future<Map<String, dynamic>> leaderboard({String scope = 'global', int? matchId}) async {
-    final r = await _dio.get('/leaderboard/', queryParameters: {
-      'scope': scope,
-      if (matchId != null) 'match_id': matchId,
-    });
+  Future<Map<String, dynamic>> leaderboard({
+    String scope = 'global',
+    int? matchId,
+  }) async {
+    final r = await _dio.get(
+      '/leaderboard/',
+      queryParameters: {
+        'scope': scope,
+        if (matchId != null) 'match_id': matchId,
+      },
+    );
     return r.data as Map<String, dynamic>;
   }
 
   // --- ai ---
 
-  Future<Map<String, dynamic>> aiCaption({int? matchId, String? summary}) async {
-    final r = await _dio.post('/ai/caption/', data: {
-      if (matchId != null) 'match_id': matchId,
-      if (summary != null) 'summary': summary,
-    });
+  Future<Map<String, dynamic>> aiCaption({
+    int? matchId,
+    String? summary,
+  }) async {
+    final r = await _dio.post(
+      '/ai/caption/',
+      data: {
+        if (matchId != null) 'match_id': matchId,
+        if (summary != null) 'summary': summary,
+      },
+    );
     return r.data as Map<String, dynamic>;
   }
 }

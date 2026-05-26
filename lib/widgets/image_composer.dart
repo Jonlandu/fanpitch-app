@@ -28,18 +28,42 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
 
   // Football + meme stickers — chosen to make people laugh.
   static const _stickers = <String>[
-    '⚽', '🔥', '🤣', '😱', '🦁', '🏆',
-    '🐐', '🤡', '💀', '👀', '😎', '🤯',
-    '🥲', '💯', '🎯', '🥶', '🤝', '💪',
-    '🇵🇹', '🇨🇩', '🇫🇷', '🇧🇷', '🥇', '❤️',
+    '⚽',
+    '🔥',
+    '🤣',
+    '😱',
+    '🦁',
+    '🏆',
+    '🐐',
+    '🤡',
+    '💀',
+    '👀',
+    '😎',
+    '🤯',
+    '🥲',
+    '💯',
+    '🎯',
+    '🥶',
+    '🤝',
+    '💪',
+    '🇵🇹',
+    '🇨🇩',
+    '🇫🇷',
+    '🇧🇷',
+    '🥇',
+    '❤️',
   ];
 
   void _addEmoji(String e) {
     setState(() {
-      _overlays.add(_Overlay(
-        kind: _OverlayKind.emoji, content: e,
-        position: const Offset(120, 160), scale: 1.5,
-      ));
+      _overlays.add(
+        _Overlay(
+          kind: _OverlayKind.emoji,
+          content: e,
+          position: const Offset(120, 160),
+          scale: 1.5,
+        ),
+      );
       _selectedIndex = _overlays.length - 1;
       _showStickerPanel = false;
     });
@@ -52,7 +76,9 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Add meme text'),
         content: TextField(
-          controller: ctrl, autofocus: true, maxLength: 60,
+          controller: ctrl,
+          autofocus: true,
+          maxLength: 60,
           decoration: const InputDecoration(
             hintText: 'POV: tu paries 1-1',
             border: OutlineInputBorder(),
@@ -72,10 +98,14 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
     );
     if (text == null || text.isEmpty) return;
     setState(() {
-      _overlays.add(_Overlay(
-        kind: _OverlayKind.text, content: text,
-        position: const Offset(60, 80), scale: 1.0,
-      ));
+      _overlays.add(
+        _Overlay(
+          kind: _OverlayKind.text,
+          content: text,
+          position: const Offset(60, 80),
+          scale: 1.0,
+        ),
+      );
       _selectedIndex = _overlays.length - 1;
     });
   }
@@ -97,8 +127,9 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
       Navigator.of(context).pop(bytes);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Compose failed: $e')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Compose failed: $e')));
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -106,8 +137,8 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
   }
 
   Future<Uint8List> _capture() async {
-    final boundary = _boundary.currentContext!.findRenderObject()
-        as RenderRepaintBoundary;
+    final boundary =
+        _boundary.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage(pixelRatio: 2.0);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData!.buffer.asUint8List();
@@ -134,9 +165,13 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
             onPressed: _busy ? null : _save,
             icon: _busy
                 ? const SizedBox(
-                    width: 16, height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2,
-                        color: Colors.white))
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
                 : const Icon(Icons.check, color: Colors.white),
             label: const Text('Done', style: TextStyle(color: Colors.white)),
           ),
@@ -162,8 +197,7 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
                             _OverlayWidget(
                               overlay: _overlays[i],
                               selected: i == _selectedIndex,
-                              onTap: () =>
-                                  setState(() => _selectedIndex = i),
+                              onTap: () => setState(() => _selectedIndex = i),
                               onMove: (delta) {
                                 setState(() {
                                   _overlays[i].position += delta;
@@ -171,9 +205,8 @@ class _ImageComposerScreenState extends State<ImageComposerScreen> {
                               },
                               onScale: (f) {
                                 setState(() {
-                                  _overlays[i].scale =
-                                      (_overlays[i].scale * f)
-                                          .clamp(0.4, 6.0);
+                                  _overlays[i].scale = (_overlays[i].scale * f)
+                                      .clamp(0.4, 6.0);
                                 });
                               },
                               onRotate: (r) {
@@ -248,8 +281,7 @@ class _OverlayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final child = overlay.kind == _OverlayKind.emoji
-        ? Text(overlay.content,
-            style: TextStyle(fontSize: 36 * overlay.scale))
+        ? Text(overlay.content, style: TextStyle(fontSize: 36 * overlay.scale))
         : _MemeText(text: overlay.content, scale: overlay.scale);
 
     return Positioned(
@@ -280,7 +312,8 @@ class _OverlayWidget extends StatelessWidget {
               ),
               if (selected)
                 Positioned(
-                  right: -10, top: -10,
+                  right: -10,
+                  top: -10,
                   child: GestureDetector(
                     onTap: onDelete,
                     child: Container(
@@ -289,8 +322,11 @@ class _OverlayWidget extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Colors.redAccent,
                       ),
-                      child: const Icon(Icons.close,
-                          size: 14, color: Colors.white),
+                      child: const Icon(
+                        Icons.close,
+                        size: 14,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -433,9 +469,14 @@ class _ToolButton extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 28),
             const SizedBox(height: 2),
-            Text(label,
-                style: TextStyle(color: color, fontSize: 11,
-                    fontWeight: FontWeight.w700)),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ],
         ),
       ),
@@ -454,8 +495,10 @@ class _Hint extends StatelessWidget {
         children: [
           Icon(Icons.info_outline, color: Colors.white60, size: 18),
           SizedBox(height: 2),
-          Text('Drag • pinch • rotate',
-              style: TextStyle(color: Colors.white60, fontSize: 10)),
+          Text(
+            'Drag • pinch • rotate',
+            style: TextStyle(color: Colors.white60, fontSize: 10),
+          ),
         ],
       ),
     );

@@ -30,10 +30,16 @@ class ScoreHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Expanded(child: _teamCell(context, match.homeTeam.shortName, homeScore)),
-          const Text('vs',
-              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16)),
-          Expanded(child: _teamCell(context, match.awayTeam.shortName, awayScore)),
+          Expanded(
+            child: _teamCell(context, match.homeTeam.shortName, homeScore),
+          ),
+          const Text(
+            'vs',
+            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),
+          ),
+          Expanded(
+            child: _teamCell(context, match.awayTeam.shortName, awayScore),
+          ),
         ],
       ),
     );
@@ -42,13 +48,19 @@ class ScoreHeader extends StatelessWidget {
   Widget _teamCell(BuildContext context, String name, int score) {
     return Column(
       children: [
-        Text(name,
-            style:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        Text(
+          name,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 4),
-        Text('$score',
-            style: const TextStyle(
-                fontSize: 56, fontWeight: FontWeight.w900, height: 1)),
+        Text(
+          '$score',
+          style: const TextStyle(
+            fontSize: 56,
+            fontWeight: FontWeight.w900,
+            height: 1,
+          ),
+        ),
       ],
     );
   }

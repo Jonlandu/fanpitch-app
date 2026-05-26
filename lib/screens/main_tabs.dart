@@ -44,9 +44,14 @@ class _MainTabsState extends ConsumerState<MainTabs> {
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.dynamic_feed), label: 'For you'),
           NavigationDestination(
-              icon: Icon(Icons.sports_soccer), label: 'Matches'),
+            icon: Icon(Icons.dynamic_feed),
+            label: 'For you',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.sports_soccer),
+            label: 'Matches',
+          ),
           NavigationDestination(icon: Icon(Icons.person), label: 'Me'),
         ],
       ),

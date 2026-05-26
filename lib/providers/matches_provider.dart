@@ -21,4 +21,5 @@ class MatchesController extends StateNotifier<AsyncValue<List<Match>>> {
 
 final matchesProvider =
     StateNotifierProvider<MatchesController, AsyncValue<List<Match>>>(
-        (ref) => MatchesController(ref.read(apiClientProvider)));
+      (ref) => MatchesController(ref.read(apiClientProvider)),
+    );

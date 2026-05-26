@@ -22,4 +22,5 @@ class FeedController extends StateNotifier<AsyncValue<List<StatusPost>>> {
 
 final feedProvider =
     StateNotifierProvider<FeedController, AsyncValue<List<StatusPost>>>(
-        (ref) => FeedController(ref.read(apiClientProvider)));
+      (ref) => FeedController(ref.read(apiClientProvider)),
+    );

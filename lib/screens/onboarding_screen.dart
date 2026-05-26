@@ -40,28 +40,32 @@ const _pages = <_Page>[
     iconColor: FanPitchColors.pitchGreenHi,
     eyebrow: 'LIVE',
     title: 'Le match en direct\ndans ta poche.',
-    subtitle: 'Suis chaque but, carton et moment magique en temps réel — même quand tu n\'es pas devant la TV.',
+    subtitle:
+        'Suis chaque but, carton et moment magique en temps réel — même quand tu n\'es pas devant la TV.',
   ),
   _Page(
     icon: Icons.local_fire_department_rounded,
     iconColor: FanPitchColors.fanOrange,
     eyebrow: 'TRIBE',
     title: 'Réagis avec\nta tribu.',
-    subtitle: 'Émojis qui fusent, sondages éclair, commentaires qui chauffent. Vis chaque action avec des milliers de fans.',
+    subtitle:
+        'Émojis qui fusent, sondages éclair, commentaires qui chauffent. Vis chaque action avec des milliers de fans.',
   ),
   _Page(
     icon: Icons.emoji_events_rounded,
     iconColor: FanPitchColors.gold,
     eyebrow: 'WIN',
     title: 'Prédis. Score.\nBrille.',
-    subtitle: 'Place tes paris avant le coup d\'envoi, gagne des points, débloque des badges et grimpe au classement.',
+    subtitle:
+        'Place tes paris avant le coup d\'envoi, gagne des points, débloque des badges et grimpe au classement.',
   ),
   _Page(
     icon: Icons.bolt_rounded,
     iconColor: FanPitchColors.pitchGreen,
     eyebrow: 'READY',
     title: 'Prêt à entrer\nsur le terrain ?',
-    subtitle: 'Rejoins la communauté FanPitch en 30 secondes. Aucune carte de crédit, juste ta passion.',
+    subtitle:
+        'Rejoins la communauté FanPitch en 30 secondes. Aucune carte de crédit, juste ta passion.',
   ),
 ];
 
@@ -124,7 +128,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.fromLTRB(20, 14, 16, 4),
               child: Row(
                 children: [
-                  SvgPicture.asset('assets/branding/logo_mark.svg', width: 32, height: 32),
+                  SvgPicture.asset(
+                    'assets/branding/logo_mark.svg',
+                    width: 32,
+                    height: 32,
+                  ),
                   const SizedBox(width: 10),
                   Text(
                     'FanPitch',
@@ -139,7 +147,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (!_isLast)
                     TextButton(
                       onPressed: _skip,
-                      child: Text('Passer', style: TextStyle(color: muted, fontWeight: FontWeight.w600)),
+                      child: Text(
+                        'Passer',
+                        style: TextStyle(
+                          color: muted,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                 ],
               ),
@@ -151,7 +165,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 controller: _controller,
                 itemCount: _pages.length,
                 onPageChanged: (i) => setState(() => _index = i),
-                itemBuilder: (_, i) => _PageView(page: _pages[i], isDark: isDark),
+                itemBuilder: (_, i) =>
+                    _PageView(page: _pages[i], isDark: isDark),
               ),
             ),
 
@@ -169,7 +184,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
-                      color: selected ? FanPitchColors.pitchGreen : muted.withValues(alpha: 0.35),
+                      color: selected
+                          ? FanPitchColors.pitchGreen
+                          : muted.withValues(alpha: 0.35),
                     ),
                   );
                 }),
@@ -189,7 +206,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: FanPitchColors.pitchGreen.withValues(alpha: 0.35),
+                            color: FanPitchColors.pitchGreen.withValues(
+                              alpha: 0.35,
+                            ),
                             blurRadius: 24,
                             offset: const Offset(0, 12),
                           ),
@@ -224,7 +243,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       onPressed: _skip,
                       child: Text(
                         'Déjà inscrit ? Connecte-toi',
-                        style: TextStyle(color: fg, fontWeight: FontWeight.w600, fontSize: 14),
+                        style: TextStyle(
+                          color: fg,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
@@ -256,64 +279,90 @@ class _PageView extends StatelessWidget {
             flex: 5,
             child: _HeroIllustration(icon: page.icon, color: page.iconColor)
                 .animate(key: ValueKey(page.title))
-                .scale(begin: const Offset(0.85, 0.85), end: const Offset(1, 1), duration: 500.ms, curve: Curves.easeOutBack)
+                .scale(
+                  begin: const Offset(0.85, 0.85),
+                  end: const Offset(1, 1),
+                  duration: 500.ms,
+                  curve: Curves.easeOutBack,
+                )
                 .fadeIn(duration: 400.ms),
           ),
           const SizedBox(height: 20),
 
           // Eyebrow chip
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: page.iconColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(99),
-            ),
-            child: Text(
-              page.eyebrow,
-              style: TextStyle(
-                color: page.iconColor,
-                fontWeight: FontWeight.w800,
-                fontSize: 11,
-                letterSpacing: 1.6,
-              ),
-            ),
-          )
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: page.iconColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(99),
+                ),
+                child: Text(
+                  page.eyebrow,
+                  style: TextStyle(
+                    color: page.iconColor,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 11,
+                    letterSpacing: 1.6,
+                  ),
+                ),
+              )
               .animate(key: ValueKey('${page.title}eyebrow'))
               .fadeIn(delay: 150.ms, duration: 350.ms)
-              .slideY(begin: 0.3, end: 0, delay: 150.ms, duration: 350.ms, curve: Curves.easeOutCubic),
+              .slideY(
+                begin: 0.3,
+                end: 0,
+                delay: 150.ms,
+                duration: 350.ms,
+                curve: Curves.easeOutCubic,
+              ),
 
           const SizedBox(height: 14),
 
           // Title
           Text(
-            page.title,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w900,
-              color: fg,
-              letterSpacing: -0.8,
-              height: 1.1,
-            ),
-          )
+                page.title,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
+                  color: fg,
+                  letterSpacing: -0.8,
+                  height: 1.1,
+                ),
+              )
               .animate(key: ValueKey('${page.title}title'))
               .fadeIn(delay: 200.ms, duration: 400.ms)
-              .slideY(begin: 0.3, end: 0, delay: 200.ms, duration: 400.ms, curve: Curves.easeOutCubic),
+              .slideY(
+                begin: 0.3,
+                end: 0,
+                delay: 200.ms,
+                duration: 400.ms,
+                curve: Curves.easeOutCubic,
+              ),
 
           const SizedBox(height: 12),
 
           // Subtitle
           Text(
-            page.subtitle,
-            style: TextStyle(
-              fontSize: 15,
-              color: FanPitchColors.muted,
-              fontWeight: FontWeight.w500,
-              height: 1.5,
-            ),
-          )
+                page.subtitle,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: FanPitchColors.muted,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                ),
+              )
               .animate(key: ValueKey('${page.title}sub'))
               .fadeIn(delay: 280.ms, duration: 400.ms)
-              .slideY(begin: 0.3, end: 0, delay: 280.ms, duration: 400.ms, curve: Curves.easeOutCubic),
+              .slideY(
+                begin: 0.3,
+                end: 0,
+                delay: 280.ms,
+                duration: 400.ms,
+                curve: Curves.easeOutCubic,
+              ),
           const Spacer(),
         ],
       ),
@@ -350,22 +399,33 @@ class _HeroIllustration extends StatelessWidget {
           ),
           // Outer ring (animated rotation)
           Container(
-            width: 220,
-            height: 220,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: color.withValues(alpha: 0.22), width: 2),
-            ),
-          )
+                width: 220,
+                height: 220,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: color.withValues(alpha: 0.22),
+                    width: 2,
+                  ),
+                ),
+              )
               .animate(onPlay: (c) => c.repeat())
-              .rotate(duration: 12.seconds, begin: 0, end: 1, curve: Curves.linear),
+              .rotate(
+                duration: 12.seconds,
+                begin: 0,
+                end: 1,
+                curve: Curves.linear,
+              ),
           // Inner ring
           Container(
             width: 180,
             height: 180,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: color.withValues(alpha: 0.35), width: 2),
+              border: Border.all(
+                color: color.withValues(alpha: 0.35),
+                width: 2,
+              ),
             ),
           ),
           // Central solid disc
@@ -391,22 +451,25 @@ class _HeroIllustration extends StatelessWidget {
             final dy = 110 * (i < 2 ? -1.0 : 1.0);
             return Transform.translate(
               offset: Offset(dx, dy),
-              child: Container(
-                width: i.isEven ? 14 : 10,
-                height: i.isEven ? 14 : 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: i.isEven ? FanPitchColors.fanOrange : FanPitchColors.gold,
-                ),
-              )
-                  .animate(onPlay: (c) => c.repeat(reverse: true))
-                  .scale(
-                    begin: const Offset(0.6, 0.6),
-                    end: const Offset(1.1, 1.1),
-                    duration: 1800.ms,
-                    delay: (i * 200).ms,
-                    curve: Curves.easeInOut,
-                  ),
+              child:
+                  Container(
+                        width: i.isEven ? 14 : 10,
+                        height: i.isEven ? 14 : 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: i.isEven
+                              ? FanPitchColors.fanOrange
+                              : FanPitchColors.gold,
+                        ),
+                      )
+                      .animate(onPlay: (c) => c.repeat(reverse: true))
+                      .scale(
+                        begin: const Offset(0.6, 0.6),
+                        end: const Offset(1.1, 1.1),
+                        duration: 1800.ms,
+                        delay: (i * 200).ms,
+                        curve: Curves.easeInOut,
+                      ),
             );
           }),
         ],

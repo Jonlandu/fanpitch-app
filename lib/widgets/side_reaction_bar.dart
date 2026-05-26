@@ -90,8 +90,10 @@ class _ReactionButton extends StatefulWidget {
 class _ReactionButtonState extends State<_ReactionButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl = AnimationController(
-    vsync: this, duration: const Duration(milliseconds: 220),
-    lowerBound: 0.85, upperBound: 1.15,
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
+    lowerBound: 0.85,
+    upperBound: 1.15,
   );
 
   @override
@@ -119,12 +121,14 @@ class _ReactionButtonState extends State<_ReactionButton>
             ScaleTransition(
               scale: _ctrl,
               child: Container(
-                width: 48, height: 48,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: widget.isActive
-                      ? Theme.of(context).colorScheme.primary
-                            .withValues(alpha: 0.35)
+                      ? Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.35)
                       : Colors.black.withValues(alpha: 0.35),
                 ),
                 alignment: Alignment.center,
@@ -150,7 +154,9 @@ class _ReactionButtonState extends State<_ReactionButton>
 
 class _IconButton extends StatelessWidget {
   const _IconButton({
-    required this.icon, required this.label, required this.onTap,
+    required this.icon,
+    required this.label,
+    required this.onTap,
   });
   final IconData icon;
   final String label;
@@ -164,7 +170,8 @@ class _IconButton extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 48, height: 48,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.black.withValues(alpha: 0.35),
@@ -175,7 +182,9 @@ class _IconButton extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(
-              color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700,
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
               shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
             ),
           ),

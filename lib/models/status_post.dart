@@ -70,14 +70,18 @@ class StatusPost {
     }
     final reactCount = brk.values.fold<int>(0, (a, b) => a + b);
     return StatusPost(
-      id: id, author: author, bodyText: bodyText, media: media,
+      id: id,
+      author: author,
+      bodyText: bodyText,
+      media: media,
       teamId: teamId,
       impressionsCount: impressionsCount,
       reactionsCount: reactCount,
       commentsCount: commentsCount,
       reactionsBreakdown: brk,
       myReactions: next,
-      expiresAt: expiresAt, createdAt: createdAt,
+      expiresAt: expiresAt,
+      createdAt: createdAt,
     );
   }
 
@@ -92,10 +96,12 @@ class StatusPost {
     impressionsCount: (j['impressions_count'] ?? 0) as int,
     reactionsCount: (j['reactions_count'] ?? 0) as int,
     commentsCount: (j['comments_count'] ?? 0) as int,
-    reactionsBreakdown: ((j['reactions_breakdown'] ?? const {}) as Map)
-        .map((k, v) => MapEntry(k as String, v as int)),
+    reactionsBreakdown: ((j['reactions_breakdown'] ?? const {}) as Map).map(
+      (k, v) => MapEntry(k as String, v as int),
+    ),
     myReactions: ((j['my_reactions'] ?? const []) as List)
-        .map((e) => e as String).toList(),
+        .map((e) => e as String)
+        .toList(),
     expiresAt: DateTime.parse(j['expires_at'] as String),
     createdAt: DateTime.parse(j['created_at'] as String),
   );

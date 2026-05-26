@@ -11,8 +11,7 @@ import '../services/api_client.dart';
 class CreateStatusScreen extends ConsumerStatefulWidget {
   const CreateStatusScreen({super.key});
   @override
-  ConsumerState<CreateStatusScreen> createState() =>
-      _CreateStatusScreenState();
+  ConsumerState<CreateStatusScreen> createState() => _CreateStatusScreenState();
 }
 
 class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
@@ -45,7 +44,8 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
     final picker = ImagePicker();
     final f = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 1600, imageQuality: 86,
+      maxWidth: 1600,
+      imageQuality: 86,
     );
     if (f == null) return;
     final bytes = await f.readAsBytes();
@@ -60,13 +60,16 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
   Future<void> _aiCaption() async {
     setState(() => _captionLoading = true);
     try {
-      final r = await ref.read(apiClientProvider).aiCaption(summary: _body.text);
+      final r = await ref
+          .read(apiClientProvider)
+          .aiCaption(summary: _body.text);
       if (!mounted) return;
       setState(() => _caption = r['caption'] as String?);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('AI caption failed: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('AI caption failed: $e')));
     } finally {
       if (mounted) setState(() => _captionLoading = false);
     }
@@ -88,7 +91,8 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
         mediaId = media.id;
       }
       await api.createStatus(
-        bodyText: _caption != null && _caption!.isNotEmpty && _imageBytes == null
+        bodyText:
+            _caption != null && _caption!.isNotEmpty && _imageBytes == null
             ? '${_body.text}\n\n$_caption'
             : _body.text,
         mediaId: mediaId,
@@ -97,8 +101,9 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
       if (mounted) context.go('/');
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Post failed: $e')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Post failed: $e')));
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -119,8 +124,10 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
             onPressed: _busy ? null : _submit,
             child: _busy
                 ? const SizedBox(
-                    width: 16, height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2))
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
                 : const Text('Post'),
           ),
         ],
@@ -154,8 +161,10 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                     onPressed: _captionLoading ? null : _aiCaption,
                     icon: _captionLoading
                         ? const SizedBox(
-                            width: 16, height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2))
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                         : const Icon(Icons.auto_awesome),
                     label: const Text('AI caption'),
                   ),
@@ -166,11 +175,15 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text('"$_caption"',
-                      style: const TextStyle(fontStyle: FontStyle.italic)),
+                  child: Text(
+                    '"$_caption"',
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ),
               ],
               if (_imageBytes != null) ...[
@@ -178,8 +191,11 @@ class _CreateStatusScreenState extends ConsumerState<CreateStatusScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   // Image.memory works on every platform (web included).
-                  child: Image.memory(_imageBytes!,
-                      height: 220, fit: BoxFit.cover),
+                  child: Image.memory(
+                    _imageBytes!,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 TextButton.icon(
                   icon: const Icon(Icons.close, size: 18),

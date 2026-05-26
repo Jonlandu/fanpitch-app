@@ -8,10 +8,12 @@ import 'package:gal/gal.dart';
 class MediaDownloader {
   MediaDownloader();
 
-  final Dio _http = Dio(BaseOptions(
-    receiveTimeout: const Duration(seconds: 30),
-    responseType: ResponseType.bytes,
-  ));
+  final Dio _http = Dio(
+    BaseOptions(
+      receiveTimeout: const Duration(seconds: 30),
+      responseType: ResponseType.bytes,
+    ),
+  );
 
   /// Downloads [url] and writes it to the gallery.
   /// Returns `true` on success. Returns `false` if the user denies permission

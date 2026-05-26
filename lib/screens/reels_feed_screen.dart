@@ -55,10 +55,7 @@ class _ReelsFeedScreenState extends ConsumerState<ReelsFeedScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 56,
-        title: _TopTabs(
-          tab: state.tab,
-          onTap: ctrl.switchTab,
-        ),
+        title: _TopTabs(tab: state.tab, onTap: ctrl.switchTab),
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
@@ -70,50 +67,50 @@ class _ReelsFeedScreenState extends ConsumerState<ReelsFeedScreen> {
       body: state.loading
           ? const Center(child: CircularProgressIndicator(color: Colors.white))
           : state.error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Couldn\'t load feed.\n${state.error}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(height: 16),
-                        FilledButton(
-                          onPressed: ctrl.refresh,
-                          child: const Text('Retry'),
-                        ),
-                      ],
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Couldn\'t load feed.\n${state.error}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
                     ),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: ctrl.refresh,
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : state.items.isEmpty
+          ? _EmptyState(onRefresh: ctrl.refresh, tab: state.tab)
+          : PageView.builder(
+              controller: _pc,
+              scrollDirection: Axis.vertical,
+              onPageChanged: (i) {
+                setState(() => _activeIndex = i);
+                if (i >= state.items.length - 3) ctrl.loadMore();
+              },
+              itemCount: state.items.length,
+              itemBuilder: (_, i) {
+                final s = state.items[i];
+                return VisibilityDetector(
+                  key: ValueKey('reel-${s.id}'),
+                  onVisibilityChanged: (info) =>
+                      _onVisibilityChanged(s.id, info.visibleFraction),
+                  child: StatusReel(
+                    status: s,
+                    isActive: i == _activeIndex,
+                    onChanged: ctrl.replaceItem,
                   ),
-                )
-              : state.items.isEmpty
-                  ? _EmptyState(onRefresh: ctrl.refresh, tab: state.tab)
-                  : PageView.builder(
-                      controller: _pc,
-                      scrollDirection: Axis.vertical,
-                      onPageChanged: (i) {
-                        setState(() => _activeIndex = i);
-                        if (i >= state.items.length - 3) ctrl.loadMore();
-                      },
-                      itemCount: state.items.length,
-                      itemBuilder: (_, i) {
-                        final s = state.items[i];
-                        return VisibilityDetector(
-                          key: ValueKey('reel-${s.id}'),
-                          onVisibilityChanged: (info) =>
-                              _onVisibilityChanged(s.id, info.visibleFraction),
-                          child: StatusReel(
-                            status: s,
-                            isActive: i == _activeIndex,
-                            onChanged: ctrl.replaceItem,
-                          ),
-                        );
-                      },
-                    ),
+                );
+              },
+            ),
     );
   }
 }

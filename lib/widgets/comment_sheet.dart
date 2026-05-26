@@ -42,9 +42,12 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
   Future<void> _load() async {
     setState(() => _loading = true);
     try {
-      final list = await ref.read(apiClientProvider).listComments(
-        targetType: widget.targetType, targetId: widget.targetId,
-      );
+      final list = await ref
+          .read(apiClientProvider)
+          .listComments(
+            targetType: widget.targetType,
+            targetId: widget.targetId,
+          );
       if (mounted) setState(() => _items = list);
     } catch (_) {
       // ignore — show empty state
@@ -58,17 +61,21 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
     if (body.isEmpty || _sending) return;
     setState(() => _sending = true);
     try {
-      await ref.read(apiClientProvider).postComment(
-        targetType: widget.targetType, targetId: widget.targetId,
-        body: body,
-      );
+      await ref
+          .read(apiClientProvider)
+          .postComment(
+            targetType: widget.targetType,
+            targetId: widget.targetId,
+            body: body,
+          );
       _ctrl.clear();
       widget.onPosted();
       await _load();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Comment failed: $e')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Comment failed: $e')));
       }
     } finally {
       if (mounted) setState(() => _sending = false);
@@ -82,7 +89,8 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
       padding: EdgeInsets.only(bottom: bottomInset),
       child: Container(
         constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.7),
+          maxHeight: MediaQuery.of(context).size.height * 0.7,
+        ),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -92,9 +100,11 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
           children: [
             const SizedBox(height: 8),
             Container(
-              width: 36, height: 4,
+              width: 36,
+              height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(2),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 12),
@@ -102,8 +112,10 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  Text('${_items.length} comments',
-                      style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    '${_items.length} comments',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
@@ -120,19 +132,18 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : _items.isEmpty
-                      ? const Padding(
-                          padding: EdgeInsets.all(40),
-                          child: Center(
-                            child: Text('Be the first to react. Cook 🔥'),
-                          ),
-                        )
-                      : ListView.separated(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          itemCount: _items.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 2),
-                          itemBuilder: (_, i) => _CommentTile(c: _items[i]),
-                        ),
+                  ? const Padding(
+                      padding: EdgeInsets.all(40),
+                      child: Center(
+                        child: Text('Be the first to react. Cook 🔥'),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      itemCount: _items.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 2),
+                      itemBuilder: (_, i) => _CommentTile(c: _items[i]),
+                    ),
             ),
             const Divider(height: 1),
             Padding(
@@ -149,8 +160,10 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
                         hintText: 'Drop a line…',
                         border: OutlineInputBorder(),
                         counterText: '',
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                       ),
                     ),
                   ),
@@ -159,8 +172,10 @@ class _CommentSheetState extends ConsumerState<CommentSheet> {
                     onPressed: _sending ? null : _send,
                     icon: _sending
                         ? const SizedBox(
-                            width: 14, height: 14,
-                            child: CircularProgressIndicator(strokeWidth: 2))
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
                         : const Icon(Icons.send, size: 16),
                     label: const Text('Send'),
                   ),
@@ -186,20 +201,18 @@ class _CommentTile extends StatelessWidget {
         ? (author['username'] ?? 'user').toString()
         : 'user $author';
     final ts = c['created_at'] != null
-        ? DateFormat('d MMM HH:mm').format(
-            DateTime.parse(c['created_at'] as String).toLocal())
+        ? DateFormat(
+            'd MMM HH:mm',
+          ).format(DateTime.parse(c['created_at'] as String).toLocal())
         : '';
     return ListTile(
       dense: true,
-      leading: CircleAvatar(
-        child: Text(name.substring(0, 1).toUpperCase()),
-      ),
+      leading: CircleAvatar(child: Text(name.substring(0, 1).toUpperCase())),
       title: Row(
         children: [
           Text('@$name', style: const TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(width: 8),
-          Text(ts,
-              style: Theme.of(context).textTheme.bodySmall),
+          Text(ts, style: Theme.of(context).textTheme.bodySmall),
         ],
       ),
       subtitle: Text(body),

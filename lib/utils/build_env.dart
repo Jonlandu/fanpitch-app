@@ -4,10 +4,10 @@
 /// Use [BuildEnv.current] to branch behaviour or to render the small
 /// [EnvBadge] overlay that signals which backend the app is hitting.
 enum BuildEnv {
-  local,    // localhost:8000 backend
-  dev,      // dev branch deploy (typically aliases to local in sandbox)
-  staging,  // staging branch deploy
-  prod;     // production — the AWS EC2 hosted backend
+  local, // localhost:8000 backend
+  dev, // dev branch deploy (typically aliases to local in sandbox)
+  staging, // staging branch deploy
+  prod; // production — the AWS EC2 hosted backend
 
   static final current = _resolve();
 
@@ -24,9 +24,9 @@ enum BuildEnv {
 
   /// User-facing label for the badge.
   String get label => switch (this) {
-        BuildEnv.local   => 'LOCAL',
-        BuildEnv.dev     => 'DEV',
-        BuildEnv.staging => 'STAGING',
-        BuildEnv.prod    => 'PROD',
-      };
+    BuildEnv.local => 'LOCAL',
+    BuildEnv.dev => 'DEV',
+    BuildEnv.staging => 'STAGING',
+    BuildEnv.prod => 'PROD',
+  };
 }

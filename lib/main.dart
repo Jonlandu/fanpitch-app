@@ -9,11 +9,14 @@ import 'utils/config.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Reduce VisibilityDetector update frequency for smoother scroll.
-  VisibilityDetectorController.instance.updateInterval =
-      const Duration(milliseconds: 200);
+  VisibilityDetectorController.instance.updateInterval = const Duration(
+    milliseconds: 200,
+  );
 
   if (kDebugMode) {
-    debugPrint('🚀 FanPitch boot — API=${AppConfig.apiBase}  WS=${AppConfig.wsBase}');
+    debugPrint(
+      '🚀 FanPitch boot — API=${AppConfig.apiBase}  WS=${AppConfig.wsBase}',
+    );
   }
 
   runApp(const ProviderScope(child: FanPitchApp()));

@@ -19,21 +19,25 @@ class MatchesListScreen extends ConsumerWidget {
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (list) {
           if (list.isEmpty) {
-            return ListView(children: const [
-              SizedBox(height: 80),
-              Center(child: Text('No matches scheduled.')),
-            ]);
+            return ListView(
+              children: const [
+                SizedBox(height: 80),
+                Center(child: Text('No matches scheduled.')),
+              ],
+            );
           }
-          final sorted = [...list]..sort((a, b) {
-            int rank(Match m) {
-              if (m.isLive) return 0;
-              if (m.status == 'UPCOMING') return 1;
-              return 2;
-            }
-            final r = rank(a).compareTo(rank(b));
-            if (r != 0) return r;
-            return a.kickoffAt.compareTo(b.kickoffAt);
-          });
+          final sorted = [...list]
+            ..sort((a, b) {
+              int rank(Match m) {
+                if (m.isLive) return 0;
+                if (m.status == 'UPCOMING') return 1;
+                return 2;
+              }
+
+              final r = rank(a).compareTo(rank(b));
+              if (r != 0) return r;
+              return a.kickoffAt.compareTo(b.kickoffAt);
+            });
           return ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: sorted.length,
@@ -52,7 +56,9 @@ class _MatchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = DateFormat('EEE d MMM • HH:mm').format(match.kickoffAt.toLocal());
+    final ts = DateFormat(
+      'EEE d MMM • HH:mm',
+    ).format(match.kickoffAt.toLocal());
     Color tone;
     switch (match.status) {
       case 'LIVE':
@@ -67,10 +73,14 @@ class _MatchTile extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
-        title: Text('${match.homeTeam.shortName}  '
-            '${match.homeScore} - ${match.awayScore}  ${match.awayTeam.shortName}',
-            style: const TextStyle(fontWeight: FontWeight.w700)),
-        subtitle: Text('${match.competition.isEmpty ? "FanPitch Match" : match.competition} • $ts'),
+        title: Text(
+          '${match.homeTeam.shortName}  '
+          '${match.homeScore} - ${match.awayScore}  ${match.awayTeam.shortName}',
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        subtitle: Text(
+          '${match.competition.isEmpty ? "FanPitch Match" : match.competition} • $ts',
+        ),
         trailing: Chip(
           label: Text(match.status, style: const TextStyle(fontSize: 11)),
           backgroundColor: tone.withValues(alpha: 0.15),

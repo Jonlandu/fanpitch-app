@@ -60,7 +60,10 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                       child: Text(
                         s.toUpperCase(),
                         style: TextStyle(
-                            fontWeight: selected ? FontWeight.w800 : FontWeight.w500),
+                          fontWeight: selected
+                              ? FontWeight.w800
+                              : FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -92,8 +95,10 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen> {
                 leading: CircleAvatar(child: Text('${i + 1}')),
                 title: Text(e['display_name'] ?? e['username']),
                 subtitle: Text(e['country'] ?? ''),
-                trailing: Text('${e['points']} pts',
-                    style: const TextStyle(fontWeight: FontWeight.w700)),
+                trailing: Text(
+                  '${e['points']} pts',
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
               );
             },
           );

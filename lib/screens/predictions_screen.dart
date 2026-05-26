@@ -43,11 +43,9 @@ class _PredictionsScreenState extends ConsumerState<PredictionsScreen> {
       _msg = null;
     });
     try {
-      await ref.read(apiClientProvider).submitPrediction(
-            matchId: widget.matchId,
-            home: _home,
-            away: _away,
-          );
+      await ref
+          .read(apiClientProvider)
+          .submitPrediction(matchId: widget.matchId, home: _home, away: _away);
       setState(() => _msg = 'Prediction locked: $_home–$_away');
     } catch (e) {
       setState(() => _msg = 'Error: $e');
@@ -61,9 +59,10 @@ class _PredictionsScreenState extends ConsumerState<PredictionsScreen> {
       children: [
         Text(label, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
-        Text('$value',
-            style: const TextStyle(
-                fontSize: 48, fontWeight: FontWeight.w800)),
+        Text(
+          '$value',
+          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w800),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -98,16 +97,32 @@ class _PredictionsScreenState extends ConsumerState<PredictionsScreen> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Text('${m.homeTeam.name}  vs  ${m.awayTeam.name}',
-                      style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    '${m.homeTeam.name}  vs  ${m.awayTeam.name}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   const SizedBox(height: 8),
-                  Text(m.competition.isEmpty ? 'FanPitch Match' : m.competition),
+                  Text(
+                    m.competition.isEmpty ? 'FanPitch Match' : m.competition,
+                  ),
                   const SizedBox(height: 32),
                   Row(
                     children: [
-                      Expanded(child: _stepper(m.homeTeam.shortName, _home, (v) => setState(() => _home = v))),
+                      Expanded(
+                        child: _stepper(
+                          m.homeTeam.shortName,
+                          _home,
+                          (v) => setState(() => _home = v),
+                        ),
+                      ),
                       const SizedBox(width: 24),
-                      Expanded(child: _stepper(m.awayTeam.shortName, _away, (v) => setState(() => _away = v))),
+                      Expanded(
+                        child: _stepper(
+                          m.awayTeam.shortName,
+                          _away,
+                          (v) => setState(() => _away = v),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 32),

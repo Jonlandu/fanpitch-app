@@ -32,13 +32,17 @@ class MatchRoomScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Chip(
-              label: Text(state.connected ? 'LIVE' : 'OFF',
-                  style: const TextStyle(fontSize: 11)),
+              label: Text(
+                state.connected ? 'LIVE' : 'OFF',
+                style: const TextStyle(fontSize: 11),
+              ),
               backgroundColor: state.connected
                   ? Colors.redAccent.withValues(alpha: 0.15)
                   : Theme.of(context).disabledColor.withValues(alpha: 0.15),
               side: BorderSide(
-                color: state.connected ? Colors.redAccent : Theme.of(context).disabledColor,
+                color: state.connected
+                    ? Colors.redAccent
+                    : Theme.of(context).disabledColor,
               ),
             ),
           ),

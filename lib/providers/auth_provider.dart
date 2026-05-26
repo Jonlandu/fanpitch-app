@@ -30,7 +30,9 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
       // Stale / invalid token, or backend unreachable. Treat as "not logged in".
       try {
         await _storage.clear();
-      } catch (_) {/* ignore */}
+      } catch (_) {
+        /* ignore */
+      }
       state = const AsyncValue.data(null);
     }
   }
@@ -80,15 +82,17 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
     lastError = null;
     try {
       await _storage.clear();
-    } catch (_) {/* ignore */}
+    } catch (_) {
+      /* ignore */
+    }
     state = const AsyncValue.data(null);
   }
 }
 
 final authProvider =
     StateNotifierProvider<AuthController, AsyncValue<AppUser?>>((ref) {
-  return AuthController(
-    ref.read(apiClientProvider),
-    ref.read(authStorageProvider),
-  );
-});
+      return AuthController(
+        ref.read(apiClientProvider),
+        ref.read(authStorageProvider),
+      );
+    });

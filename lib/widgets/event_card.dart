@@ -105,8 +105,10 @@ class EventCard extends StatelessWidget {
                   child: Icon(_icon(), color: c, size: 18),
                 ),
                 const SizedBox(width: 12),
-                Text("${event.minute}'",
-                    style: const TextStyle(fontWeight: FontWeight.w800)),
+                Text(
+                  "${event.minute}'",
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -119,8 +121,10 @@ class EventCard extends StatelessWidget {
             if (event.detail.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 4, left: 40),
-                child: Text(event.detail,
-                    style: Theme.of(context).textTheme.bodySmall),
+                child: Text(
+                  event.detail,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             const SizedBox(height: 8),
             ReactionBar(counts: reactionCounts, onReact: onReact),

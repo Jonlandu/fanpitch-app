@@ -18,7 +18,9 @@ class MatchSocket {
   bool _closed = false;
 
   Future<void> connect(int matchId) async {
-    final uri = Uri.parse('${AppConfig.wsBase}/ws/match/$matchId/?token=$_token');
+    final uri = Uri.parse(
+      '${AppConfig.wsBase}/ws/match/$matchId/?token=$_token',
+    );
     final ch = WebSocketChannel.connect(uri);
     _ch = ch;
     ch.stream.listen(
@@ -26,7 +28,9 @@ class MatchSocket {
         try {
           final m = jsonDecode(raw as String) as Map<String, dynamic>;
           _ctrl.add(m);
-        } catch (_) {/* ignore malformed */}
+        } catch (_) {
+          /* ignore malformed */
+        }
       },
       onError: (e) {
         if (!_closed) _ctrl.addError(e);
@@ -43,20 +47,24 @@ class MatchSocket {
     required int targetId,
     required String emoji,
   }) {
-    _ch?.sink.add(jsonEncode({
-      'type': 'reaction.send',
-      'target_type': targetType,
-      'target_id': targetId,
-      'emoji': emoji,
-    }));
+    _ch?.sink.add(
+      jsonEncode({
+        'type': 'reaction.send',
+        'target_type': targetType,
+        'target_id': targetId,
+        'emoji': emoji,
+      }),
+    );
   }
 
   void votePoll(int pollId, int optionIndex) {
-    _ch?.sink.add(jsonEncode({
-      'type': 'poll.vote',
-      'poll_id': pollId,
-      'option_index': optionIndex,
-    }));
+    _ch?.sink.add(
+      jsonEncode({
+        'type': 'poll.vote',
+        'poll_id': pollId,
+        'option_index': optionIndex,
+      }),
+    );
   }
 
   void ping() {

@@ -80,8 +80,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     setState(() => _loadingMore = true);
     try {
       final api = ref.read(apiClientProvider);
-      final page = await api.getUserStatuses(widget.userId,
-          offset: _offset, limit: 20);
+      final page = await api.getUserStatuses(
+        widget.userId,
+        offset: _offset,
+        limit: 20,
+      );
       if (!mounted) return;
       setState(() {
         _statuses.addAll(page.items);
@@ -141,17 +144,29 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, size: 48, color: FanPitchColors.muted),
+                      const Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: FanPitchColors.muted,
+                      ),
                       const SizedBox(height: 12),
-                      Text(_error!, style: const TextStyle(color: FanPitchColors.muted)),
+                      Text(
+                        _error!,
+                        style: const TextStyle(color: FanPitchColors.muted),
+                      ),
                       const SizedBox(height: 16),
-                      FilledButton(onPressed: _loadAll, child: const Text('Réessayer')),
+                      FilledButton(
+                        onPressed: _loadAll,
+                        child: const Text('Réessayer'),
+                      ),
                     ],
                   ),
                 ),
               )
             else if (user != null) ...[
-              SliverToBoxAdapter(child: _Header(user: user, postsCount: _total)),
+              SliverToBoxAdapter(
+                child: _Header(user: user, postsCount: _total),
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -167,13 +182,18 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Row(
                     children: [
-                      Text('Publications',
-                          style: Theme.of(context).textTheme.titleLarge),
+                      Text(
+                        'Publications',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                       const Spacer(),
-                      Text('$_total',
-                          style: const TextStyle(
-                              color: FanPitchColors.muted,
-                              fontWeight: FontWeight.w600)),
+                      Text(
+                        '$_total',
+                        style: const TextStyle(
+                          color: FanPitchColors.muted,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -221,9 +241,11 @@ class _AppBar extends StatelessWidget {
       pinned: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
-      title: Text(user?.profile.displayName.isNotEmpty == true
-          ? user!.profile.displayName
-          : user?.username ?? 'Profil'),
+      title: Text(
+        user?.profile.displayName.isNotEmpty == true
+            ? user!.profile.displayName
+            : user?.username ?? 'Profil',
+      ),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_rounded),
         onPressed: () => Navigator.of(context).maybePop().then((handled) {
@@ -265,7 +287,9 @@ class _Header extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        p.displayName.isNotEmpty ? p.displayName : user.username,
+                        p.displayName.isNotEmpty
+                            ? p.displayName
+                            : user.username,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -293,7 +317,10 @@ class _Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (p.bio != null && p.bio!.isNotEmpty)
-                Text(p.bio!, style: const TextStyle(fontSize: 14, height: 1.45)),
+                Text(
+                  p.bio!,
+                  style: const TextStyle(fontSize: 14, height: 1.45),
+                ),
               const SizedBox(height: 14),
               Wrap(
                 spacing: 8,
@@ -302,7 +329,10 @@ class _Header extends StatelessWidget {
                   if (p.country != null && p.country!.isNotEmpty)
                     _Chip(icon: Icons.public_rounded, label: p.country!),
                   _Chip(icon: Icons.stars_rounded, label: '${p.points} pts'),
-                  _Chip(icon: Icons.trending_up_rounded, label: 'Lvl ${p.level}'),
+                  _Chip(
+                    icon: Icons.trending_up_rounded,
+                    label: 'Lvl ${p.level}',
+                  ),
                 ],
               ),
               const SizedBox(height: 18),
@@ -331,18 +361,22 @@ class _Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final url = user.profile.avatarUrl;
-    final initials = (user.profile.displayName.isNotEmpty
-            ? user.profile.displayName
-            : user.username)
-        .substring(0, 1)
-        .toUpperCase();
+    final initials =
+        (user.profile.displayName.isNotEmpty
+                ? user.profile.displayName
+                : user.username)
+            .substring(0, 1)
+            .toUpperCase();
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: context.fp.brandGradient,
-        border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 4),
+        border: Border.all(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          width: 4,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.12),
@@ -364,15 +398,15 @@ class _Avatar extends StatelessWidget {
   }
 
   Widget _initialBubble(String initials, double s) => Center(
-        child: Text(
-          initials,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: s * 0.42,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      );
+    child: Text(
+      initials,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: s * 0.42,
+        fontWeight: FontWeight.w800,
+      ),
+    ),
+  );
 }
 
 class _Chip extends StatelessWidget {
@@ -393,7 +427,10 @@ class _Chip extends StatelessWidget {
         children: [
           Icon(icon, size: 13, color: FanPitchColors.muted),
           const SizedBox(width: 6),
-          Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -411,11 +448,19 @@ class _Stat extends StatelessWidget {
       children: [
         Text(
           _fmt(value),
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, letterSpacing: -0.3),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.3,
+          ),
         ),
         Text(
           label,
-          style: const TextStyle(fontSize: 12, color: FanPitchColors.muted, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 12,
+            color: FanPitchColors.muted,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -432,7 +477,11 @@ class _FollowRow extends StatelessWidget {
   final AppUser user;
   final bool busy;
   final VoidCallback onToggle;
-  const _FollowRow({required this.user, required this.busy, required this.onToggle});
+  const _FollowRow({
+    required this.user,
+    required this.busy,
+    required this.onToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -460,13 +509,24 @@ class _FollowRow extends StatelessWidget {
               ? OutlinedButton(
                   onPressed: busy ? null : onToggle,
                   child: busy
-                      ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
                       : const Text('Abonné  ✓'),
                 )
               : FilledButton(
                   onPressed: busy ? null : onToggle,
                   child: busy
-                      ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
                       : const Text('S\'abonner'),
                 ),
         ),
@@ -493,11 +553,20 @@ class _EmptyPosts extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.inbox_rounded, size: 56, color: FanPitchColors.muted.withValues(alpha: 0.5)),
+          Icon(
+            Icons.inbox_rounded,
+            size: 56,
+            color: FanPitchColors.muted.withValues(alpha: 0.5),
+          ),
           const SizedBox(height: 12),
           Text(
-            isMe ? 'Tu n\'as encore rien publié.' : 'Aucune publication pour le moment.',
-            style: const TextStyle(color: FanPitchColors.muted, fontWeight: FontWeight.w600),
+            isMe
+                ? 'Tu n\'as encore rien publié.'
+                : 'Aucune publication pour le moment.',
+            style: const TextStyle(
+              color: FanPitchColors.muted,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           if (isMe) ...[
             const SizedBox(height: 16),

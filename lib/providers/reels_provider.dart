@@ -23,23 +23,27 @@ class ReelsState {
   });
 
   ReelsState copyWith({
-    List<StatusPost>? items, bool? loading, bool? loadingMore,
-    String? error, FeedTab? tab,
-  }) =>
-      ReelsState(
-        items: items ?? this.items,
-        loading: loading ?? this.loading,
-        loadingMore: loadingMore ?? this.loadingMore,
-        error: error,
-        tab: tab ?? this.tab,
-      );
+    List<StatusPost>? items,
+    bool? loading,
+    bool? loadingMore,
+    String? error,
+    FeedTab? tab,
+  }) => ReelsState(
+    items: items ?? this.items,
+    loading: loading ?? this.loading,
+    loadingMore: loadingMore ?? this.loadingMore,
+    error: error,
+    tab: tab ?? this.tab,
+  );
 }
 
 class ReelsController extends StateNotifier<ReelsState> {
   ReelsController(this._api) : super(const ReelsState(loading: true)) {
     refresh();
     _impressionFlusher = Timer.periodic(
-      const Duration(seconds: 8), (_) => _flushImpressions());
+      const Duration(seconds: 8),
+      (_) => _flushImpressions(),
+    );
   }
   final ApiClient _api;
 
@@ -69,7 +73,8 @@ class ReelsController extends StateNotifier<ReelsState> {
       final existingIds = {for (final s in state.items) s.id};
       final fresh = more.where((s) => !existingIds.contains(s.id)).toList();
       state = state.copyWith(
-        items: [...state.items, ...fresh], loadingMore: false,
+        items: [...state.items, ...fresh],
+        loadingMore: false,
       );
     } catch (_) {
       state = state.copyWith(loadingMore: false);
@@ -119,6 +124,6 @@ class ReelsController extends StateNotifier<ReelsState> {
   }
 }
 
-final reelsProvider =
-    StateNotifierProvider<ReelsController, ReelsState>(
-        (ref) => ReelsController(ref.read(apiClientProvider)));
+final reelsProvider = StateNotifierProvider<ReelsController, ReelsState>(
+  (ref) => ReelsController(ref.read(apiClientProvider)),
+);

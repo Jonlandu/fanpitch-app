@@ -32,9 +32,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       context.go('/');
     } else {
       final err = notifier.lastError;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_humanise(err))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_humanise(err))));
     }
     if (mounted) setState(() => _busy = false);
   }
@@ -58,14 +58,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 48),
-              Text('FanPitch',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displaySmall
-                      ?.copyWith(fontWeight: FontWeight.w900)),
+              Text(
+                'FanPitch',
+                style: Theme.of(
+                  context,
+                ).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w900),
+              ),
               const SizedBox(height: 8),
-              Text('Live the match. Together. Out loud.',
-                  style: Theme.of(context).textTheme.bodyLarge),
+              Text(
+                'Live the match. Together. Out loud.',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
               const SizedBox(height: 48),
               TextField(
                 controller: _username,
@@ -88,8 +91,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 onPressed: _busy ? null : _submit,
                 child: _busy
                     ? const SizedBox(
-                        width: 18, height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2))
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Text('Log in'),
               ),
               const SizedBox(height: 12),

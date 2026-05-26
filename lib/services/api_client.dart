@@ -37,12 +37,14 @@ class ApiClient {
               final clone = await _dio.fetch(options);
               return handler.resolve(clone);
             } else {
-              // Si le refresh échoue, on stoppe tout et on renvoie une 401 propre
-              // pour rediriger l'utilisateur vers l'écran de Login
+              // Refresh failed — clear in-memory auth state so the router
+              // sends the user back to /login instead of leaving them on a
+              // half-broken page with stale state.
+              onSessionExpired?.call();
               return handler.reject(
                 DioException(
                   requestOptions: e.requestOptions,
-                  error: 'Session expired, please try to reconnect.',
+                  error: 'Session expired, please reconnect.',
                   type: DioExceptionType.badResponse,
                   response: e.response,
                 ),
@@ -57,6 +59,12 @@ class ApiClient {
 
   final AuthStorage _storage;
   final Dio _dio = Dio();
+
+  /// Optional callback fired when the refresh token also fails. The auth
+  /// provider wires this to `authProvider.notifier.logout()` so the router
+  /// transitions cleanly to /login instead of letting the UI sit on a
+  /// half-broken feed page.
+  void Function()? onSessionExpired;
 
   Future<bool> _tryRefresh() async {
     final r = await _storage.readRefresh();

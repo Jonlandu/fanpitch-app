@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/generated/app_localizations.dart';
 import '../providers/locale_provider.dart';
+import '../router.dart';
 import '../theme.dart';
 
 const _seenKey = 'fp_language_picker_seen_v1';
@@ -55,6 +56,10 @@ class _LanguagePickerScreenState extends ConsumerState<LanguagePickerScreen> {
     if (code == null) return;
     await ref.read(localeProvider.notifier).set(Locale(code));
     await markLanguagePickerSeen();
+    // Invalidate the gate so the router redirect no longer bounces us back
+    // here. Without this, the FutureProvider keeps returning its cached
+    // "language picker needed = true" value and the navigation looks frozen.
+    ref.invalidate(languagePickerNeededProvider);
     if (!mounted) return;
     if (widget.fromSettings) {
       Navigator.of(context).pop();

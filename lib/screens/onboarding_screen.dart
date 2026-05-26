@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/generated/app_localizations.dart';
+import '../router.dart';
 import '../theme.dart';
 
 const _seenKey = 'fp_onboarding_seen_v1';
@@ -66,14 +68,14 @@ final _pages = <_Page>[
   ),
 ];
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _controller = PageController();
   int _index = 0;
 
@@ -85,14 +87,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   bool get _isLast => _index == _pages.length - 1;
 
-  Future<void> _finish() async {
+  /// Persist the "onboarding seen" flag AND invalidate the gate so the
+  /// router redirect re-reads it on next navigation. Without the
+  /// invalidation, FutureProvider keeps returning its cached `true` and
+  /// every later logout bounces back here instead of going to /login.
+  Future<void> _seenAndInvalidate() async {
     await _markSeen();
+    ref.invalidate(firstLaunchProvider);
+  }
+
+  Future<void> _finish() async {
+    await _seenAndInvalidate();
     if (!mounted) return;
     context.go('/register');
   }
 
   Future<void> _skip() async {
-    await _markSeen();
+    await _seenAndInvalidate();
     if (!mounted) return;
     context.go('/login');
   }

@@ -1,0 +1,18 @@
+FanPitch — AWS World Sports Innovation Cup 2026 (Challenge 3 "Fan Squad")
+
+Source code (public GitHub):
+
+  Mobile app (Flutter, iOS/Android):  https://github.com/Jonlandu/fanpitch-app
+  Backend API (Django, AWS-deployed): https://github.com/Jonlandu/fanpitch-api
+
+Live demo backend (Innovation Sandbox, eu-central-1):
+  http://ec2-63-184-221-33.eu-central-1.compute.amazonaws.com/api/docs/
+
+Demo credentials (10 nationalities, 20 fan accounts, password = fanpitch2026):
+  congo_general / fanpitch2026   (DRC ultra)
+  lisbon_lion   / fanpitch2026   (Portugal ultra)
+  paris_fan     / fanpitch2026   (France ultra)
+  messi_devoto  / fanpitch2026   (Argentina ultra)
+  ...20 fans across COD, POR, FRA, ARG, BRA, MAR, SEN, CMR, ESP, NGA
+
+Run instructions: see README.md in each repo.

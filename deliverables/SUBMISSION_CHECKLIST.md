@@ -11,18 +11,26 @@
 - [ ] **`executive_summary.pdf`** — build the 5 slides from `deliverables/executive_summary.md`, export to PDF
 - [ ] *(optional)* `prfaq.pdf` — skip for v1, can resubmit `_v2.zip` later
 
-## Build the 5-slide deck (15 min)
+## The deck is already built ✅
 
-1. Open Keynote / PowerPoint / Google Slides.
-2. Pick a clean dark template (green accent #00A651 matches the FanPitch brand).
-3. Create 5 slides, copy-paste each `## SLIDE N` block from `executive_summary.md`.
-4. For each `[VISUAL]` hint:
-   - **Slide 1**: 3 phone mockups side-by-side (stat app · WhatsApp · stadium).
-   - **Slide 2**: 4 screenshots of the 4 tabs (take them now from the app — iPhone simulator or device).
-   - **Slide 3**: Architecture diagram — copy the ASCII box, or rebuild in Excalidraw.
-   - **Slide 4**: Either a Swagger UI screenshot of `/api/docs/` or the table styled.
-   - **Slide 5**: Map of Africa with country chips, three-pillar scorecard.
-5. Export → File > Export to PDF. Name it `executive_summary.pdf`.
+`executive_summary.pdf` (1 MB, 5 slides, landscape 1280×720) was generated from `executive_summary.html` via Chrome headless. Branded with the FanPitch palette (green / orange / gold / ink), Traction signals on slide 5, all visuals self-contained — no external images needed.
+
+If you want to **regenerate** after edits to the HTML:
+```bash
+cd deliverables
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --no-pdf-header-footer --no-margins \
+  --print-to-pdf=executive_summary.pdf \
+  "file://$(pwd)/executive_summary.html"
+```
+
+### Optional — add iPhone screenshots to slide 2
+
+The deck is already visually rich, but if you want to embed real screenshots of the 4 tabs (could nudge "Implementation Quality" higher with the judges):
+
+1. From your iPhone, open FanPitch, screenshot each tab (Pour toi · Live · Matchs · Moi). 4 PNGs.
+2. Drop them in `deliverables/screenshots/` with these exact names: `tab1_foryou.png`, `tab2_live.png`, `tab3_matches.png`, `tab4_me.png`.
+3. Tell me to re-embed them; I'll update the HTML and regenerate the PDF in 30 seconds.
 
 ## Record the video (30 min)
 

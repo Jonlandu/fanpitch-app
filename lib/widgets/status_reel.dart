@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -339,10 +341,30 @@ class _Background extends StatelessWidget {
       );
     }
     if (media?.cdnUrl != null) {
-      return CachedNetworkImage(
-        imageUrl: media!.cdnUrl!,
-        fit: BoxFit.cover,
-        errorWidget: (_, __, ___) => _gradient(context),
+      // Blurred copy of the same image fills the screen behind a contained
+      // (un-cropped, un-stretched) foreground. Mimics Instagram: full image
+      // stays visible at natural aspect ratio, but the screen never shows
+      // raw black bars on the sides.
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          CachedNetworkImage(
+            imageUrl: media!.cdnUrl!,
+            fit: BoxFit.cover,
+            errorWidget: (_, __, ___) => _gradient(context),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: Container(color: Colors.black.withValues(alpha: 0.35)),
+          ),
+          Center(
+            child: CachedNetworkImage(
+              imageUrl: media.cdnUrl!,
+              fit: BoxFit.contain,
+              errorWidget: (_, __, ___) => const SizedBox.shrink(),
+            ),
+          ),
+        ],
       );
     }
     return _gradient(context);

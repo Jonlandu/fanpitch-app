@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# FanPitch — push demo photos into iOS Simulator + Android Emulator galleries.
+# FanPitch — push demo photos into BOTH Android Emulator galleries.
 #
 # Workflow:
 #   1. On your Mac, download whatever photos you want to publish during the
@@ -7,14 +7,14 @@
 #         ~/Downloads/fanpitch_demo_photos/
 #      Anything goes — jpg, png, webp. 5-10 photos is plenty.
 #
-#   2. Make sure both emulators are running (`bash scripts/launch_demo.sh`).
+#   2. Make sure both Android emulators are running:
+#        bash scripts/launch_demo.sh
 #
-#   3. Run this script. It will:
-#      - addmedia every image into the iOS Simulator Photos library
-#      - adb push every image into the Android Emulator /sdcard/Pictures/
-#      - trigger a media scan so the Gallery picks them up immediately
+#   3. Run this script. It will adb push every image to /sdcard/Pictures/ on
+#      both emulator-5554 and emulator-5556, then trigger a media scan so the
+#      Gallery / image picker sees them immediately.
 #
-#   4. In FanPitch on either device:
+#   4. In FanPitch on either phone:
 #      Tap (+) New Post > Add image > the photos are at the top of the gallery.
 
 set -o pipefail
@@ -60,40 +60,30 @@ fi
 echo -e "${BOLD}═══ Found ${#PHOTOS[@]} photo(s) in $PHOTOS_DIR ═══${RESET}"
 for p in "${PHOTOS[@]}"; do echo "  - $(basename "$p")"; done
 
-# ─── iOS Simulator ────────────────────────────────────────────────────
-echo ""
-echo -e "${BOLD}═══ iOS Simulator (booted) ═══${RESET}"
-if xcrun simctl list devices booted 2>/dev/null | grep -q "Booted"; then
-  for p in "${PHOTOS[@]}"; do
-    if xcrun simctl addmedia booted "$p" 2>&1; then
-      ok "Added: $(basename "$p")"
-    else
-      fail "iOS addmedia failed for $(basename "$p")"
-    fi
-  done
-else
-  warn "No iOS Simulator booted. Run: bash scripts/launch_demo.sh"
-fi
-
-# ─── Android Emulator ─────────────────────────────────────────────────
-echo ""
-echo -e "${BOLD}═══ Android Emulator (emulator-5554) ═══${RESET}"
-if $ADB devices 2>/dev/null | grep -q "emulator-5554"; then
+# ─── Push to both Android emulators ───────────────────────────────────
+push_to() {
+  local serial="$1"
+  echo ""
+  echo -e "${BOLD}═══ Android Emulator ($serial) ═══${RESET}"
+  if ! $ADB devices 2>/dev/null | grep -q "^$serial"; then
+    warn "$serial not booted. Run: bash scripts/launch_demo.sh"
+    return 0
+  fi
   for p in "${PHOTOS[@]}"; do
     fname=$(basename "$p")
-    if $ADB push "$p" "/sdcard/Pictures/$fname" >/dev/null 2>&1; then
-      # Trigger media scan so the Gallery / image picker sees the file
-      $ADB shell am broadcast \
+    if $ADB -s "$serial" push "$p" "/sdcard/Pictures/$fname" >/dev/null 2>&1; then
+      $ADB -s "$serial" shell am broadcast \
         -a android.intent.action.MEDIA_SCANNER_SCAN_FILE \
         -d "file:///sdcard/Pictures/$fname" >/dev/null 2>&1
       ok "Pushed: $fname"
     else
-      fail "Android push failed for $fname"
+      fail "Push failed for $fname on $serial"
     fi
   done
-else
-  warn "No Android emulator booted. Run: bash scripts/launch_demo.sh"
-fi
+}
+
+push_to emulator-5554
+push_to emulator-5556
 
 echo ""
 echo -e "${GREEN}${BOLD}═══════════════════════════════════════════════════════════════${RESET}"

@@ -105,6 +105,29 @@
   "matchStatusLive": "Live",
   "matchStatusFinished": "Beendet",
 
+  "hubFeatured": "Im Fokus",
+  "hubLiveNow": "Live",
+  "hubUpcoming": "Bald",
+  "hubFinished": "Kürzlich beendet",
+  "hubStandings": "Tabelle",
+  "hubTopScorers": "Torjäger",
+  "hubSeeAll": "Alle anzeigen",
+  "hubNoLive": "Aktuell keine Live-Spiele.",
+  "hubNoUpcoming": "Keine kommenden Spiele.",
+  "hubNoFinished": "Noch keine beendeten Spiele.",
+  "hubPossession": "Ballbesitz",
+  "hubGoals": "{count, plural, =1{1 Tor} other{{count} Tore}}",
+  "@hubGoals": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "standingsP": "Sp",
+  "standingsW": "S",
+  "standingsD": "U",
+  "standingsL": "N",
+  "standingsGd": "+/−",
+  "standingsPts": "Pkt",
+  "standingsTeam": "Team",
+
   "leaderboardTitle": "Rangliste",
 
   "commonCancel": "Abbrechen",

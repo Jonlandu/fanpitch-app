@@ -105,6 +105,29 @@
   "matchStatusLive": "Live",
   "matchStatusFinished": "Finished",
 
+  "hubFeatured": "Featured",
+  "hubLiveNow": "Live now",
+  "hubUpcoming": "Upcoming",
+  "hubFinished": "Recently finished",
+  "hubStandings": "Standings",
+  "hubTopScorers": "Top scorers",
+  "hubSeeAll": "See all",
+  "hubNoLive": "No live matches right now.",
+  "hubNoUpcoming": "No upcoming matches.",
+  "hubNoFinished": "No finished matches yet.",
+  "hubPossession": "Possession",
+  "hubGoals": "{count, plural, =1{1 goal} other{{count} goals}}",
+  "@hubGoals": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "standingsP": "P",
+  "standingsW": "W",
+  "standingsD": "D",
+  "standingsL": "L",
+  "standingsGd": "+/−",
+  "standingsPts": "Pts",
+  "standingsTeam": "Team",
+
   "leaderboardTitle": "Leaderboard",
 
   "commonCancel": "Cancel",

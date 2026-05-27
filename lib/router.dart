@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,8 +8,10 @@ import 'screens/create_status_screen.dart';
 import 'screens/language_picker_screen.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/login_screen.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'screens/main_tabs.dart';
 import 'screens/match_room_screen.dart';
+import 'screens/matches_list_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/predictions_screen.dart';
 import 'screens/register_screen.dart';
@@ -129,6 +132,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'leaderboard',
             builder: (_, __) => const LeaderboardScreen(),
+          ),
+          GoRoute(
+            path: 'matches/all',
+            builder: (ctx, __) => Scaffold(
+              appBar: AppBar(title: Text(AppL10n.of(ctx).matchesTitle)),
+              body: const MatchesListScreen(),
+            ),
           ),
           GoRoute(
             path: 'u/:id',

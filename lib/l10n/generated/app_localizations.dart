@@ -565,6 +565,120 @@ abstract class AppL10n {
   /// **'Terminé'**
   String get matchStatusFinished;
 
+  /// No description provided for @hubFeatured.
+  ///
+  /// In fr, this message translates to:
+  /// **'À l\'affiche'**
+  String get hubFeatured;
+
+  /// No description provided for @hubLiveNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'En direct'**
+  String get hubLiveNow;
+
+  /// No description provided for @hubUpcoming.
+  ///
+  /// In fr, this message translates to:
+  /// **'À venir'**
+  String get hubUpcoming;
+
+  /// No description provided for @hubFinished.
+  ///
+  /// In fr, this message translates to:
+  /// **'Récemment terminés'**
+  String get hubFinished;
+
+  /// No description provided for @hubStandings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement'**
+  String get hubStandings;
+
+  /// No description provided for @hubTopScorers.
+  ///
+  /// In fr, this message translates to:
+  /// **'Meilleurs buteurs'**
+  String get hubTopScorers;
+
+  /// No description provided for @hubSeeAll.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir tout'**
+  String get hubSeeAll;
+
+  /// No description provided for @hubNoLive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun match en direct pour le moment.'**
+  String get hubNoLive;
+
+  /// No description provided for @hubNoUpcoming.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun match à venir.'**
+  String get hubNoUpcoming;
+
+  /// No description provided for @hubNoFinished.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun match terminé.'**
+  String get hubNoFinished;
+
+  /// No description provided for @hubPossession.
+  ///
+  /// In fr, this message translates to:
+  /// **'Possession'**
+  String get hubPossession;
+
+  /// No description provided for @hubGoals.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 but} other{{count} buts}}'**
+  String hubGoals(int count);
+
+  /// No description provided for @standingsP.
+  ///
+  /// In fr, this message translates to:
+  /// **'MJ'**
+  String get standingsP;
+
+  /// No description provided for @standingsW.
+  ///
+  /// In fr, this message translates to:
+  /// **'G'**
+  String get standingsW;
+
+  /// No description provided for @standingsD.
+  ///
+  /// In fr, this message translates to:
+  /// **'N'**
+  String get standingsD;
+
+  /// No description provided for @standingsL.
+  ///
+  /// In fr, this message translates to:
+  /// **'P'**
+  String get standingsL;
+
+  /// No description provided for @standingsGd.
+  ///
+  /// In fr, this message translates to:
+  /// **'+/−'**
+  String get standingsGd;
+
+  /// No description provided for @standingsPts.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pts'**
+  String get standingsPts;
+
+  /// No description provided for @standingsTeam.
+  ///
+  /// In fr, this message translates to:
+  /// **'Équipe'**
+  String get standingsTeam;
+
   /// No description provided for @leaderboardTitle.
   ///
   /// In fr, this message translates to:

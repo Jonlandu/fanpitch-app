@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../l10n/generated/app_localizations.dart';
-import 'matches_list_screen.dart';
+import 'match_hub_screen.dart';
 import 'profile_screen.dart';
 import 'reels_feed_screen.dart';
 
@@ -18,7 +18,7 @@ class _MainTabsState extends ConsumerState<MainTabs> {
 
   static const _pages = <Widget>[
     ReelsFeedScreen(),
-    MatchesListScreen(),
+    MatchHubScreen(),
     ProfileScreen(),
   ];
 

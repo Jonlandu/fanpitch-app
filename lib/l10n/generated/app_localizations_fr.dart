@@ -266,6 +266,71 @@ class AppL10nFr extends AppL10n {
   String get matchStatusFinished => 'Terminé';
 
   @override
+  String get hubFeatured => 'À l\'affiche';
+
+  @override
+  String get hubLiveNow => 'En direct';
+
+  @override
+  String get hubUpcoming => 'À venir';
+
+  @override
+  String get hubFinished => 'Récemment terminés';
+
+  @override
+  String get hubStandings => 'Classement';
+
+  @override
+  String get hubTopScorers => 'Meilleurs buteurs';
+
+  @override
+  String get hubSeeAll => 'Voir tout';
+
+  @override
+  String get hubNoLive => 'Aucun match en direct pour le moment.';
+
+  @override
+  String get hubNoUpcoming => 'Aucun match à venir.';
+
+  @override
+  String get hubNoFinished => 'Aucun match terminé.';
+
+  @override
+  String get hubPossession => 'Possession';
+
+  @override
+  String hubGoals(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count buts',
+      one: '1 but',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get standingsP => 'MJ';
+
+  @override
+  String get standingsW => 'G';
+
+  @override
+  String get standingsD => 'N';
+
+  @override
+  String get standingsL => 'P';
+
+  @override
+  String get standingsGd => '+/−';
+
+  @override
+  String get standingsPts => 'Pts';
+
+  @override
+  String get standingsTeam => 'Équipe';
+
+  @override
   String get leaderboardTitle => 'Classement';
 
   @override

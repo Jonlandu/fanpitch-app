@@ -14,8 +14,9 @@
 // resolves them via [featuredMatchById].
 //
 // Swap the sample URLs / video ID for real broadcast feeds when available.
+// ignore: unused_import
+import '../models/team.dart'; // kept for the commented featured-match block
 import '../models/match.dart';
-import '../models/team.dart';
 
 sealed class LiveSource {
   const LiveSource();
@@ -55,34 +56,29 @@ const _featuredArgFraId = -1;
 const _featuredYoutubeId = 'i9dy3v2dGsM';
 
 // Kickoff is pinned to app launch so the in-match minute organically
-// grows: starts at ~23' when the user opens the app, ticks up from there.
+// grows. Kept for when the featured match is re-enabled.
+// ignore: unused_element
 final DateTime _featuredKickoff =
     DateTime.now().subtract(const Duration(minutes: 23));
 
-List<Match> _featuredMatches() => [
-      Match(
-        id: _featuredArgFraId,
-        homeTeam: Team(
-          id: -1001,
-          name: 'Argentina',
-          shortName: 'ARG',
-          country: 'Argentina',
-          colorPrimary: '#75AADB',
-        ),
-        awayTeam: Team(
-          id: -1002,
-          name: 'France',
-          shortName: 'FRA',
-          country: 'France',
-          colorPrimary: '#0055A4',
-        ),
-        kickoffAt: _featuredKickoff,
-        status: 'LIVE',
-        homeScore: 3,
-        awayScore: 3,
-        competition: 'FIFA World Cup 2022 — Final',
-        venue: 'Lusail Stadium, Qatar',
-      ),
+// The featured ARG vs FRA YouTube broadcast is temporarily disabled
+// because the chosen FIFA video (`i9dy3v2dGsM`) returns YouTube error 150
+// — the video owner restricts off-platform embedding. The YouTube pipeline
+// itself works; swap `_featuredYoutubeId` for an embed-allowed video ID
+// and uncomment the entry below to re-enable.
+List<Match> _featuredMatches() => const <Match>[
+      // Match(
+      //   id: _featuredArgFraId,
+      //   homeTeam: Team(id: -1001, name: 'Argentina', shortName: 'ARG',
+      //                   country: 'Argentina', colorPrimary: '#75AADB'),
+      //   awayTeam: Team(id: -1002, name: 'France', shortName: 'FRA',
+      //                   country: 'France', colorPrimary: '#0055A4'),
+      //   kickoffAt: _featuredKickoff,
+      //   status: 'LIVE',
+      //   homeScore: 3, awayScore: 3,
+      //   competition: 'FIFA World Cup 2022 — Final',
+      //   venue: 'Lusail Stadium, Qatar',
+      // ),
     ];
 
 /// All synthetic featured live matches, in display order.

@@ -50,17 +50,16 @@ The killer "WebSocket fan-out" demo: a goal hits both phones in <300 ms. This is
 **Voiceover**:
 > *"For You — TikTok-style reels of fan posts that auto-expire after a week. Reactions, comments, dwell-time impressions are all tracked. Posts can be generated with our AI Caption Studio — Bedrock Claude, four languages, French, English, Lingala and Swahili."*
 
-### 0:55 — 1:30 · TAB 2 · LIVE — THE BROADCAST WOW (35 s)
+### 0:55 — 1:30 · TAB 2 · LIVE — THE BROADCAST SURFACE (35 s)
 
 **Visual**:
-- Tap Live tab. Show the 3 broadcast cards — **featured 🇦🇷 ARG 3-3 FRA — 2022 World Cup Final** at top.
-- Tap the featured card.
-- The YouTube player loads, FIFA highlights of the final play.
-- LIVE badge top-left pulses, score bug top-right.
-- Scroll the commentary timeline below — show goals/cards/subs (Mbappé hat-trick, Messi, Di María).
+- Tap Live tab. Show the live broadcast cards (every match flagged LIVE on the backend).
+- Tap one card → the broadcast player opens.
+- The video plays in 16:9 with the LIVE badge pulsing top-left, score bug top-right.
+- Scroll the commentary timeline below — show goals/cards/subs.
 
 **Voiceover**:
-> *"Live. Every active match is a broadcast card. The featured one is the 2022 World Cup Final, Argentina-France. Watch — the video actually plays, real FIFA highlights. Score bug, LIVE badge, commentary timeline. Two video pipelines under the hood: video_player for our simulated streams, youtube_player_flutter for real broadcasts. We picked the right tool per match."*
+> *"Live. Every match flagged live on the backend shows as a broadcast card here. Tap one — full-screen player, pulsing LIVE badge, score bug, commentary timeline below. Two video pipelines under the hood: video_player for our simulated streams and youtube_player_flutter for licensed broadcasts. Same Flutter widget, switches automatically per source."*
 
 ### 1:30 — 2:15 · TAB 3 · MATCH HUB + 2-PHONE WEBSOCKET MOMENT (45 s)
 

@@ -26,7 +26,8 @@
   "loginPassword": "Contraseña",
   "loginSubmit": "Iniciar sesión",
   "loginNoAccount": "¿Sin cuenta todavía? Regístrate",
-  "loginError": "Credenciales inválidas",
+  "loginError": "Usuario o contraseña incorrectos",
+  "loginNetworkError": "No se puede conectar al servidor. Verifica tu conexión.",
 
   "registerTitle": "Crear una cuenta",
   "registerDisplayName": "Nombre a mostrar",

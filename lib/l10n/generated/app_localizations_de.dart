@@ -80,7 +80,11 @@ class AppL10nDe extends AppL10n {
   String get loginNoAccount => 'Noch kein Konto? Registrieren';
 
   @override
-  String get loginError => 'Ungültige Anmeldedaten';
+  String get loginError => 'Benutzername oder Passwort ist falsch';
+
+  @override
+  String get loginNetworkError =>
+      'Server nicht erreichbar. Prüfe deine Verbindung.';
 
   @override
   String get registerTitle => 'Konto erstellen';

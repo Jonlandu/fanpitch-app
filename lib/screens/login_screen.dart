@@ -32,21 +32,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (ok) {
       context.go('/');
     } else {
+      final l = AppL10n.of(context);
       final err = notifier.lastError;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(_humanise(err))));
+      final s = err?.toString() ?? '';
+      final msg = (s.contains('connection') || s.contains('XMLHttpRequest'))
+          ? l.loginNetworkError
+          : l.loginError;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(msg),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
     }
     if (mounted) setState(() => _busy = false);
-  }
-
-  String _humanise(Object? e) {
-    final s = e?.toString() ?? 'Unknown error';
-    if (s.contains('401')) return 'Wrong username or password.';
-    if (s.contains('connection') || s.contains('XMLHttpRequest')) {
-      return 'Cannot reach the server. Is daphne running?';
-    }
-    return 'Login failed: $s';
   }
 
   @override

@@ -238,8 +238,14 @@ abstract class AppL10n {
   /// No description provided for @loginError.
   ///
   /// In fr, this message translates to:
-  /// **'Identifiants incorrects'**
+  /// **'Nom d\'utilisateur ou mot de passe incorrect'**
   String get loginError;
+
+  /// No description provided for @loginNetworkError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de joindre le serveur. Vérifie ta connexion.'**
+  String get loginNetworkError;
 
   /// No description provided for @registerTitle.
   ///

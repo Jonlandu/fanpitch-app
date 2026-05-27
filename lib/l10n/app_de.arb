@@ -26,7 +26,8 @@
   "loginPassword": "Passwort",
   "loginSubmit": "Anmelden",
   "loginNoAccount": "Noch kein Konto? Registrieren",
-  "loginError": "Ungültige Anmeldedaten",
+  "loginError": "Benutzername oder Passwort ist falsch",
+  "loginNetworkError": "Server nicht erreichbar. Prüfe deine Verbindung.",
 
   "registerTitle": "Konto erstellen",
   "registerDisplayName": "Anzeigename",

@@ -26,7 +26,8 @@
   "loginPassword": "Password",
   "loginSubmit": "Sign in",
   "loginNoAccount": "No account yet? Sign up",
-  "loginError": "Invalid credentials",
+  "loginError": "Username or password is incorrect",
+  "loginNetworkError": "Cannot reach the server. Check your connection.",
 
   "registerTitle": "Create an account",
   "registerDisplayName": "Display name",

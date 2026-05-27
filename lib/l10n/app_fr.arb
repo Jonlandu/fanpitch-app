@@ -26,7 +26,8 @@
   "loginPassword": "Mot de passe",
   "loginSubmit": "Se connecter",
   "loginNoAccount": "Pas encore de compte ? Inscris-toi",
-  "loginError": "Identifiants incorrects",
+  "loginError": "Nom d'utilisateur ou mot de passe incorrect",
+  "loginNetworkError": "Impossible de joindre le serveur. Vérifie ta connexion.",
 
   "registerTitle": "Créer un compte",
   "registerDisplayName": "Nom à afficher",

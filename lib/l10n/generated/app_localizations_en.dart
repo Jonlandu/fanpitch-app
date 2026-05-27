@@ -79,7 +79,11 @@ class AppL10nEn extends AppL10n {
   String get loginNoAccount => 'No account yet? Sign up';
 
   @override
-  String get loginError => 'Invalid credentials';
+  String get loginError => 'Username or password is incorrect';
+
+  @override
+  String get loginNetworkError =>
+      'Cannot reach the server. Check your connection.';
 
   @override
   String get registerTitle => 'Create an account';

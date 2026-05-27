@@ -26,7 +26,8 @@
   "loginPassword": "Palavra-passe",
   "loginSubmit": "Entrar",
   "loginNoAccount": "Ainda não tens conta? Regista-te",
-  "loginError": "Credenciais inválidas",
+  "loginError": "Nome de utilizador ou palavra-passe incorretos",
+  "loginNetworkError": "Não foi possível contactar o servidor. Verifica a tua ligação.",
 
   "registerTitle": "Criar conta",
   "registerDisplayName": "Nome a apresentar",

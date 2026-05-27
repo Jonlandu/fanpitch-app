@@ -80,7 +80,11 @@ class AppL10nPt extends AppL10n {
   String get loginNoAccount => 'Ainda não tens conta? Regista-te';
 
   @override
-  String get loginError => 'Credenciais inválidas';
+  String get loginError => 'Nome de utilizador ou palavra-passe incorretos';
+
+  @override
+  String get loginNetworkError =>
+      'Não foi possível contactar o servidor. Verifica a tua ligação.';
 
   @override
   String get registerTitle => 'Criar conta';

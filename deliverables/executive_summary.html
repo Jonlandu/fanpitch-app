@@ -73,12 +73,56 @@
   }
   .tab-card {
     background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-    padding: 18px 20px; border-radius: 14px;
+    padding: 14px 16px; border-radius: 14px;
+    display: flex; gap: 14px; align-items: stretch;
   }
-  .tab-card .tab-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .tab-card .tab-head .emoji { font-size: 28px; }
-  .tab-card .tab-head .name { font-size: 18px; font-weight: 800; color: #fff; }
-  .tab-card .desc { font-size: 13px; line-height: 1.5; color: #C5CDD5; }
+  .tab-card .preview {
+    flex: 0 0 76px; height: 130px;
+    border-radius: 10px; padding: 6px 8px;
+    display: flex; flex-direction: column; gap: 4px;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.10);
+    font-size: 8px; color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .tab-card .preview .notch {
+    position: absolute; top: -2px; left: 50%; transform: translateX(-50%);
+    width: 22px; height: 5px; background: rgba(0,0,0,0.6); border-radius: 0 0 5px 5px;
+  }
+  .tab-card .preview-body { flex: 1; }
+  .tab-card .preview-body .name {
+    font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tab-card .preview-body .name .emoji { font-size: 20px; }
+  .tab-card .preview-body .desc { font-size: 11.5px; line-height: 1.45; color: #C5CDD5; }
+  .tab-card .preview-body .desc strong { color: #FFC83D; }
+
+  /* preview mini-content per tab */
+  .pv-foryou { background: linear-gradient(135deg, #1B2027, #0D1117); }
+  .pv-foryou .row { background: rgba(255,107,44,0.50); border-radius: 4px; padding: 6px 4px; margin-top: 14px; }
+  .pv-foryou .row + .row { background: rgba(0,166,81,0.40); margin-top: 4px; }
+  .pv-foryou .meta { display: flex; gap: 4px; font-size: 7px; margin-top: 2px; opacity: 0.9; }
+
+  .pv-live { background: linear-gradient(135deg, #003D1F, #E5363B); position: relative; }
+  .pv-live .live-badge { position: absolute; top: 8px; left: 6px; background: #E5363B; padding: 1px 4px; border-radius: 2px; font-size: 6px; font-weight: 900; letter-spacing: 0.5px; }
+  .pv-live .play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; background: rgba(255,255,255,0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: 14px; }
+  .pv-live .score { position: absolute; bottom: 12px; left: 6px; right: 6px; text-align: center; font-size: 9px; font-weight: 900; }
+
+  .pv-hub { background: linear-gradient(135deg, #00A651, #1B2027); position: relative; }
+  .pv-hub .carousel { background: rgba(255,255,255,0.30); border-radius: 4px; height: 22px; margin-top: 12px; }
+  .pv-hub .tile { background: rgba(255,255,255,0.20); border-radius: 3px; height: 12px; margin-top: 4px; }
+  .pv-hub .standings { background: rgba(0,0,0,0.40); border-radius: 3px; padding: 3px; margin-top: 4px; }
+  .pv-hub .standings .r { height: 4px; background: #FFC83D; margin-top: 2px; border-radius: 1px; opacity: 0.7; }
+  .pv-hub .standings .r:nth-child(1) { width: 80%; }
+  .pv-hub .standings .r:nth-child(2) { width: 65%; }
+  .pv-hub .standings .r:nth-child(3) { width: 50%; }
+
+  .pv-me { background: linear-gradient(135deg, #0D1117, #003D1F); position: relative; }
+  .pv-me .avatar { width: 28px; height: 28px; background: linear-gradient(135deg, #00A651, #FF6B2C); border-radius: 50%; margin: 18px auto 6px; }
+  .pv-me .uname { text-align: center; font-size: 9px; font-weight: 800; }
+  .pv-me .level { text-align: center; font-size: 7px; color: #FFC83D; margin-top: 1px; }
+  .pv-me .badges { display: flex; justify-content: center; gap: 3px; margin-top: 4px; }
+  .pv-me .badges span { width: 8px; height: 8px; background: #FFC83D; border-radius: 50%; opacity: 0.8; }
 
   .plus-row {
     margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;
@@ -204,15 +248,18 @@
 <!-- ═══════════════════════════════ SLIDE 1 ═══════════════════════════════ -->
 <section class="slide bg-night">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div class="brand"><img src="logo_mark.png" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> FANPITCH</div>
     <div>AWS WORLD SPORTS INNOVATION CUP 2026 · CHALLENGE 3 "FAN SQUAD"</div>
     <div class="pagenum">1 / 5</div>
   </div>
 
+  <!-- Big brand mark as a hero watermark on the right side -->
+  <img src="logo_mark.png" alt="" style="position:absolute; right:-40px; top:60px; width:340px; height:340px; opacity:0.18; pointer-events:none;">
+
   <h1 class="huge">Two billion people<br>watch football.</h1>
   <h1 style="color:#FFC83D; margin-top:8px; font-size:48px;">None of them really watch <em>alone</em>.</h1>
 
-  <div style="margin-top: 28px; max-width: 880px;">
+  <div style="margin-top: 28px; max-width: 760px;">
     <p style="font-size: 20px; color: #C5CDD5;">
       The match is the heartbeat. The social experience is scattered across screenshots, group chats and stadium nostalgia. There is no purpose-built social arena synced to <strong style="color:#FFC83D;">the minute the goal happens</strong>.
     </p>
@@ -240,7 +287,7 @@
 <!-- ═══════════════════════════════ SLIDE 2 ═══════════════════════════════ -->
 <section class="slide bg-dark">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div class="brand"><img src="logo_mark.png" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> FANPITCH</div>
     <div>THE SOLUTION · FOUR SURFACES, ONE HEARTBEAT</div>
     <div class="pagenum">2 / 5</div>
   </div>
@@ -250,20 +297,56 @@
 
   <div class="tab-grid">
     <div class="tab-card">
-      <div class="tab-head"><span class="emoji">📲</span><span class="name">For You</span></div>
-      <div class="desc">TikTok-style vertical reels of fan posts (image · text · AI caption). 7-day auto-expiring "funny status". Reactions, comments, dwell-time impressions all tracked.</div>
+      <div class="preview pv-foryou">
+        <div class="notch"></div>
+        <div class="row">POST · 🔥 234</div>
+        <div class="row">POST · 🔥 187</div>
+        <div class="meta">📲 ⚽ 🏆 👤</div>
+      </div>
+      <div class="preview-body">
+        <div class="name"><span class="emoji">📲</span>For You</div>
+        <div class="desc">TikTok-style vertical reels of fan posts (image · text · AI caption). <strong>7-day auto-expiring</strong> "funny status". Reactions, comments, dwell-time impressions all tracked.</div>
+      </div>
     </div>
     <div class="tab-card">
-      <div class="tab-head"><span class="emoji">🔴</span><span class="name">Live</span></div>
-      <div class="desc">Every active match as a broadcast card. <strong>Featured: 2022 World Cup Final ARG 3-3 FRA</strong> plays via real YouTube clip. Score bug + LIVE badge + commentary timeline overlay.</div>
+      <div class="preview pv-live">
+        <div class="notch"></div>
+        <div class="live-badge">LIVE</div>
+        <div class="play">▶</div>
+        <div class="score">ARG 3 - 3 FRA</div>
+      </div>
+      <div class="preview-body">
+        <div class="name"><span class="emoji">🔴</span>Live</div>
+        <div class="desc">Every active match as a broadcast card. <strong>Featured: ARG 3-3 FRA · 2022 WC Final</strong> plays via real YouTube clip. Score bug + LIVE badge + commentary timeline.</div>
+      </div>
     </div>
     <div class="tab-card">
-      <div class="tab-head"><span class="emoji">⚽</span><span class="name">Match Hub</span></div>
-      <div class="desc">Hero carousel · live tiles with possession bars · upcoming carousel · recently finished · standings table (real W/D/L/GD/Pts) · top scorers podium. Inspired by 1xBet depth.</div>
+      <div class="preview pv-hub">
+        <div class="notch"></div>
+        <div class="carousel"></div>
+        <div class="tile"></div>
+        <div class="tile"></div>
+        <div class="standings">
+          <div class="r"></div><div class="r"></div><div class="r"></div>
+        </div>
+      </div>
+      <div class="preview-body">
+        <div class="name"><span class="emoji">⚽</span>Match Hub</div>
+        <div class="desc">Hero carousel · live tiles with possession bars · upcoming · recently finished · <strong>standings (real W/D/L/GD/Pts)</strong> · top scorers. Inspired by 1xBet depth.</div>
+      </div>
     </div>
     <div class="tab-card">
-      <div class="tab-head"><span class="emoji">👤</span><span class="name">Me</span></div>
-      <div class="desc">Profile · points · level · country · badges · language picker (5 locales). Real-time leaderboard after every finished match.</div>
+      <div class="preview pv-me">
+        <div class="notch"></div>
+        <div class="avatar"></div>
+        <div class="uname">@congo_general</div>
+        <div class="level">⭐ Lv 12 · 🇨🇩 COD</div>
+        <div class="badges"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="preview-body">
+        <div class="name"><span class="emoji">👤</span>Me</div>
+        <div class="desc">Profile · points · level · country · badges · <strong>language picker (5 locales)</strong>. Real-time leaderboard after every finished match.</div>
+      </div>
     </div>
   </div>
 
@@ -283,7 +366,7 @@
 <!-- ═══════════════════════════════ SLIDE 3 ═══════════════════════════════ -->
 <section class="slide bg-pitch">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div class="brand"><img src="logo_mark.png" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> FANPITCH</div>
     <div>TECHNICAL INNOVATION · 34% OF SCORE</div>
     <div class="pagenum">3 / 5</div>
   </div>
@@ -344,7 +427,7 @@
 <!-- ═══════════════════════════════ SLIDE 4 ═══════════════════════════════ -->
 <section class="slide bg-dark">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div class="brand"><img src="logo_mark.png" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> FANPITCH</div>
     <div>DATA LAYER · 33 ENDPOINTS · 9 DOMAINS</div>
     <div class="pagenum">4 / 5</div>
   </div>
@@ -382,7 +465,7 @@
 <!-- ═══════════════════════════════ SLIDE 5 ═══════════════════════════════ -->
 <section class="slide bg-brand">
   <div class="topbar">
-    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div class="brand"><img src="logo_mark.png" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;"> FANPITCH</div>
     <div>MARKET IMPACT · 33% OF SCORE · WHY WE'LL WIN</div>
     <div class="pagenum">5 / 5</div>
   </div>

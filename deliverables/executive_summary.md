@@ -88,7 +88,7 @@ A Flutter app with a 4-tab navigation. Each tab is a fully shipped surface:
 ### Why this is innovative
 - ⚡ **Real-time fan-out via WebSocket Channels** — a goal event hits one channel group, fans on N devices see the score flip in <300 ms.
 - 🤖 **Auto-spawned polls** — server inspects `MatchEvent.type`; a `RED` card triggers a poll *"Carton rouge mérité ?"* without any human in the loop.
-- 🤖 **Bedrock Claude 4.6** generates fan post captions (multilingual). Cost-bounded, flagged off by default.
+- 🤖 **Bedrock Claude 3 Haiku** generates fan post captions in 4 languages (FR / EN / Lingala / Swahili). Cost-bounded, BedrockCall audit log, fan-tone prompts.
 - 🎮 **Simulator with personas** — 7 bot personas (ultra, casual, analyst, provocateur) react to events so the room never feels empty.
 - 🎬 **Two video backends** — `video_player` for simulated streams, `youtube_player_flutter` for the featured World Cup match.
 
@@ -117,7 +117,7 @@ The architecture box above, rendered cleanly (Excalidraw or hand drawn).
 | ⚽ **Matches** | `GET /matches/` · `GET /matches/{id}/` · `GET /matches/{id}/events/` · WebSocket `ws://.../ws/match/{id}/` | List, detail, event stream, live channel |
 | 🔮 **Predictions** | `POST /predictions/` · scored at fulltime by Celery beat | Oracle badge for exact-score predictions |
 | 🏆 **Gamification** | `GET /leaderboard/` · `GET /badges/` | Points, levels, achievement unlocks |
-| 🤖 **AI** | `POST /ai/caption/` (Bedrock Claude 4.6) | Multilingual fan caption generation |
+| 🤖 **AI** | `POST /ai/caption/` (Bedrock Claude 3 Haiku) | Multilingual fan caption generation |
 
 ### Match-tab specific data (shaped client-side, ready for backend hook-up)
 - 🏟️ **Standings** — computed from real `FINISHED` matches (W/D/L, GD, points, FIFA tiebreakers).

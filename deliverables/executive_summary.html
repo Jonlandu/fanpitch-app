@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FanPitch — Executive Summary</title>
+<style>
+  /* ── Print page: each slide = its own 16:9 landscape page ─────── */
+  @page {
+    size: 1280px 720px;
+    margin: 0;
+  }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; background: #0D1117; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #fff; }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    padding: 56px 64px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide:last-child { page-break-after: auto; }
+
+  /* ── Palette: green #00A651, orange #FF6B2C, ink #0D1117, gold #FFC83D ── */
+  .bg-dark   { background: linear-gradient(135deg, #0D1117 0%, #1B2027 100%); }
+  .bg-brand  { background: linear-gradient(135deg, #00A651 0%, #FF6B2C 100%); }
+  .bg-pitch  { background: linear-gradient(135deg, #003D1F 0%, #00A651 100%); }
+  .bg-night  { background: linear-gradient(135deg, #0D1117 0%, #003D1F 100%); }
+
+  /* ── Header strip on every slide ──────────────────────────────── */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 28px;
+    font-size: 13px; letter-spacing: 1.5px; font-weight: 700;
+    color: #FFC83D;
+  }
+  .topbar .brand {
+    display: inline-flex; align-items: center; gap: 8px; color: #fff;
+  }
+  .topbar .brand .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #00A651; box-shadow: 0 0 12px #00A651;
+  }
+  .topbar .pagenum {
+    background: rgba(255,255,255,0.10); padding: 4px 12px; border-radius: 999px;
+    font-size: 11px; color: #fff;
+  }
+
+  /* ── Typography ───────────────────────────────────────────────── */
+  h1 {
+    font-size: 56px; line-height: 1.05; letter-spacing: -1.5px;
+    font-weight: 900; margin: 0 0 12px 0; color: #fff;
+  }
+  h1.huge { font-size: 72px; }
+  h2 {
+    font-size: 22px; font-weight: 600; margin: 0 0 32px 0;
+    color: #A3ACB7; letter-spacing: 0.2px;
+  }
+  h3 { font-size: 16px; font-weight: 800; letter-spacing: 1.5px; color: #FFC83D; text-transform: uppercase; margin: 0 0 14px 0; }
+
+  ul { padding-left: 24px; margin: 0; }
+  li { margin-bottom: 10px; font-size: 17px; line-height: 1.45; }
+  li strong { color: #1FB76C; }
+  p { font-size: 17px; line-height: 1.45; margin: 0 0 12px 0; }
+
+  /* ── Tab cards layout for slide 2 ─────────────────────────────── */
+  .tab-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    margin-top: 8px;
+  }
+  .tab-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px 20px; border-radius: 14px;
+  }
+  .tab-card .tab-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .tab-card .tab-head .emoji { font-size: 28px; }
+  .tab-card .tab-head .name { font-size: 18px; font-weight: 800; color: #fff; }
+  .tab-card .desc { font-size: 13px; line-height: 1.5; color: #C5CDD5; }
+
+  .plus-row {
+    margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .pill {
+    padding: 6px 11px; border-radius: 999px;
+    background: rgba(0,166,81,0.18); color: #1FB76C; font-weight: 700;
+    border: 1px solid rgba(31,183,108,0.4);
+  }
+
+  /* ── Architecture slide ───────────────────────────────────────── */
+  .arch-box {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 22px 24px; margin-bottom: 14px;
+  }
+  .arch-box .layer { display: flex; align-items: center; gap: 14px; padding: 6px 0; }
+  .arch-box .layer .ic {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(0,166,81,0.18); display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .arch-box .layer .lbl { font-weight: 700; font-size: 15px; color: #fff; }
+  .arch-box .layer .det { color: #A3ACB7; font-size: 13px; }
+  .arch-arrow { text-align: center; color: #00A651; font-size: 18px; margin: 4px 0; font-weight: 900; }
+  .three-col {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    margin-top: 10px;
+  }
+  .three-col .col {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 12px; border-radius: 10px;
+    text-align: center;
+  }
+  .three-col .col .top { font-size: 22px; }
+  .three-col .col .nm { font-size: 13px; font-weight: 800; color: #fff; margin-top: 4px; }
+  .three-col .col .sub { font-size: 10px; color: #A3ACB7; margin-top: 2px; }
+
+  .why-list { margin-top: 16px; }
+  .why-list li { font-size: 14px; }
+
+  /* ── API slide table ──────────────────────────────────────────── */
+  table.api {
+    width: 100%; border-collapse: collapse; margin-top: 4px;
+    font-size: 13px;
+  }
+  table.api th, table.api td {
+    padding: 9px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08);
+    vertical-align: top;
+  }
+  table.api th { color: #FFC83D; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; font-size: 11px; }
+  table.api td.domain { color: #1FB76C; font-weight: 800; white-space: nowrap; }
+  table.api td.eps { font-family: "SF Mono", Monaco, monospace; font-size: 11.5px; color: #C5CDD5; }
+  table.api td.purpose { color: #C5CDD5; }
+
+  /* ── Hero (slide 1) ───────────────────────────────────────────── */
+  .hero-statline {
+    display: flex; gap: 28px; margin-top: 28px; flex-wrap: wrap;
+  }
+  .hero-statline .stat {
+    background: rgba(255,255,255,0.08); padding: 14px 20px; border-radius: 12px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-statline .stat .n {
+    font-size: 30px; font-weight: 900; color: #FFC83D; letter-spacing: -1px;
+  }
+  .hero-statline .stat .lbl {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: #fff; margin-top: 4px;
+  }
+
+  /* ── Market slide ─────────────────────────────────────────────── */
+  .market-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin-top: 12px;
+  }
+  .roadmap {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    padding: 16px 20px; border-radius: 14px;
+  }
+  .roadmap .q { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); font-size: 13px; }
+  .roadmap .q:last-child { border-bottom: none; }
+  .roadmap .qn { width: 70px; font-weight: 800; color: #FF6B2C; }
+  .roadmap .qd { color: #C5CDD5; }
+
+  .why-win {
+    background: linear-gradient(135deg, rgba(0,166,81,0.20), rgba(255,107,44,0.20));
+    border: 1px solid rgba(255,255,255,0.10);
+    padding: 18px 20px; border-radius: 14px;
+  }
+  .why-win h3 { color: #fff; }
+  .why-win ul { padding-left: 18px; }
+  .why-win li { font-size: 13.5px; margin-bottom: 8px; }
+  .why-win li strong { color: #FFC83D; }
+
+  .closing {
+    margin-top: 16px; padding: 18px 22px;
+    background: rgba(255,255,255,0.06); border-left: 4px solid #FFC83D;
+    border-radius: 8px; font-size: 19px; font-style: italic; color: #fff;
+    font-weight: 600;
+  }
+
+  .footer {
+    position: absolute; bottom: 18px; left: 64px; right: 64px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: #A3ACB7; letter-spacing: 0.4px;
+  }
+  .footer .live { color: #FFC83D; font-family: "SF Mono", Monaco, monospace; font-size: 10px; }
+
+  /* ── Misc accents ─────────────────────────────────────────────── */
+  .bullet-yellow { color: #FFC83D; font-weight: 800; }
+  .bullet-orange { color: #FF6B2C; font-weight: 800; }
+  .bullet-green { color: #1FB76C; font-weight: 800; }
+
+  .badge-row { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .badge-row .b {
+    background: rgba(255,255,255,0.10); padding: 6px 12px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; color: #fff;
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ SLIDE 1 ═══════════════════════════════ -->
+<section class="slide bg-night">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div>AWS WORLD SPORTS INNOVATION CUP 2026 · CHALLENGE 3 "FAN SQUAD"</div>
+    <div class="pagenum">1 / 5</div>
+  </div>
+
+  <h1 class="huge">Two billion people<br>watch football.</h1>
+  <h1 style="color:#FFC83D; margin-top:8px; font-size:48px;">None of them really watch <em>alone</em>.</h1>
+
+  <div style="margin-top: 28px; max-width: 880px;">
+    <p style="font-size: 20px; color: #C5CDD5;">
+      The match is the heartbeat. The social experience is scattered across screenshots, group chats and stadium nostalgia. There is no purpose-built social arena synced to <strong style="color:#FFC83D;">the minute the goal happens</strong>.
+    </p>
+  </div>
+
+  <div class="hero-statline">
+    <div class="stat"><div class="n">2 B</div><div class="lbl">Global football fans</div></div>
+    <div class="stat"><div class="n">700 M</div><div class="lbl">African fans, mobile-first, underserved</div></div>
+    <div class="stat"><div class="n">90 min</div><div class="lbl">Per match. 7 days of community after.</div></div>
+    <div class="stat"><div class="n">5</div><div class="lbl">Languages at launch (🇫🇷 🇬🇧 🇪🇸 🇵🇹 🇩🇪)</div></div>
+  </div>
+
+  <div style="margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap;">
+    <span class="pill">❌ OneFootball = stats, no community</span>
+    <span class="pill">❌ Twitter = community, not match-synced</span>
+    <span class="pill">✅ FanPitch = the live arena</span>
+  </div>
+
+  <div class="footer">
+    <div>FanPitch — built by a fan, for fans.</div>
+    <div class="live">github.com/Jonlandu/fanpitch-app · github.com/Jonlandu/fanpitch-api</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SLIDE 2 ═══════════════════════════════ -->
+<section class="slide bg-dark">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div>THE SOLUTION · FOUR SURFACES, ONE HEARTBEAT</div>
+    <div class="pagenum">2 / 5</div>
+  </div>
+
+  <h1>Live the match.<br><span style="color:#FF6B2C;">Together. Out loud.</span></h1>
+  <h2>One Flutter app. Four shipped tabs. Same live data heartbeat throughout.</h2>
+
+  <div class="tab-grid">
+    <div class="tab-card">
+      <div class="tab-head"><span class="emoji">📲</span><span class="name">For You</span></div>
+      <div class="desc">TikTok-style vertical reels of fan posts (image · text · AI caption). 7-day auto-expiring "funny status". Reactions, comments, dwell-time impressions all tracked.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-head"><span class="emoji">🔴</span><span class="name">Live</span></div>
+      <div class="desc">Every active match as a broadcast card. <strong>Featured: 2022 World Cup Final ARG 3-3 FRA</strong> plays via real YouTube clip. Score bug + LIVE badge + commentary timeline overlay.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-head"><span class="emoji">⚽</span><span class="name">Match Hub</span></div>
+      <div class="desc">Hero carousel · live tiles with possession bars · upcoming carousel · recently finished · standings table (real W/D/L/GD/Pts) · top scorers podium. Inspired by 1xBet depth.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-head"><span class="emoji">👤</span><span class="name">Me</span></div>
+      <div class="desc">Profile · points · level · country · badges · language picker (5 locales). Real-time leaderboard after every finished match.</div>
+    </div>
+  </div>
+
+  <div class="plus-row">
+    <span class="pill">🎯 Predictions · Oracle badge for exact-score</span>
+    <span class="pill">📊 Match Room · WebSocket live events</span>
+    <span class="pill">🗳️ Auto-spawned polls on red cards</span>
+    <span class="pill">🤖 AI captions FR · EN · Lingala · Swahili</span>
+  </div>
+
+  <div class="footer">
+    <div>Built on real backend data; nothing mocked at the API layer.</div>
+    <div class="live">Live: ec2-63-184-221-33.eu-central-1.compute.amazonaws.com</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SLIDE 3 ═══════════════════════════════ -->
+<section class="slide bg-pitch">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div>TECHNICAL INNOVATION · 34% OF SCORE</div>
+    <div class="pagenum">3 / 5</div>
+  </div>
+
+  <h1>AWS-native. Real-time. Production-shaped.</h1>
+  <h2>Innovation Sandbox · eu-central-1 · deployed and serving traffic right now.</h2>
+
+  <div class="arch-box">
+    <div class="layer">
+      <div class="ic">📱</div>
+      <div><div class="lbl">Flutter Mobile (iOS · Android)</div>
+      <div class="det">Riverpod · go_router · Dio + JWT refresh · web_socket_channel · video_player + youtube_player_flutter</div></div>
+    </div>
+    <div class="arch-arrow">↓ HTTPS · WSS ↓</div>
+    <div class="layer">
+      <div class="ic">⚙️</div>
+      <div><div class="lbl">EC2 t2.micro · Daphne ASGI · Django 5 + Channels</div>
+      <div class="det">DRF (auth · feed · matches · ai) · WebSocket fan-out · Celery worker + Beat · match simulator with bot personas</div></div>
+    </div>
+  </div>
+
+  <div class="three-col">
+    <div class="col">
+      <div class="top">🗄️</div>
+      <div class="nm">RDS Postgres</div>
+      <div class="sub">Relational data</div>
+    </div>
+    <div class="col">
+      <div class="top">⚡</div>
+      <div class="nm">Redis (Channels)</div>
+      <div class="sub">Live fan-out</div>
+    </div>
+    <div class="col">
+      <div class="top">📦</div>
+      <div class="nm">S3 + local fallback</div>
+      <div class="sub">User media</div>
+    </div>
+    <div class="col">
+      <div class="top">🤖</div>
+      <div class="nm">Bedrock Claude</div>
+      <div class="sub">Multilingual AI captions</div>
+    </div>
+  </div>
+
+  <ul class="why-list" style="margin-top: 18px;">
+    <li><span class="bullet-yellow">⚡ Real-time fan-out</span> — a goal event hits one channel group, fans on N devices see the score flip in <strong>&lt; 300 ms</strong>.</li>
+    <li><span class="bullet-yellow">🗳️ Auto-spawned polls</span> — server inspects MatchEvent.type; a RED card triggers "Carton rouge mérité ?" without any human in the loop.</li>
+    <li><span class="bullet-yellow">🤖 Bedrock Claude 3 Haiku</span> generates fan post captions in 4 languages (FR · EN · Lingala · Swahili). Cost-bounded, audit-logged, fan-tone prompts.</li>
+    <li><span class="bullet-yellow">🎬 Two video pipelines</span> — video_player for simulated streams · youtube_player_flutter for the featured World Cup match.</li>
+  </ul>
+
+  <div class="footer">
+    <div>Source: github.com/Jonlandu/fanpitch-api · github.com/Jonlandu/fanpitch-app</div>
+    <div class="live">Swagger: /api/docs/ · 33 endpoints across 9 domains</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SLIDE 4 ═══════════════════════════════ -->
+<section class="slide bg-dark">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div>DATA LAYER · 33 ENDPOINTS · 9 DOMAINS</div>
+    <div class="pagenum">4 / 5</div>
+  </div>
+
+  <h1>Everything a football fan needs,<br>exposed via REST + WebSocket.</h1>
+  <h2>Auto-documented via OpenAPI / Swagger UI at /api/docs/.</h2>
+
+  <table class="api">
+    <thead>
+      <tr><th style="width:120px;">Domain</th><th>Endpoints</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="domain">🔐 Auth</td><td class="eps">/auth/register · /auth/login · /auth/refresh · /auth/me</td><td class="purpose">JWT access + refresh; auto-retry on 401.</td></tr>
+      <tr><td class="domain">📰 Feed</td><td class="eps">/feed/for-you · /feed/following</td><td class="purpose">TikTok-style ranked feed, impression-aware.</td></tr>
+      <tr><td class="domain">✍️ Statuses</td><td class="eps">/statuses/ — 7-day TTL</td><td class="purpose">Funny status: text + media.</td></tr>
+      <tr><td class="domain">📷 Media</td><td class="eps">/media/upload-url · /media/local-upload · /media/</td><td class="purpose">S3 presign + local fallback (Innovation Sandbox).</td></tr>
+      <tr><td class="domain">💬 Interactions</td><td class="eps">/reactions · /comments · /impressions</td><td class="purpose">Emoji reactions, comments, dwell-time tracking.</td></tr>
+      <tr><td class="domain">⚽ Matches</td><td class="eps">/matches · /matches/{id} · /matches/{id}/events · ws://…/ws/match/{id}/</td><td class="purpose">List · detail · event stream · live channel.</td></tr>
+      <tr><td class="domain">🔮 Predictions</td><td class="eps">/predictions/ — Celery scoring at fulltime</td><td class="purpose">Oracle badge for exact-score predictions.</td></tr>
+      <tr><td class="domain">🏆 Gamification</td><td class="eps">/leaderboard · /badges</td><td class="purpose">Points, levels, achievement unlocks.</td></tr>
+      <tr><td class="domain">🤖 AI</td><td class="eps">/ai/caption (Bedrock Claude 3 Haiku)</td><td class="purpose">Multilingual fan caption generation.</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 16px; background: rgba(255,200,61,0.10); border: 1px solid rgba(255,200,61,0.30); padding: 12px 16px; border-radius: 10px; font-size: 12.5px; color: #FFC83D;">
+    <strong>Match Hub data, ready for backend hook-up:</strong> standings (real W/D/L/GD/Pts from FINISHED matches, FIFA tiebreakers) · lineups (11+7, country-aware rosters, 4 formations) · in-match stats (possession, shots, corners, fouls, cards, passes, accuracy) · top scorers (aggregated from real goal attributions) · live broadcast source switcher.
+  </div>
+
+  <div class="footer">
+    <div>33 endpoints — concrete count from <code>/api/v1/</code> router introspection.</div>
+    <div class="live">Demo creds: congo_general / fanpitch2026 — 20 fans across 10 countries</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SLIDE 5 ═══════════════════════════════ -->
+<section class="slide bg-brand">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> FANPITCH</div>
+    <div>MARKET IMPACT · 33% OF SCORE · WHY WE'LL WIN</div>
+    <div class="pagenum">5 / 5</div>
+  </div>
+
+  <h1>700 M African fans first.<br>2 B globally after that.</h1>
+  <h2>Mobile-first · multilingual · built by a fan, for fans.</h2>
+
+  <div class="market-grid">
+    <div class="roadmap">
+      <h3 style="color:#fff;">GO-TO-MARKET ROADMAP</h3>
+      <div class="q"><div class="qn">Q1 '26</div><div class="qd">MVP launch in DRC, Portugal, Brazil, France (Lusophone + Francophone first).</div></div>
+      <div class="q"><div class="qn">Q2 '26</div><div class="qd">Fan Club subscription ($1.99/mo) · AR scarf · league partnerships.</div></div>
+      <div class="q"><div class="qn">Q3 '26</div><div class="qd">Expand to Anglophone Africa · Argentina · Mexico. Real Bedrock caption rollout.</div></div>
+      <div class="q"><div class="qn">Q4 '26</div><div class="qd">Stadium partnerships · second-screen sponsored polls.</div></div>
+
+      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.20);">
+        <div style="font-size: 11px; letter-spacing: 1px; color: #fff; opacity: 0.7; text-transform: uppercase; margin-bottom: 4px;">TAM ceiling</div>
+        <div style="font-size: 28px; font-weight: 900; color: #FFC83D;">2 B fans × $0.50 ARPU = $1 B / year</div>
+      </div>
+    </div>
+
+    <div class="why-win">
+      <h3>WHY WE'LL WIN</h3>
+      <ul>
+        <li><strong>Working code · deployed AWS</strong> — no smoke and mirrors. Live URL serving traffic now.</li>
+        <li><strong>All three pillars shipped</strong> — Live arena · 1-week funny status · Bragging rights.</li>
+        <li><strong>Built by a fan, for fans</strong> — country palettes · native player rosters · multilingual.</li>
+        <li><strong>Sandbox-aware</strong> — eu-central-1 · free-tier shaped · no over-provisioning.</li>
+        <li><strong>AWS-native + Kiro-built</strong> — Bedrock · EC2 · RDS · S3 · Channels. Every line in production.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="closing">
+    "Two billion fans. One match. One arena. FanPitch — built by the people who actually watch."
+  </div>
+
+  <div class="footer">
+    <div>Innocent Kibundulu Kazadi · Team FanPitch · Challenge 3 Fan Squad</div>
+    <div class="live">Deadline: 27 May 2026 · DFB Campus, Frankfurt, 16 June 2026</div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -48,6 +48,8 @@ app.*.map.json
 *.pdf
 ISB-UserGuide.pdf
 Challenge*.pdf
+# …but our own submission PDFs (executive summary etc.) are allowed.
+!deliverables/*.pdf
 
 # Generated icon previews (re-creatable from assets/branding/app_icon.svg)
 assets/branding/previews/

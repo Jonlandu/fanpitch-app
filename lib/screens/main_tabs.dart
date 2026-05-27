@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../l10n/generated/app_localizations.dart';
+import 'live_screen.dart';
 import 'match_hub_screen.dart';
 import 'profile_screen.dart';
 import 'reels_feed_screen.dart';
@@ -18,6 +19,7 @@ class _MainTabsState extends ConsumerState<MainTabs> {
 
   static const _pages = <Widget>[
     ReelsFeedScreen(),
+    LiveScreen(),
     MatchHubScreen(),
     ProfileScreen(),
   ];
@@ -27,11 +29,16 @@ class _MainTabsState extends ConsumerState<MainTabs> {
     final l = AppL10n.of(context);
     // The Reels feed runs its own immersive AppBar, so we hide ours on tab 0.
     final showAppBar = _index != 0;
+    final title = switch (_index) {
+      1 => l.liveTitle,
+      2 => l.matchesTitle,
+      _ => l.tabMe,
+    };
     return Scaffold(
       extendBody: _index == 0,
       appBar: showAppBar
           ? AppBar(
-              title: Text(_index == 1 ? l.matchesTitle : l.tabMe),
+              title: Text(title),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.emoji_events_outlined),
@@ -49,6 +56,11 @@ class _MainTabsState extends ConsumerState<MainTabs> {
           NavigationDestination(
             icon: const Icon(Icons.dynamic_feed),
             label: l.tabForYou,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.live_tv_outlined),
+            selectedIcon: const Icon(Icons.live_tv),
+            label: l.tabLive,
           ),
           NavigationDestination(
             icon: const Icon(Icons.sports_soccer),

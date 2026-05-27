@@ -361,6 +361,12 @@ abstract class AppL10n {
   /// **'Pour toi'**
   String get tabForYou;
 
+  /// No description provided for @tabLive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Live'**
+  String get tabLive;
+
   /// No description provided for @tabMatches.
   ///
   /// In fr, this message translates to:
@@ -372,6 +378,48 @@ abstract class AppL10n {
   /// In fr, this message translates to:
   /// **'Moi'**
   String get tabMe;
+
+  /// No description provided for @liveTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'En direct'**
+  String get liveTitle;
+
+  /// No description provided for @liveNoMatches.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun match en direct pour le moment.'**
+  String get liveNoMatches;
+
+  /// No description provided for @liveWatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Regarder'**
+  String get liveWatch;
+
+  /// No description provided for @liveLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement du flux…'**
+  String get liveLoading;
+
+  /// No description provided for @liveStreamError.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger la vidéo. Réessaie.'**
+  String get liveStreamError;
+
+  /// No description provided for @liveCommentary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commentaires en direct'**
+  String get liveCommentary;
+
+  /// No description provided for @liveMinute.
+  ///
+  /// In fr, this message translates to:
+  /// **'{minute}\''**
+  String liveMinute(int minute);
 
   /// No description provided for @feedForYou.
   ///

@@ -56,8 +56,20 @@
   "matchStatsNoEvents": "Sin eventos aún",
 
   "tabForYou": "Para ti",
+  "tabLive": "Live",
   "tabMatches": "Partidos",
   "tabMe": "Yo",
+
+  "liveTitle": "En directo",
+  "liveNoMatches": "No hay partidos en directo ahora mismo.",
+  "liveWatch": "Ver",
+  "liveLoading": "Cargando transmisión…",
+  "liveStreamError": "No se pudo cargar el vídeo. Toca para reintentar.",
+  "liveCommentary": "Comentarios en directo",
+  "liveMinute": "{minute}'",
+  "@liveMinute": {
+    "placeholders": { "minute": { "type": "int" } }
+  },
 
   "feedForYou": "Para ti",
   "feedFollowing": "Siguiendo",

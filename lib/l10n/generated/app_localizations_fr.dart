@@ -148,10 +148,36 @@ class AppL10nFr extends AppL10n {
   String get tabForYou => 'Pour toi';
 
   @override
+  String get tabLive => 'Live';
+
+  @override
   String get tabMatches => 'Matchs';
 
   @override
   String get tabMe => 'Moi';
+
+  @override
+  String get liveTitle => 'En direct';
+
+  @override
+  String get liveNoMatches => 'Aucun match en direct pour le moment.';
+
+  @override
+  String get liveWatch => 'Regarder';
+
+  @override
+  String get liveLoading => 'Chargement du flux…';
+
+  @override
+  String get liveStreamError => 'Impossible de charger la vidéo. Réessaie.';
+
+  @override
+  String get liveCommentary => 'Commentaires en direct';
+
+  @override
+  String liveMinute(int minute) {
+    return '$minute\'';
+  }
 
   @override
   String get feedForYou => 'Pour toi';

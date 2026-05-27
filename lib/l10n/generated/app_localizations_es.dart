@@ -147,10 +147,37 @@ class AppL10nEs extends AppL10n {
   String get tabForYou => 'Para ti';
 
   @override
+  String get tabLive => 'Live';
+
+  @override
   String get tabMatches => 'Partidos';
 
   @override
   String get tabMe => 'Yo';
+
+  @override
+  String get liveTitle => 'En directo';
+
+  @override
+  String get liveNoMatches => 'No hay partidos en directo ahora mismo.';
+
+  @override
+  String get liveWatch => 'Ver';
+
+  @override
+  String get liveLoading => 'Cargando transmisión…';
+
+  @override
+  String get liveStreamError =>
+      'No se pudo cargar el vídeo. Toca para reintentar.';
+
+  @override
+  String get liveCommentary => 'Comentarios en directo';
+
+  @override
+  String liveMinute(int minute) {
+    return '$minute\'';
+  }
 
   @override
   String get feedForYou => 'Para ti';

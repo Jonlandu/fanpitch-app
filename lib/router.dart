@@ -9,6 +9,7 @@ import 'screens/language_picker_screen.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/login_screen.dart';
 import 'l10n/generated/app_localizations.dart';
+import 'screens/live_player_screen.dart';
 import 'screens/main_tabs.dart';
 import 'screens/match_room_screen.dart';
 import 'screens/matches_list_screen.dart';
@@ -139,6 +140,11 @@ final routerProvider = Provider<GoRouter>((ref) {
               appBar: AppBar(title: Text(AppL10n.of(ctx).matchesTitle)),
               body: const MatchesListScreen(),
             ),
+          ),
+          GoRoute(
+            path: 'live/:id',
+            builder: (ctx, st) =>
+                LivePlayerScreen(matchId: int.parse(st.pathParameters['id']!)),
           ),
           GoRoute(
             path: 'u/:id',

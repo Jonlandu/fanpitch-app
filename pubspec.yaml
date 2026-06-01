@@ -31,7 +31,7 @@ dependencies:
   flutter_svg: ^2.0.10+1     # render brand logo SVG at any size
   flutter_animate: ^4.5.0    # declarative animations for onboarding + motion design
   gal: ^2.3.0                # save post media to the device photo gallery
-  permission_handler: ^11.3.1 # iOS photo-add permission for gal
+  permission_handler: ^12.0.2 # iOS photo-add permission for gal
 
 dev_dependencies:
   flutter_test:

@@ -25,7 +25,7 @@ dependencies:
   collection: ^1.18.0
   cupertino_icons: ^1.0.8
   video_player: ^2.9.2
-  youtube_player_flutter: ^9.1.1   # YouTube playback for featured live matches
+  youtube_player_flutter: ^10.0.1   # YouTube playback for featured live matches
   visibility_detector: ^0.4.0+2
   shimmer: ^3.0.0
   flutter_svg: ^2.0.10+1     # render brand logo SVG at any size
